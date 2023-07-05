@@ -17,6 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+#urlpatterns = [
+#   path('admin/', admin.site.urls),
+#]
+
+# Django's built-in path function and our views are imported
+from django.urls import path
+from django.contrib.auth.views import LoginView
+from RecipeArchive import views
+
+# URL patterns are defined for our app
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # An empty path ('') is mapped to our home view.
+    # This means that when a user navigates to the root URL of our app, the home view will be used to handle the request.
+    path('', views.home, name='home'),
+    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path("register/", views.register, name="register"),
+    path('recipes/', views.home, name='home'),
 ]
+
