@@ -37,6 +37,7 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path('recipes/', views.home, name='home'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('add-recipe/', views.add_recipe, name='add_recipe'),
 
 ]
 

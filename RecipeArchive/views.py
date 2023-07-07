@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .models import Recipe
+from .forms import RecipeForm
 from django.contrib.auth.decorators import login_required
 
 # A view is defined to handle requests to the homepage
@@ -34,4 +35,15 @@ def register(request):
         form = UserCreationForm()
     return render(request, "registration/register.html", {"form": form})
 
+def add_recipe(request):
+    if request.method == "POST":
+        form = RecipeForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_recipe = form.save(commit=False)
+            new_recipe.user = request.user
+            new_recipe.save()
+            return redirect('home')
+    else:
+        form = RecipeForm()
 
+    return render(request, 'recipes/add_recipe.html', {'form': form})
