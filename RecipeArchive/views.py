@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 
@@ -47,3 +47,41 @@ def add_recipe(request):
         form = RecipeForm()
 
     return render(request, 'recipes/add_recipe.html', {'form': form})
+
+
+# This function represents the view for deleting a recipe.
+# 'login_required' decorator is used to ensure that only logged-in users can access this view.
+@login_required
+def delete_recipe(request, recipe_id):
+    # Retrieve the recipe by its ID.
+    recipe = Recipe.objects.get(id=recipe_id)
+
+    # Check if the logged-in user is the one who added the recipe.
+    if recipe.user == request.user:
+        # If so, delete the recipe.
+        recipe.delete()
+
+    # After deleting the recipe (or if the user didn't have permission to delete it), redirect the user to the homepage.
+    return redirect('home')
+
+
+# Define a view function named 'recipe' which takes a request and recipe_id as arguments
+def recipe(request, recipe_id):
+    # Try to get the Recipe object with the provided recipe_id.
+    # If the object does not exist, the function will return a 404 response immediately.
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+
+    # If the method of the request is POST, it means that the delete button on the recipe page was clicked
+    if request.method == 'POST':
+        # Delete the recipe object from the database
+        recipe.delete()
+
+        # After deleting the recipe, redirect the user back to the homepage
+        return redirect('home')
+
+    # Create a context dictionary that includes the recipe object
+    context = {'recipe': recipe}
+
+    # Render the 'RecipeArchive/recipe.html' template, and pass in the context dictionary.
+    # This will make the recipe data available in the template.
+    return render(request, 'recipes/recipe.html', context)

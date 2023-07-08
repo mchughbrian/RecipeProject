@@ -1,0 +1,39 @@
+{% extends 'base_generic.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <h2>{{ recipe.name }}</h2>
+
+        <!-- Recipe Image -->
+        {% if recipe.image %}
+        <div class="row">
+            <div class="col-md-12">
+                <img src="{{ recipe.image.url }}" class="img-fluid" alt="{{ recipe.name }}">
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recipe Details -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <p><strong>Meal Type:</strong> {{ recipe.meal_type }}</p>
+                <p><strong>Rating:</strong> {{ recipe.rating }}</p>
+                <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+            </div>
+        </div>
+
+        <!-- Delete Button -->
+        {% if user.is_authenticated and user == recipe.user %}
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <form action="{% url 'delete_recipe' recipe.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete Recipe</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
