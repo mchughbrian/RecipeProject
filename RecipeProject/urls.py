@@ -26,6 +26,8 @@ from django.urls import path
 from django.contrib.auth.views import LoginView
 from RecipeArchive import views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 # URL patterns are defined for our app
@@ -39,5 +41,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('add-recipe/', views.add_recipe, name='add_recipe'),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
