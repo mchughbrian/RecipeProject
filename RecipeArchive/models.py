@@ -11,13 +11,15 @@ class Recipe(models.Model):
     name = models.CharField(max_length=200)
 
     # description of the recipe as a text field
-    description = models.TextField()
+    #description = models.TextField()
+
+    ingredients = models.TextField()
 
     # image of the recipe, uploaded to the "recipes/" directory
     image = models.ImageField(upload_to='recipes/')
 
     # cuisine of the recipe as a string of maximum length 100 characters
-    cuisine = models.CharField(max_length=100)
+    #cuisine = models.CharField(max_length=100)
 
     MEAL_TYPE_CHOICES = [
         ('Breakfast', 'Breakfast'),
@@ -36,8 +38,10 @@ class Recipe(models.Model):
     # protein type of the recipe as a string of maximum length 100 characters
     protein_type = models.CharField(max_length=100)
 
+    RATING_CHOICES = [(i, i) for i in range(1, 6)]  # This creates a list of tuples for choices
+
     # rating of the recipe as an integer
-    rating = models.IntegerField()
+    rating = models.IntegerField(choices=RATING_CHOICES, default=5)
 
     # date when the recipe was added, automatically set to the current date and time
     date_added = models.DateTimeField(auto_now_add=True)
