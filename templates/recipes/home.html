@@ -22,10 +22,9 @@
             <!-- Add new recipe block -->
             <div class="col-md-4">
                 <div class="card">
-                    <img src="{% static 'images/add-recipe.png' %}" class="card-img-top" alt="Add new recipe">
-                    <div class="card-body">
-                        <a href="/add-recipe/" class="btn btn-primary">Add New Recipe</a>
-                    </div>
+                    <a href="{% url 'add_recipe' %}">
+                        <img src="{% static 'images/add-recipe.png' %}" class="card-img-top" alt="Add new recipe">
+                    </a>
                 </div>
             </div>
 
