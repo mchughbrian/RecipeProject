@@ -41,7 +41,8 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('add-recipe/', views.add_recipe, name='add_recipe'),
     path('delete/<int:recipe_id>/', views.delete_recipe, name='delete_recipe'),
-    path('recipe/<int:recipe_id>/', views.recipe, name='recipe'),  # new line
+    path('recipe/<int:recipe_id>/', views.recipe, name='recipe'),
+    path('profile/', views.profile, name='profile'),
 
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

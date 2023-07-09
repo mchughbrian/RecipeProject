@@ -85,3 +85,7 @@ def recipe(request, recipe_id):
     # Render the 'RecipeArchive/recipe.html' template, and pass in the context dictionary.
     # This will make the recipe data available in the template.
     return render(request, 'recipes/recipe.html', context)
+
+def profile(request):
+    # This is just a simple example. You can customize this view according to your needs.
+    return render(request, 'registration/profile.html')
