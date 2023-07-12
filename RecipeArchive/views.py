@@ -24,6 +24,13 @@ def home(request):
     else:
         return redirect('login')
 
+    # Check if sortField parameter is present
+    sort_field = request.GET.get('sortField')
+    if sort_field:
+        recipes = recipes.order_by(sort_field)
+
+    return render(request, 'recipes/home.html', {'recipes': recipes})
+
 def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
