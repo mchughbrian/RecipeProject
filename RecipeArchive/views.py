@@ -96,3 +96,33 @@ def recipe(request, recipe_id):
 def profile(request):
     # This is just a simple example. You can customize this view according to your needs.
     return render(request, 'registration/profile.html')
+
+def edit_recipe(request, id):
+    # Get the Recipe instance with the given ID. If no such instance exists,
+    # the get_object_or_404 function will automatically render a 404 response.
+    recipe = get_object_or_404(Recipe, id=id)
+
+    # If the request method is POST, this means that the user has submitted the form.
+    if request.method == "POST":
+        # Create a form instance and populate it with data from the request and
+        # files (uploaded images), binding it to the recipe instance.
+        # If the form is valid, Django will automatically update the recipe instance.
+        form = RecipeForm(request.POST, request.FILES, instance=recipe)
+
+        # Check if the form is valid.
+        if form.is_valid():
+            # Save the changes made to the recipe instance.
+            form.save()
+
+            # After saving the changes, redirect the user to the home page.
+            return redirect('home')
+
+    # If the request method is not POST, this means the user has navigated to the page
+    # but has not submitted the form. In this case, we want to display the form
+    # populated with the current data of the recipe instance.
+    else:
+        form = RecipeForm(instance=recipe)
+
+    # Render the 'edit_recipe.html' template with the form as context.
+    return render(request, 'recipes/edit_recipe.html', {'form': form})
+

@@ -24,6 +24,10 @@
             </div>
         </div>
 
+        {% if user.is_authenticated and user == recipe.user %}
+            <a href="{% url 'edit_recipe' recipe.id %}" class="btn btn-primary">Edit Recipe</a>
+        {% endif %}
+
         <!-- Delete Button -->
         {% if user.is_authenticated and user == recipe.user %}
         <div class="row mt-4">
