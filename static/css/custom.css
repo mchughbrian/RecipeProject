@@ -10,3 +10,7 @@
     max-height: 300px;
     object-fit: cover;
 }
+
+.recipe-row {
+    margin-bottom: 30px; /* Or any other value you like */
+}
