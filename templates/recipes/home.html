@@ -30,7 +30,9 @@
             {% for recipe in recipes %}
             <div class="col-md-4 d-flex">
                 <div class="card flex-grow-1 d-flex flex-column">
-                    <a href="/recipe/{{ recipe.id }}" class="img-container" style="background-image: url({{ recipe.image.url }});"></a>
+                    {% if recipe.image %}
+                        <a href="/recipe/{{ recipe.id }}" class="img-container" style="background-image: url({{ recipe.image.url }});"></a>
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ recipe.name }}</h5>
                         <p>{{ recipe.rating }} &#9733;</p>

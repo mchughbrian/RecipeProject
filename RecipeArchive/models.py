@@ -16,7 +16,7 @@ class Recipe(models.Model):
     ingredients = models.TextField()
 
     # image of the recipe, uploaded to the "recipes/" directory
-    image = models.ImageField(upload_to='recipes/')
+    image = models.ImageField(upload_to='recipes/', blank=True, null=True)  # this makes the field optional
 
     # cuisine of the recipe as a string of maximum length 100 characters
     #cuisine = models.CharField(max_length=100)
