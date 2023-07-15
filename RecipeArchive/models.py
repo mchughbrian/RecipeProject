@@ -4,6 +4,8 @@
 # Django's built-in models and User model are imported
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 
 # Recipe model is defined
@@ -69,3 +71,14 @@ class MealPlan(models.Model):
     # The `name` field is a simple char field that allows the user to name their meal plan.
     # The `default="My Meal Plan"` sets a default name if the user doesn't provide one.
     name = models.CharField(max_length=200, default="My Meal Plan")
+
+    #Fields from the form
+
+    DAY_CHOICES = [(i, i) for i in range(1, 6)]  # This creates a list of tuples for choices
+
+    num_days = models.IntegerField(choices=DAY_CHOICES, default=5)
+
+    #num_days = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
+    breakfast = models.BooleanField(default=False)
+    lunch = models.BooleanField(default=False)
+    dinner = models.BooleanField(default=False)
