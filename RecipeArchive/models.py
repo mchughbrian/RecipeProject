@@ -4,7 +4,7 @@
 # Django's built-in models and User model are imported
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
+# from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 
@@ -72,13 +72,32 @@ class MealPlan(models.Model):
     # The `default="My Meal Plan"` sets a default name if the user doesn't provide one.
     name = models.CharField(max_length=200, default="My Meal Plan")
 
-    #Fields from the form
+    # Fields from the form
 
     DAY_CHOICES = [(i, i) for i in range(1, 6)]  # This creates a list of tuples for choices
 
     num_days = models.IntegerField(choices=DAY_CHOICES, default=5)
 
-    #num_days = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
+    # num_days = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
     breakfast = models.BooleanField(default=False)
     lunch = models.BooleanField(default=False)
     dinner = models.BooleanField(default=False)
+
+
+class MealDay(models.Model):
+    # Defines the relationship between MealDay and MealPlan
+    # Each MealDay is related to a single MealPlan and each MealPlan can have multiple MealDays
+    meal_plan = models.ForeignKey(MealPlan, on_delete=models.CASCADE)
+
+    # This field stores the day of the meal (e.g. 1, 2, 3 up to 7)
+    day = models.IntegerField()
+
+    # Meal type can be 'Breakfast', 'Lunch', or 'Dinner'
+    meal_type = models.CharField(max_length=20)
+
+    # Defines the relationship between MealDay and Recipe
+    # Each MealDay is associated with a single Recipe
+    recipe = models.ForeignKey(Recipe, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f"Day {self.day} - {self.meal_type}"

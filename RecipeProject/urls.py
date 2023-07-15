@@ -45,6 +45,10 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('edit-recipe/<int:id>/', views.edit_recipe, name='edit_recipe'),
     path('create-meal-plan/', views.create_meal_plan, name='create_meal_plan'),
+    path('create-mealplan/', views.create_mealplan, name='create_mealplan'),
+    path('create-mealday/<int:mealplan_id>/', views.create_mealday, name='create_mealday'),
+    path('mealplan/<int:mealplan_id>/', views.mealplan_detail, name='mealplan_detail'),
+    path('create_mealplan/', views.create_mealplan, name='create_mealplan'),
 
 
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

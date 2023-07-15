@@ -15,3 +15,21 @@ class MealPlanForm(forms.ModelForm):
     class Meta:
         model = MealPlan
         fields = ['num_days', 'breakfast', 'lunch', 'dinner']
+
+
+class MealDayForm(forms.Form):
+    # we'll overwrite the __init__ method to accept additional arguments
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')  # get the user from the keyword arguments
+        days = kwargs.pop('days')  # get the number of days
+        meals = kwargs.pop('meals')  # get the selected meals
+        super().__init__(*args, **kwargs)  # call the parent's __init__
+
+        # for each day, we create fields for each meal
+        for i in range(days):
+            for meal in meals:
+                # we create a new ModelChoiceField for the meal of the day
+                self.fields['day_%s_meal_%s' % (i, meal)] = forms.ModelChoiceField(
+                    queryset=Recipe.objects.filter(user=self.user),  # we only want to show the user's recipes
+                    label='Day %s: %s' % (i + 1, meal)  # the label will show which day and meal this field is for
+                )
