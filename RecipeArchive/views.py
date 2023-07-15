@@ -10,6 +10,7 @@ from .models import Recipe
 from .forms import RecipeForm
 from django.contrib.auth.decorators import login_required
 
+
 # A view is defined to handle requests to the homepage
 def home(request):
     # The view checks if the user is authenticated
@@ -25,11 +26,12 @@ def home(request):
         return redirect('login')
 
     # Check if sortField parameter is present
-    sort_field = request.GET.get('sortField')
-    if sort_field:
-        recipes = recipes.order_by(sort_field)
+    #sort_field = request.GET.get('sortField')
+    #if sort_field:
+    #    recipes = recipes.order_by(sort_field)
 
-    return render(request, 'recipes/home.html', {'recipes': recipes})
+    #return render(request, 'recipes/home.html', {'recipes': recipes})
+
 
 def register(request):
     if request.method == "POST":
@@ -41,6 +43,7 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, "registration/register.html", {"form": form})
+
 
 def add_recipe(request):
     if request.method == "POST":
@@ -93,9 +96,11 @@ def recipe(request, recipe_id):
     # This will make the recipe data available in the template.
     return render(request, 'recipes/recipe.html', context)
 
+
 def profile(request):
     # This is just a simple example. You can customize this view according to your needs.
     return render(request, 'registration/profile.html')
+
 
 def edit_recipe(request, id):
     # Get the Recipe instance with the given ID. If no such instance exists,
@@ -125,4 +130,17 @@ def edit_recipe(request, id):
 
     # Render the 'edit_recipe.html' template with the form as context.
     return render(request, 'recipes/edit_recipe.html', {'form': form})
+
+
+def create_meal_plan(request):
+    if request.method == 'POST':
+        form = MealPlanForm(request.POST)
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+    else:
+        form = MealPlanForm()
+
+    return render(request, 'recipes/create_meal_plan.html', {'form': form})
 

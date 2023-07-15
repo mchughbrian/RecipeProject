@@ -5,6 +5,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Recipe model is defined
 class Recipe(models.Model):
     # name of the recipe as a string of maximum length 200 characters
@@ -48,3 +49,23 @@ class Recipe(models.Model):
 
     # the user who added the recipe, linked via a foreign key to the User model
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class MealPlan(models.Model):
+    # The `user` field is a foreign key to the User model. This creates a "many-to-one"
+    # relationship where each user can have many meal plans, but each meal plan belongs
+    # to a single user. If a user is deleted, all their meal plans are also deleted
+    # due to `on_delete=models.CASCADE`.
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # The `recipes` field is a many-to-many field to the Recipe model. This allows
+    # a meal plan to contain many recipes, and a recipe to belong to many meal plans.
+    recipes = models.ManyToManyField(Recipe)
+
+    # The `created_date` field is a date field that automatically sets to the current date
+    # when a meal plan is created, due to `auto_now_add=True`.
+    created_date = models.DateField(auto_now_add=True)
+
+    # The `name` field is a simple char field that allows the user to name their meal plan.
+    # The `default="My Meal Plan"` sets a default name if the user doesn't provide one.
+    name = models.CharField(max_length=200, default="My Meal Plan")
