@@ -136,39 +136,40 @@ def edit_recipe(request, id):
     return render(request, 'recipes/edit_recipe.html', {'form': form})
 
 
-def create_meal_plan(request):
-    if request.method == 'POST':
-        form = MealPlanForm(request.POST)
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # redirect to a new URL:
-            return HttpResponseRedirect('/recipes/create_mealday.html')
-    else:
-        form = MealPlanForm()
-
-    return render(request, 'recipes/create_meal_plan.html', {'form': form})
+#def create_meal_plan(request):
+#    if request.method == 'POST':
+#        form = MealPlanForm(request.POST)
+#        if form.is_valid():
+#            # process the data in form.cleaned_data as required
+#            # redirect to a new URL:
+#            return HttpResponseRedirect('/recipes/create_mealday.html')
+#    else:
+#        form = MealPlanForm()
+#
+#    return render(request, 'recipes/create_meal_plan.html', {'form': form})
 
 
 def create_mealday(request):
     # retrieve the mealplan created by the current user and sorted by the creation date in descending order
     # so the first one would be the latest mealplan created
-    mealplan = MealPlan.objects.filter(user=request.user).order_by('-created_at').first()
+    mealplan = MealPlan.objects.filter(user=request.user).order_by('-created_date').first()
 
     # if the request method is POST
     if request.method == 'POST':
         # initialize the MealDayForm with POST data and some extra arguments
-        form = MealDayForm(request.POST, user=request.user, days=mealplan.days, meals=mealplan.meals.split(','))
+        meals = [mealplan.breakfast, mealplan.lunch, mealplan.dinner]
+        form = MealDayForm(request.POST, user=request.user, days=mealplan.days, meals=meals) #, meals=mealplan.meals.split(','))
 
         # if the form is valid
         if form.is_valid():
             # for each field in the form
             for field, value in form.cleaned_data.items():
                 # split the field name by '_' to get the day and meal
-                day, meal = field.split('_')[1:3]
+                days, meal = field.split('_')[1:3]
                 # create a new MealDay instance
                 MealDay.objects.create(
                     meal_plan=mealplan,  # assign the meal plan
-                    day=int(day),  # convert the day to an integer
+                    days=int(days),  # convert the day to an integer
                     meal_type=meal,  # assign the meal type
                     recipe=value  # assign the selected recipe
                 )
@@ -176,7 +177,8 @@ def create_mealday(request):
             return redirect('home')
     # if the request method is not POST, initialize the form without any data
     else:
-        form = MealDayForm(user=request.user, days=mealplan.days, meals=mealplan.meals.split(','))
+        meals = [mealplan.breakfast, mealplan.lunch, mealplan.dinner]
+        form = MealDayForm(request.POST, user=request.user, days=mealplan.days, meals=meals)  # , meals=mealplan.meals.split(','))
 
     # render the template with the form
     return render(request, 'recipes/create_mealday.html', {'form': form})
@@ -198,7 +200,7 @@ def create_mealplan(request):
             mealplan.save()
 
             # redirect to the create_mealdays view
-            return redirect('create_mealdays')
+            return redirect('create_mealday')
     # if the request method is not POST, initialize the form without any data
     else:
         form = MealPlanForm()

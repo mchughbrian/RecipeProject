@@ -14,7 +14,7 @@ class RecipeForm(forms.ModelForm):
 class MealPlanForm(forms.ModelForm):
     class Meta:
         model = MealPlan
-        fields = ['num_days', 'breakfast', 'lunch', 'dinner']
+        fields = ['days', 'breakfast', 'lunch', 'dinner']
 
 
 class MealDayForm(forms.Form):

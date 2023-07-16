@@ -76,7 +76,7 @@ class MealPlan(models.Model):
 
     DAY_CHOICES = [(i, i) for i in range(1, 6)]  # This creates a list of tuples for choices
 
-    num_days = models.IntegerField(choices=DAY_CHOICES, default=5)
+    days = models.IntegerField(choices=DAY_CHOICES, default=5)
 
     # num_days = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
     breakfast = models.BooleanField(default=False)
