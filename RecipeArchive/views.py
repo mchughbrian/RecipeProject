@@ -149,7 +149,7 @@ def edit_recipe(request, id):
 #    return render(request, 'recipes/create_meal_plan.html', {'form': form})
 
 
-def create_mealday(request):
+'''def create_mealday(request):
     # retrieve the mealplan created by the current user and sorted by the creation date in descending order
     # so the first one would be the latest mealplan created
     mealplan = MealPlan.objects.filter(user=request.user).order_by('-created_date').first()
@@ -181,7 +181,23 @@ def create_mealday(request):
         form = MealDayForm(request.POST, user=request.user, days=mealplan.days, meals=meals)  # , meals=mealplan.meals.split(','))
 
     # render the template with the form
+    return render(request, 'recipes/create_mealday.html', {'form': form})'''
+
+def create_mealday(request, mealplan_id):
+    mealplan = get_object_or_404(MealPlan, id=mealplan_id)
+    days = mealplan.days
+    meals = [mealplan.breakfast, mealplan.lunch, mealplan.dinner]
+
+    if request.method == 'POST':
+        form = MealDayForm(request.POST, user=request.user, days=days, meals=meals)
+        if form.is_valid():
+            # process the form and redirect as needed
+            pass
+    else:
+        form = MealDayForm(user=request.user, days=days, meals=meals)
+
     return render(request, 'recipes/create_mealday.html', {'form': form})
+
 
 
 def create_mealplan(request):
@@ -199,8 +215,12 @@ def create_mealplan(request):
             # save the mealplan to the database
             mealplan.save()
 
-            # redirect to the create_mealdays view
-            return redirect('create_mealday')
+            days = form.cleaned_data['days']
+            meals = []  # Here you need to get the list of meals based on user input
+
+            # redirect to the create_mealdays view with the meal plan id as a parameter
+            return redirect('create_mealday', mealplan_id=mealplan.id)
+
     # if the request method is not POST, initialize the form without any data
     else:
         form = MealPlanForm()
