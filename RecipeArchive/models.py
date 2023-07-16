@@ -52,6 +52,9 @@ class Recipe(models.Model):
     # the user who added the recipe, linked via a foreign key to the User model
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class MealPlan(models.Model):
     # The `user` field is a foreign key to the User model. This creates a "many-to-one"
