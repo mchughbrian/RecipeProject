@@ -1,0 +1,22 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Meal Plan Detail</h2>
+
+        <!-- Display meal plan information -->
+        <p><strong>Name:</strong> {{ mealplan.name }}</p>
+        <p><strong>Start Date:</strong> {{ mealplan.start_date }}</p>
+        <p><strong>End Date:</strong> {{ mealplan.end_date }}</p>
+
+        <!-- Display meal days -->
+        {% for mealday in mealplan.mealdays.all %}
+            <div class="meal-day">
+                <h3>Day {{ mealday.day }} - {{ mealday.get_meal_type_display }}</h3>
+                <p><strong>Recipe:</strong> {{ mealday.recipe }}</p>
+            </div>
+        {% empty %}
+            <p>No meal days found for this meal plan.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
