@@ -136,54 +136,6 @@ def edit_recipe(request, id):
     return render(request, 'recipes/edit_recipe.html', {'form': form})
 
 
-#def create_meal_plan(request):
-#    if request.method == 'POST':
-#        form = MealPlanForm(request.POST)
-#        if form.is_valid():
-#            # process the data in form.cleaned_data as required
-#            # redirect to a new URL:
-#            return HttpResponseRedirect('/recipes/create_mealday.html')
-#    else:
-#        form = MealPlanForm()
-#
-#    return render(request, 'recipes/create_meal_plan.html', {'form': form})
-
-
-'''def create_mealday(request):
-    # retrieve the mealplan created by the current user and sorted by the creation date in descending order
-    # so the first one would be the latest mealplan created
-    mealplan = MealPlan.objects.filter(user=request.user).order_by('-created_date').first()
-
-    # if the request method is POST
-    if request.method == 'POST':
-        # initialize the MealDayForm with POST data and some extra arguments
-        meals = [mealplan.breakfast, mealplan.lunch, mealplan.dinner]
-        form = MealDayForm(request.POST, user=request.user, days=mealplan.days, meals=meals) #, meals=mealplan.meals.split(','))
-
-        # if the form is valid
-        if form.is_valid():
-            # for each field in the form
-            for field, value in form.cleaned_data.items():
-                # split the field name by '_' to get the day and meal
-                days, meal = field.split('_')[1:3]
-                # create a new MealDay instance
-                MealDay.objects.create(
-                    meal_plan=mealplan,  # assign the meal plan
-                    days=int(days),  # convert the day to an integer
-                    meal_type=meal,  # assign the meal type
-                    recipe=value  # assign the selected recipe
-                )
-            # redirect to a new page (replace 'home' with wherever you want to redirect)
-            return redirect('home')
-    # if the request method is not POST, initialize the form without any data
-    else:
-        meals = [mealplan.breakfast, mealplan.lunch, mealplan.dinner]
-        form = MealDayForm(request.POST, user=request.user, days=mealplan.days, meals=meals)  # , meals=mealplan.meals.split(','))
-
-    # render the template with the form
-    return render(request, 'recipes/create_mealday.html', {'form': form})'''
-
-
 def create_mealday(request, mealplan_id):
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
     days = mealplan.days
@@ -238,4 +190,3 @@ def mealplan_detail(request, mealplan_id):
 
     # Render the meal plan details template with the mealplan object
     return render(request, 'recipes/mealplan_detail.html', {'mealplan': mealplan})
-    #return redirect('recipes/mealplan_detail', mealplan_id=mealplan.id)
