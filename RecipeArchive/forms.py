@@ -33,13 +33,16 @@ class MealDayForm(forms.Form):
         # for each day, we create fields for each meal
         #for i in range(days):
         #    for meal in meals:
-        #        # we create a new ModelChoiceField for the meal of the day
+                # we create a new ModelChoiceField for the meal of the day
         #        self.fields['day_%s_meal_%s' % (i, meal)] = forms.ModelChoiceField(
         #            queryset=Recipe.objects.filter(user=self.user),  # we only want to show the user's recipes
         #            label='Day %s: %s' % (i + 1, meal)  # the label will show which day and meal this field is for
         #        )
 # for each day, we create fields for each meal
         for i in range(1, days + 1):
-            self.fields['breakfast_%s' % i] = forms.ModelChoiceField(queryset=Recipe.objects.all(), required=False)
-            self.fields['lunch_%s' % i] = forms.ModelChoiceField(queryset=Recipe.objects.all(), required=False)
-            self.fields['dinner_%s' % i] = forms.ModelChoiceField(queryset=Recipe.objects.all(), required=False)
+            if meals.get('breakfast'):  # if breakfast is True
+                self.fields['breakfast_%s' % i] = forms.ModelChoiceField(queryset=Recipe.objects.all(), required=False)
+            if meals.get('lunch'):  # if lunch is True
+                self.fields['lunch_%s' % i] = forms.ModelChoiceField(queryset=Recipe.objects.all(), required=False)
+            if meals.get('dinner'):  # if dinner is True
+                self.fields['dinner_%s' % i] = forms.ModelChoiceField(queryset=Recipe.objects.all(), required=False)

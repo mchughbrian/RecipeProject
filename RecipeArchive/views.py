@@ -183,11 +183,15 @@ def edit_recipe(request, id):
     # render the template with the form
     return render(request, 'recipes/create_mealday.html', {'form': form})'''
 
+
 def create_mealday(request, mealplan_id):
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
     days = mealplan.days
-    meals = [mealplan.breakfast, mealplan.lunch, mealplan.dinner]
-
+    meals = {
+        'breakfast': mealplan.breakfast,
+        'lunch': mealplan.lunch,
+        'dinner': mealplan.dinner,
+    }
     if request.method == 'POST':
         form = MealDayForm(request.POST, user=request.user, days=days, meals=meals)
         if form.is_valid():
@@ -197,7 +201,6 @@ def create_mealday(request, mealplan_id):
         form = MealDayForm(user=request.user, days=days, meals=meals)
 
     return render(request, 'recipes/create_mealday.html', {'form': form})
-
 
 
 def create_mealplan(request):

@@ -1,31 +1,36 @@
 {% extends 'base_generic.html' %}
+{% load recipe_tags %}  {# Load the custom template filters #}
 
 {% block content %}
-<div class="container">
-    <h1>Create Meal Plan</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-group">
-                {% if field.name.startswith('breakfast') %}
-                    <label>{{ field.label }} - Breakfast</label>
-                {% elif field.name.startswith('lunch') %}
-                    <label>{{ field.label }} - Lunch</label>
-                {% elif field.name.startswith('dinner') %}
-                    <label>{{ field.label }} - Dinner</label>
-                {% else %}
-                    <label>{{ field.label }}</label>
+    <div class="container">
+        <h1>Create Meal Plan</h1>
+        <form method="POST">
+            {% csrf_token %}
+
+            {# Loop through the fields in the form #}
+            {% for field in form %}
+
+                {# Use the custom filter to check what type of meal the field corresponds to #}
+                {% if field.name|starts_with:'breakfast' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }} {# This uses the django-crispy-forms package for better styling. If you don't have it installed, use {{ field }} instead. #}
+                    </div>
+                {% elif field.name|starts_with:'lunch' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }} {# This uses the django-crispy-forms package for better styling. If you don't have it installed, use {{ field }} instead. #}
+                    </div>
+                {% elif field.name|starts_with:'dinner' %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }} {# This uses the django-crispy-forms package for better styling. If you don't have it installed, use {{ field }} instead. #}
+                    </div>
                 {% endif %}
-                {{ field }}
-                {% if field.help_text %}
-                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                {% endif %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
+
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 {% endblock %}
