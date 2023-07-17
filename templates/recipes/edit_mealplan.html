@@ -1,0 +1,20 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Meal Plan</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+    <!-- Delete Meal Plan Button -->
+    <form method="POST" action="{% url 'delete_mealplan' mealplan.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete Meal Plan</button>
+    </form>
+</div>
+{% endblock %}

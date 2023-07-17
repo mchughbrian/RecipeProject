@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -11,6 +11,7 @@ from .models import Recipe, MealPlan, MealDay
 from .forms import RecipeForm, MealDayForm
 from .forms import MealPlanForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 
@@ -190,3 +191,38 @@ def mealplan_detail(request, mealplan_id):
 
     # Render the meal plan details template with the mealplan object
     return render(request, 'recipes/mealplan_detail.html', {'mealplan': mealplan})
+
+
+def view_mealplans(request):
+    mealplans = MealPlan.objects.filter(user=request.user).order_by('id')  # get meal plans in descending order of start date
+    return render(request, 'recipes/view_mealplans.html', {'mealplans': mealplans})
+
+
+def edit_mealplan(request, mealplan_id):
+    mealplan = get_object_or_404(MealPlan, id=mealplan_id)
+    if request.method == 'POST':
+        form = MealPlanForm(request.POST, instance=mealplan)
+        if form.is_valid():
+            form.save()
+            return redirect('mealplan_detail', mealplan_id=mealplan.id)
+    else:
+        form = MealPlanForm(instance=mealplan)
+    return render(request, 'recipes/edit_mealplan.html', {'form': form})
+
+
+def delete_mealplan(request, mealplan_id):
+    # get the mealplan or 404 if not found
+    mealplan = get_object_or_404(MealPlan, id=mealplan_id)
+
+    # check if the logged-in user is the owner of the mealplan
+    if request.user != mealplan.user:
+        return HttpResponseForbidden()
+
+    # if this is a POST request, delete the mealplan
+    if request.method == 'POST':
+        mealplan.delete()
+        messages.success(request, 'Meal plan deleted successfully')
+        return redirect('view_mealplans')  # assuming 'mealplans' is the URL where you list all meal plans
+
+    # if not a POST request, render the confirm delete page
+    return render(request, 'recipes/confirm_delete.html', {'mealplan': mealplan})

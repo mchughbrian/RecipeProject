@@ -8,13 +8,6 @@
             <div class="col-md-6">
                 <h1>{{ user.username }}</h1>
             </div>
-            <!-- removing buttons
-            <div class="col-md-6">
-                <form method="POST" enctype="multipart/form-data">
-                    <input type="file" name="profile_picture">
-                    <button type="submit">Upload</button>
-                </form>
-            </div> -->
         </div>
 
         <!-- Create Meal Plan Button -->
@@ -23,6 +16,14 @@
                 <a href="{% url 'create_mealplan' %}" class="btn btn-primary">Create Meal Plan</a>
             </div>
         </div>
+
+            <!-- View Meal Plan Button -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <a href="{% url 'view_mealplans' %}" class="btn btn-primary">View Meal Plans</a>
+            </div>
+        </div>
+
 
         <!-- Recipe section -->
         <div class="row d-flex ">
