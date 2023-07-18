@@ -85,6 +85,10 @@ class MealPlan(models.Model):
     lunch = models.BooleanField(default=False)
     dinner = models.BooleanField(default=False)
 
+    #want to auto save create and update date for displaying
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
 
 class MealDay(models.Model):
     # Defines the relationship between MealDay and MealPlan

@@ -195,7 +195,8 @@ def mealplan_detail(request, mealplan_id):
 
 
 def view_mealplans(request):
-    mealplans = MealPlan.objects.filter(user=request.user).order_by('id')  # get meal plans in descending order of start date
+    # get all the mealplans of the current user and order by 'updated' field in descending order
+    mealplans = MealPlan.objects.filter(user=request.user).order_by('-updated')
     return render(request, 'recipes/view_mealplans.html', {'mealplans': mealplans})
 
 
