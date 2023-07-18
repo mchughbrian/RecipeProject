@@ -76,7 +76,6 @@ class MealPlan(models.Model):
     name = models.CharField(max_length=200, default="My Meal Plan")
 
     # Fields from the form
-
     DAY_CHOICES = [(i, i) for i in range(1, 8)]  # This creates a list of tuples for choices
 
     days = models.IntegerField(choices=DAY_CHOICES, default=5)

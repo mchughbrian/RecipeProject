@@ -14,7 +14,7 @@ class RecipeForm(forms.ModelForm):
 class MealPlanForm(forms.ModelForm):
     class Meta:
         model = MealPlan
-        fields = ['days', 'breakfast', 'lunch', 'dinner']
+        fields = ['name', 'days', 'breakfast', 'lunch', 'dinner']
         widgets = {
             'breakfast': forms.CheckboxInput,
             'lunch': forms.CheckboxInput,
@@ -28,6 +28,7 @@ class MealDayForm(forms.Form):
         self.user = kwargs.pop('user')  # get the user from the keyword arguments
         days = kwargs.pop('days')  # get the number of days
         meals = kwargs.pop('meals')  # get the selected meals
+        self.name = kwargs.pop('name', None)  # get the name, if provided
         super().__init__(*args, **kwargs)  # call the parent's __init__
 
 
