@@ -5,7 +5,7 @@
     {% for mealplan in mealplans %}
         <div>
             <h2>{{ mealplan.name }}</h2>
-            <p>From {{ mealplan.start_date }} to {{ mealplan.end_date }}</p>
+           <!-- <p>From {{ mealplan.start_date }} to {{ mealplan.end_date }}</p>-->
             <a href="{% url 'mealplan_detail' mealplan_id=mealplan.id %}">View</a>
             <a href="{% url 'edit_mealplan' mealplan_id=mealplan.id %}">Edit</a>
             <a href="{% url 'delete_mealplan' mealplan_id=mealplan.id %}">Delete</a>
