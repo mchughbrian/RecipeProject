@@ -145,16 +145,27 @@ def create_mealday(request, mealplan_id):
         'lunch': mealplan.lunch,
         'dinner': mealplan.dinner,
     }
-    name = mealplan.name
+
     if request.method == 'POST':
-        form = MealDayForm(request.POST, user=request.user, days=days, meals=meals, name=name)
+        form = MealDayForm(request.POST, user=request.user, days=days, meals=meals)
         if form.is_valid():
-            # process the form and redirect as needed
+            for i in range(1, days + 1):
+                for meal_type in ['breakfast', 'lunch', 'dinner']:
+                    if meals[meal_type]:  # Only if the boolean for the meal type is TRUE
+                        recipe = form.cleaned_data.get(f"{meal_type}_{i}")
+                        if recipe:
+                            MealDay.objects.create(
+                                meal_plan=mealplan,
+                                day=i,
+                                meal_type=meal_type,
+                                recipe=recipe
+                            )
             return redirect('mealplan_detail', mealplan_id=mealplan.id)
     else:
-        form = MealDayForm(user=request.user, days=days, meals=meals, name=name)
+        form = MealDayForm(user=request.user, days=days, meals=meals)
 
     return render(request, 'recipes/create_mealday.html', {'form': form})
+
 
 
 def create_mealplan(request):

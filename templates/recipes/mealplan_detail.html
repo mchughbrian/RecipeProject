@@ -11,7 +11,7 @@
         <p><strong>End Date:</strong> {{ mealplan.end_date }}</p>
 
         <!-- Display meal days -->
-        {% for mealday in mealplan.mealdays.all %}
+        {% for mealday in mealplan.mealday_set.all %}
             <div class="meal-day">
                 <h3>Day {{ mealday.day }} - {{ mealday.get_meal_type_display }}</h3>
                 <p><strong>Recipe:</strong> {{ mealday.recipe }}</p>
@@ -19,5 +19,7 @@
         {% empty %}
             <p>No meal days found for this meal plan.</p>
         {% endfor %}
+
+
     </div>
 {% endblock %}
