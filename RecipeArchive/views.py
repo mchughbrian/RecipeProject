@@ -167,7 +167,6 @@ def create_mealday(request, mealplan_id):
     return render(request, 'recipes/create_mealday.html', {'form': form})
 
 
-
 def create_mealplan(request):
     # if the request method is POST
     if request.method == 'POST':
@@ -220,8 +219,7 @@ def edit_mealplan(request, mealplan_id):
             return redirect('mealplan_detail', mealplan_id=mealplan.id)
     else:
         form = MealPlanForm(instance=mealplan)
-    return render(request, 'recipes/edit_mealplan.html', {'form': form})
-
+    return render(request, 'recipes/edit_mealplan.html', {'mealplan': mealplan})
 
 def delete_mealplan(request, mealplan_id):
     # get the mealplan or 404 if not found
