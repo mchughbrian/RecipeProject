@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 # Django's built-in render function and our Recipe model are imported
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .models import Recipe, MealPlan, MealDay
+from .models import Recipe, MealPlan, MealDay, MealDayModelForm
 from .forms import RecipeForm, MealDayForm
 from .forms import MealPlanForm
 from django.contrib.auth.decorators import login_required
@@ -212,14 +212,19 @@ def view_mealplans(request):
 
 def edit_mealplan(request, mealplan_id):
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
+    mealday_instances = MealDay.objects.filter(meal_plan=mealplan)
+
     if request.method == 'POST':
-        form = MealPlanForm(request.POST, instance=mealplan)
-        if form.is_valid():
-            form.save()
+        forms = [MealDayModelForm(request.POST, prefix=str(md.id), instance=md) for md in mealday_instances]
+        if all(form.is_valid() for form in forms):
+            for form in forms:
+                form.save()
             return redirect('mealplan_detail', mealplan_id=mealplan.id)
     else:
-        form = MealPlanForm(instance=mealplan)
-    return render(request, 'recipes/edit_mealplan.html', {'mealplan': mealplan})
+        forms = [MealDayModelForm(prefix=str(md.id), instance=md) for md in mealday_instances]
+
+    return render(request, 'recipes/edit_mealplan.html', {'forms': forms, 'mealplan': mealplan})
+
 
 def delete_mealplan(request, mealplan_id):
     # get the mealplan or 404 if not found

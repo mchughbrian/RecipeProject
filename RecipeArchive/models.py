@@ -4,8 +4,8 @@
 # Django's built-in models and User model are imported
 from django.db import models
 from django.contrib.auth.models import User
+from django import forms
 # from django.core.validators import MaxValueValidator, MinValueValidator
-
 
 
 # Recipe model is defined
@@ -22,7 +22,7 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='recipes/', blank=True, null=True)  # this makes the field optional
 
     # cuisine of the recipe as a string of maximum length 100 characters
-    #cuisine = models.CharField(max_length=100)
+    # cuisine = models.CharField(max_length=100)
 
     MEAL_TYPE_CHOICES = [
         ('Breakfast', 'Breakfast'),
@@ -107,3 +107,9 @@ class MealDay(models.Model):
 
     def __str__(self):
         return f"Day {self.day} - {self.meal_type}"
+
+
+class MealDayModelForm(forms.ModelForm):
+    class Meta:
+        model = MealDay
+        fields = ['day', 'meal_type', 'recipe']
