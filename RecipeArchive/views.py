@@ -195,11 +195,22 @@ def create_mealplan(request):
 
 
 def mealplan_detail(request, mealplan_id):
-    # Retrieve the MealPlan object using the provided mealplan_id
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
+    meal_days = MealDay.objects.filter(meal_plan=mealplan).order_by('day')
 
-    # Render the meal plan details template with the mealplan object
-    return render(request, 'recipes/mealplan_detail.html', {'mealplan': mealplan})
+    # Group meals by day
+    grouped_meals = {}
+    for meal_day in meal_days:
+        day = meal_day.day
+        if day not in grouped_meals:
+            grouped_meals[day] = []
+        grouped_meals[day].append(meal_day)
+
+    context = {
+        'mealplan': mealplan,
+        'grouped_meals': grouped_meals
+    }
+    return render(request, 'recipes/mealplan_detail.html', context)
 
 
 def view_mealplans(request):

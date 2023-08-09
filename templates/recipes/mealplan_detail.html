@@ -1,25 +1,25 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-    <div class="container">
-        <a href="{% url 'mealplan_detail' mealplan_id=mealplan.id %}" class="btn btn-primary">View Meal Plan</a>
-        <h2>Meal Plan Detail</h2>
+<div class="container">
+    <a href="{% url 'mealplan_detail' mealplan_id=mealplan.id %}" class="btn btn-primary">View Meal Plan</a>
+    <h2>Meal Plan Detail</h2>
 
-        <!-- Display meal plan information -->
-        <p><strong>Name:</strong> {{ mealplan.name }}</p>
-        <p><strong>Start Date:</strong> {{ mealplan.start_date }}</p>
-        <p><strong>End Date:</strong> {{ mealplan.end_date }}</p>
+    <!-- Display meal plan information -->
+    <p><strong>Name:</strong> {{ mealplan.name }}</p>
+    <p><strong>Start Date:</strong> {{ mealplan.start_date }}</p>
+    <p><strong>End Date:</strong> {{ mealplan.end_date }}</p>
 
-        <!-- Display meal days -->
-        {% for mealday in mealplan.mealday_set.all %}
-            <div class="meal-day">
-                <h3>Day {{ mealday.day }} - {{ mealday.get_meal_type_display }}</h3>
-                <p><strong>Recipe:</strong> {{ mealday.recipe }}</p>
-            </div>
-        {% empty %}
-            <p>No meal days found for this meal plan.</p>
-        {% endfor %}
-
-
-    </div>
+    <!-- Display meal days -->
+    {% for day, meals in grouped_meals.items %}
+        <div class="meal-day">
+            <h3>Day {{ day }}</h3>
+            {% for meal_day in meals %}
+                <p><strong>{{ meal_day.meal_type }}:</strong> {{ meal_day.recipe.name }}</p>
+            {% endfor %}
+        </div>
+    {% empty %}
+        <p>No meal days found for this meal plan.</p>
+    {% endfor %}
+</div>
 {% endblock %}
