@@ -251,3 +251,14 @@ def delete_mealplan(request, mealplan_id):
 
     # if not a POST request, render the confirm delete page
     return render(request, 'recipes/confirm_delete.html', {'mealplan': mealplan})
+
+
+def get_available_recipes_for_user(user):
+    # Get recipes owned by the user
+    user_recipes = Recipe.objects.filter(user=user)
+
+    # Get special recipes
+    special_recipes = Recipe.objects.filter(user__username='default_user')
+
+    # Combine and return
+    return user_recipes | special_recipes
