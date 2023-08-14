@@ -1,12 +1,13 @@
 <form method="POST" action="{% url 'edit_mealplan' mealplan.id %}">
     {% csrf_token %}
 
-    {% for form in forms %}
+    {% for form, mealday in forms_mealdays %}
         <div class="meal-day">
-            {{ form.as_p }}
+            <p><strong>Day:</strong> {{ mealday.day }}</p>
+            <p><strong>Meal Type:</strong> {{ mealday.get_meal_type_display }}</p>
+            <p><strong>Recipe:</strong> {{ form.recipe }}</p>
         </div>
     {% endfor %}
 
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
-

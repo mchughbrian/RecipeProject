@@ -113,4 +113,10 @@ class MealDay(models.Model):
 class MealDayModelForm(forms.ModelForm):
     class Meta:
         model = MealDay
-        fields = ['day', 'meal_type', 'recipe']
+        fields = ['recipe']  # Only allow the recipe to be edited.
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(MealDayModelForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['recipe'].queryset = Recipe.objects.filter(uploaded_by=user)

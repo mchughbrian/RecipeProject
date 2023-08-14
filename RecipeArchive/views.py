@@ -232,8 +232,10 @@ def edit_mealplan(request, mealplan_id):
     else:
         forms = [MealDayModelForm(prefix=str(md.id), instance=md) for md in mealday_instances]
 
-    return render(request, 'recipes/edit_mealplan.html', {'forms': forms, 'mealplan': mealplan})
+    # Combine forms and mealday_instances for easy iteration in the template
+    forms_mealdays = zip(forms, mealday_instances)
 
+    return render(request, 'recipes/edit_mealplan.html', {'forms_mealdays': forms_mealdays, 'mealplan': mealplan})
 
 def delete_mealplan(request, mealplan_id):
     # get the mealplan or 404 if not found
