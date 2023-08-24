@@ -12,6 +12,7 @@ from .forms import RecipeForm, MealDayForm
 from .forms import MealPlanForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import HttpResponse
 
 
 # A view is defined to handle requests to the homepage
@@ -264,3 +265,21 @@ def get_available_recipes_for_user(user):
 
     # Combine and return
     return user_recipes | special_recipes
+
+
+def download_mealplan(request, mealplan_id):
+    mealplan = get_object_or_404(MealPlan, id=mealplan_id)
+    mealday_instances = MealDay.objects.filter(meal_plan=mealplan)
+
+    # Create the text content
+    content = f"Meal Plan: {mealplan.name}\n"
+    content += "===================================\n"
+
+    for mealday in mealday_instances:
+        content += f"Day {mealday.day} - {mealday.get_meal_type_display()}: {mealday.recipe}\n"
+
+    # Create the HttpResponse object with the text content,
+    # and a Content-Disposition header forcing a filename
+    response = HttpResponse(content, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=mealplan.txt'
+    return response
