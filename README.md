@@ -45,5 +45,5 @@ Adding Recipes: Navigate to the "Add Recipe" page and fill in the necessary deta
 Creating Meal Plans: Go to the "Create Meal Plan" page, choose the days and meals you'd like to plan for, and select the recipes.
 Editing Meal Plans: You can edit existing meal plans to change the recipes.
 Viewing Meal Plans: All your meal plans are displayed on the "View Meal Plans" page, which provides a detailed view when clicked on.
-Contributing
+
 
