@@ -15,7 +15,12 @@
         <div class="meal-day">
             <h3>Day {{ day }}</h3>
             {% for meal_day in meals %}
-                <p><strong>{{ meal_day.meal_type }}:</strong> {{ meal_day.recipe.name }}</p>
+            <p><strong>{{ meal_day.meal_type }}:</strong>
+               <a href="{% url 'recipe' meal_day.recipe.id %}">
+                   {{ meal_day.recipe.name }}
+               </a>
+            </p>
+
             {% endfor %}
         </div>
     {% empty %}
