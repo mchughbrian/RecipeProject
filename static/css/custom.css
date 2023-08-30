@@ -14,3 +14,14 @@
 .recipe-row {
     margin-bottom: 100px; /* Or any other value you like */
 }
+
+.btn-custom {
+    background-color: transparent;
+    border: 1px solid grey;
+    color: grey; /* Text color */
+}
+
+.btn-custom:hover {
+    background-color: grey;
+    color: white;
+}
