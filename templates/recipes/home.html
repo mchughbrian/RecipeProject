@@ -10,19 +10,14 @@
             </div>
         </div>
 
-        <!-- Create Meal Plan Button -->
+        <!-- Buttons Row -->
         <div class="row mt-4">
-            <div class="col-md-12">
-                <a href="{% url 'create_mealplan' %}" class="btn btn-primary">Create Meal Plan</a>
-            </div>
-        </div>
-
-            <!-- View Meal Plan Button -->
-        <div class="row mt-4">
-            <div class="col-md-12">
+            <div class="col-md-12 d-flex align-items-center justify-content-start"> <!-- d-flex makes the div a flex container, align-items-center vertically aligns the buttons, and justify-content-start aligns them to the start -->
+                <a href="{% url 'create_mealplan' %}" class="btn btn-primary mr-2">Create Meal Plan</a> <!-- mr-2 adds a little right margin -->
                 <a href="{% url 'view_mealplans' %}" class="btn btn-primary">View Meal Plans</a>
             </div>
         </div>
+
 
 
         <!-- Recipe section -->
