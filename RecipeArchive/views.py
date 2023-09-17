@@ -22,6 +22,18 @@ def home(request):
         # If the user is authenticated, it queries the database for all recipes added by this user
         recipes = Recipe.objects.filter(user=request.user)
 
+        # Filter by meal type if specified
+        meal_type = request.GET.get('meal_type', '')
+        if meal_type:
+            recipes = recipes.filter(meal_type=meal_type)
+
+        # Filter by rating if specified
+        rating = request.GET.get('rating', '')
+        if rating:
+            recipes = recipes.filter(rating=rating)
+
+        context = {'recipes': recipes}
+
         # It then renders the 'recipes/home.html' template, passing in the list of recipes as context
         return render(request, 'recipes/home.html', {'recipes': recipes})
 

@@ -1,7 +1,7 @@
 {% extends 'base_generic.html' %}
 {% load static %}
-
 {% block content %}
+
     <div class="container">
         <!-- User profile section -->
         <div class="row">
@@ -9,6 +9,17 @@
                 <h1>{{ user.username }}</h1>
             </div>
         </div>
+    <form method="GET" action="{% url 'home' %}">
+    <select name="meal_type">
+        <option value="">All Meal Types</option>
+        <option value="Breakfast">Breakfast</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Dinner">Dinner</option>
+        <!-- Add more meal types here -->
+    </select>
+
+    <input type="submit" value="Filter">
+</form>
 
         <!-- Buttons Row -->
         <div class="row mt-4">
