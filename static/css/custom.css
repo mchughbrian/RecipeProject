@@ -25,3 +25,11 @@
     background-color: grey;
     color: white;
 }
+
+.card {
+    height: 500px;
+}
+
+.card-body {
+    flex: 1;
+}
