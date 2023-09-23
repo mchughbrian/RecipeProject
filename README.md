@@ -11,7 +11,15 @@ https://github.com/mchughbrian/RecipeProject/assets/35962729/598bcf4e-ff25-46db-
 Users can view/edit existing recipies or add new ones. 
 
 
+https://github.com/mchughbrian/RecipeProject/assets/35962729/1e1e4680-5bd1-45f6-95ff-bf1d756599c7
+
+
+
 Users can customize and create meal plans 
+
+
+https://github.com/mchughbrian/RecipeProject/assets/35962729/5145216d-c9dd-4b62-a38b-b6589c55ecd9
+
 
 
 ## Features
