@@ -4,8 +4,17 @@
 
 MealPlanApp is a Django web application that allows users to create and manage meal plans. With an easy-to-use interface, users can add recipes, set meal plans for the week, and even choose options like "Takeout" or "N/A" for flexibility.
 
+Users have access to all their recipes on the home page and can filter by type of meal
+
 https://github.com/mchughbrian/RecipeProject/assets/35962729/d45a7b38-a6da-4899-86b1-4d4bf289b3fe
 
+Users can view/edit existing recipies or add new ones. 
+
+https://github.com/mchughbrian/RecipeProject/assets/35962729/3206dc9b-1315-4388-bd25-50ebaa871459
+
+Users can customize and create meal plans 
+
+https://github.com/mchughbrian/RecipeProject/assets/35962729/e904e2ae-ba19-4c8d-a92f-3189484b605b
 
 ## Features
 
