@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Your Meal Plans</h1>
+    <a href="{% url 'create_mealplan' %}" class="btn btn-primary mr-2">Create Meal Plan</a> <!-- mr-2 adds a little right margin -->
     {% for mealplan in mealplans %}
         <div>
             <h2>{{ mealplan.name }}</h2>
