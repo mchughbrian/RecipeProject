@@ -1,12 +1,7 @@
 import os
-
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
-
-# Create your views here.
-
-# Django's built-in render function and our Recipe model are imported
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
@@ -17,8 +12,6 @@ from django.contrib import messages
 from django.http import HttpResponse
 import requests
 from django.conf import settings
-
-
 
 
 # A view is defined to handle requests to the homepage
@@ -301,6 +294,7 @@ def download_mealplan(request, mealplan_id):
     response = HttpResponse(content, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=mealplan.txt'
     return response
+
 
 def discover(request):
     recipes = []
