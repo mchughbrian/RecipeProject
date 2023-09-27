@@ -42,3 +42,6 @@ class MealDayForm(forms.Form):
                 self.fields['lunch_%s' % i] = forms.ModelChoiceField(queryset=available_recipes, required=False)
             if meals.get('dinner'):  # if dinner is True
                 self.fields['dinner_%s' % i] = forms.ModelChoiceField(queryset=available_recipes, required=False)
+
+class RecipeSearchForm(forms.Form):
+    query = forms.CharField(label="Search for a recipe", max_length=255)

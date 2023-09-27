@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
@@ -8,11 +10,15 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
-from .forms import RecipeForm, MealDayForm
+from .forms import RecipeForm, MealDayForm, RecipeSearchForm
 from .forms import MealPlanForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
+import requests
+from django.conf import settings
+
+
 
 
 # A view is defined to handle requests to the homepage
@@ -295,3 +301,19 @@ def download_mealplan(request, mealplan_id):
     response = HttpResponse(content, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=mealplan.txt'
     return response
+
+def discover(request):
+    recipes = []
+    form = RecipeSearchForm()
+
+    if request.method == 'POST':
+        form = RecipeSearchForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            API_ENDPOINT = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch"
+            API_KEY = settings.API_KEY
+            response = requests.get(API_ENDPOINT, params={"query": query, "apiKey": API_KEY})
+            if response.status_code == 200:
+                data = response.json()
+                recipes = data['results']
+    return render(request, 'recipes/discover.html', {'form': form, 'recipes': recipes})

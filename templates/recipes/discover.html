@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h2>Discover New Recipes</h2>
+
+<form method="post" class="mb-4">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+{% if recipes %}
+    <div class="row">
+        {% for recipe in recipes %}
+            <div class="col-md-4">
+                <h5>{{ recipe.title }}</h5>
+                <img src="{{ recipe.image }}" alt="{{ recipe.title }}" class="img-fluid mb-2">
+                <!-- Add other details as necessary -->
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
