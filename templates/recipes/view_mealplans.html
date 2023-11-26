@@ -2,14 +2,15 @@
 
 {% block content %}
     <h1>Your Meal Plans</h1>
-    <a href="{% url 'create_mealplan' %}" class="btn btn-primary mr-2">Create Meal Plan</a> <!-- mr-2 adds a little right margin -->
+    <a href="{% url 'create_mealplan' %}" class="btn btn-custom mr-2">Create Meal Plan</a> <!-- mr-2 adds a little right margin -->
     {% for mealplan in mealplans %}
         <div>
             <h2>{{ mealplan.name }}</h2>
            <!-- <p>From {{ mealplan.start_date }} to {{ mealplan.end_date }}</p>-->
-            <a href="{% url 'mealplan_detail' mealplan_id=mealplan.id %}">View</a>
-            <a href="{% url 'edit_mealplan' mealplan_id=mealplan.id %}">Edit</a>
-            <a href="{% url 'delete_mealplan' mealplan_id=mealplan.id %}">Delete</a>
+            <a href="{% url 'mealplan_detail' mealplan_id=mealplan.id %}" class="action-link">View</a>
+            <a href="{% url 'edit_mealplan' mealplan_id=mealplan.id %}" class="action-link">Edit</a>
+            <a href="{% url 'delete_mealplan' mealplan_id=mealplan.id %}" class="action-link">Delete</a>
+
         </div>
     {% empty %}
         <p>You have no meal plans. Start by <a href="{% url 'create_mealplan' %}">creating a new one</a>.</p>

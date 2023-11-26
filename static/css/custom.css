@@ -43,3 +43,17 @@
 .card-body {
     flex: 1;
 }
+
+.action-link {
+  color: #808080; /* Your specific gray color */
+  text-decoration: none; /* Optional: removes the underline */
+}
+
+.action-link:hover {
+  color: #666666; /* Optionally a darker shade for hover, or keep it the same */
+  text-decoration: underline; /* Optional: adds underline on hover */
+}
+
+.action-link:visited {
+  color: #808080; /* Keep the color the same for visited links */
+}
