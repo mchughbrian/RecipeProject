@@ -26,8 +26,8 @@
         <!-- Buttons Row -->
         <div class="row mt-4">
             <div class="col-md-12 d-flex align-items-center justify-content-start"> <!-- d-flex makes the div a flex container, align-items-center vertically aligns the buttons, and justify-content-start aligns them to the start -->
-                <a href="{% url 'view_mealplans' %}" class="btn btn-primary">Meal Plan</a>
-                <a href="{% url 'discover' %}" class="btn btn-primary">Discover</a>
+                <a href="{% url 'view_mealplans' %}" class="btn btn-custom">Meal Plan</a>
+                <a href="{% url 'discover' %}" class="btn btn-custom">Discover</a>
             </div>
         </div>
 
@@ -53,7 +53,7 @@
                         <h5 class="card-title">{{ recipe.name }}</h5>
                         <p>{{ recipe.rating }} &#9733;</p>
                         <p>{{ recipe.meal_type }}</p>
-                        <a href="/recipe/{{ recipe.id }}" class="btn btn-primary">View Recipe</a>
+                        <a href="/recipe/{{ recipe.id }}" class="btn btn-custom">View Recipe</a>
                     </div>
                 </div>
             </div>

@@ -16,14 +16,24 @@
 }
 
 .btn-custom {
-    background-color: transparent;
-    border: 1px solid grey;
-    color: grey; /* Text color */
+    background-color: #f8f9fa; /* A light grey background */
+    color: #333; /* Dark grey text */
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 0.25rem; /* Rounded corners */
+    padding: 0.5rem 1rem; /* Top/bottom and left/right padding */
+    font-size: 1rem; /* Text size */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
 }
 
 .btn-custom:hover {
-    background-color: grey;
-    color: white;
+    background-color: #e2e6ea; /* Slightly darker grey background on hover */
+    color: #000; /* Black text on hover */
+    text-decoration: none; /* No underline on hover */
+}
+
+.btn-custom:focus {
+    outline: none; /* Remove the focus outline to match the style */
+    box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5); /* Subtle shadow to show focus */
 }
 
 .card {
