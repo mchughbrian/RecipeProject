@@ -57,3 +57,27 @@
 .action-link:visited {
   color: #808080; /* Keep the color the same for visited links */
 }
+
+/* Style for the Font Awesome icon */
+.fas {
+    color: #808080; /* Replace with your specific gray color code */
+}
+
+/* Style for the text within the action card */
+.action-card h4 {
+    color: #808080; /* Replace with your specific gray color code */
+}
+
+/* Target the <a> tags within .action-card specifically */
+.action-card a,
+.action-card a:visited { /* This will target both unvisited and visited links */
+    color: #808080; /* Your specific gray color code */
+    text-decoration: none; /* Removes underline from links */
+}
+
+/* To ensure that the color applies to the h4 within the <a> tag as well */
+.action-card a h4,
+.action-card a:visited h4 {
+    color: #808080; /* Your specific gray color code */
+    text-decoration: none; /* Removes underline from links */
+}
