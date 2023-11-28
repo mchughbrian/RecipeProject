@@ -17,19 +17,18 @@
                 <h1>{{ user.username }}</h1>
             </div>
         </div>
-    <form method="GET" action="{% url 'home' %}">
-    <select name="meal_type">
-        <option value="">All Meal Types</option>
-        <option value="Breakfast">Breakfast</option>
-        <option value="Lunch">Lunch</option>
-        <option value="Dinner">Dinner</option>
-        <option value="Dessert">Dessert</option>
-        <option value="Drink">Drink</option>
-        <option value="Other">Other</option>
-    </select>
+    <form method="GET" action="{% url 'home' %}" id="filterForm">
+        <select name="meal_type" id="mealTypeSelect">
+            <option value="">All Meal Types</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Drink">Drink</option>
+            <option value="Other">Other</option>
+        </select>
+    </form>
 
-    <input type="submit" value="Filter">
-</form>
 
 
         <!-- Recipe section -->
