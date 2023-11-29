@@ -102,3 +102,21 @@
 }
 
 
+.filter-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+#filterForm {
+    width: 100%;
+    max-width: 600px; /* Adjust this value as needed */
+}
+
+#mealTypeSelect {
+    width: 100%; /* Make the select box full width of the form */
+    padding: 10px; /* Add more padding for larger touch targets */
+    font-size: 1rem; /* Increase font size for better readability */
+    border: 1px solid #ccc; /* Optional: style the border */
+    border-radius: 4px; /* Optional: round the corners */
+}
