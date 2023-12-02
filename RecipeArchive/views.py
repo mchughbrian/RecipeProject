@@ -18,23 +18,29 @@ from django.conf import settings
 def home(request):
     # The view checks if the user is authenticated
     if request.user.is_authenticated:
-        # If the user is authenticated, it queries the database for all recipes added by this user
-        recipes = Recipe.objects.filter(user=request.user)
+        # Start with all recipes excluding special categories
+        recipes = Recipe.objects.exclude(name__in=["Takeout", "N/A"])
 
         # Filter by meal type if specified
         meal_type = request.GET.get('meal_type', '')
-        if meal_type:
-            recipes = recipes.filter(meal_type=meal_type)
+        if meal_type and meal_type != 'All':
+            recipes = recipes.filter(meal_type=meal_type, user=request.user)  # Filter recipes based on meal type
+        else:
+            recipes = recipes.filter(user=request.user)  # Keep excluding special categories
 
         # Filter by rating if specified
         rating = request.GET.get('rating', '')
         if rating:
             recipes = recipes.filter(rating=rating)
 
-        context = {'recipes': recipes}
+        context = {
+            'recipes': recipes,
+            'meal_type': meal_type,
+            # ... other context variables ...
+        }
 
         # It then renders the 'recipes/home.html' template, passing in the list of recipes as context
-        return render(request, 'recipes/home.html', {'recipes': recipes})
+        return render(request, 'recipes/home.html', context)
 
     # If the user is not authenticated, it renders the 'recipes/login.html' template
     else:

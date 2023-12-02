@@ -20,13 +20,13 @@
     <div class="filter-container">
         <form method="GET" action="{% url 'home' %}" id="filterForm">
             <select name="meal_type" id="mealTypeSelect">
-                <option value="">All Meal Types</option>
-                <option value="Breakfast">Breakfast</option>
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
-                <option value="Dessert">Dessert</option>
-                <option value="Drink">Drink</option>
-                <option value="Other">Other</option>
+                <option value="" {% if meal_type == '' %}selected{% endif %}>All Meal Types</option>
+                <option value="Breakfast" {% if meal_type == 'Breakfast' %}selected{% endif %}>Breakfast</option>
+                <option value="Lunch" {% if meal_type == 'Lunch' %}selected{% endif %}>Lunch</option>
+                <option value="Dinner" {% if meal_type == 'Dinner' %}selected{% endif %}>Dinner</option>
+                <option value="Dessert" {% if meal_type == 'Dessert' %}selected{% endif %}>Dessert</option>
+                <option value="Drink" {% if meal_type == 'Drink' %}selected{% endif %}>Drink</option>
+                <option value="Other" {% if meal_type == 'Other' %}selected{% endif %}>Other</option>
             </select>
         </form>
     </div>
