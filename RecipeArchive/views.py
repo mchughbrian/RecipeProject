@@ -1,7 +1,7 @@
 import os
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
@@ -12,7 +12,9 @@ from django.contrib import messages
 from django.http import HttpResponse
 import requests
 from django.conf import settings
-
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from .forms import ProfileForm
 
 # A view is defined to handle requests to the homepage
 def home(request):
@@ -317,3 +319,43 @@ def discover(request):
                 data = response.json()
                 recipes = data['results']
     return render(request, 'recipes/discover.html', {'form': form, 'recipes': recipes})
+
+
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from .forms import ProfileForm
+from django.contrib import messages
+
+
+@login_required
+def my_profile(request):
+    if request.method == 'POST':
+        user_form = UserChangeForm(request.POST, instance=request.user)
+        password_form = PasswordChangeForm(request.user, request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+
+        if password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+
+        # Redirect to some page upon success
+        return redirect('my_profile')
+
+    else:
+        user_form = UserChangeForm(instance=request.user)
+        password_form = PasswordChangeForm(request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+
+    context = {
+        'user_form': user_form,
+        'password_form': password_form,
+        'profile_form': profile_form
+    }
+    return render(request, 'recipes/profile.html', context)
+

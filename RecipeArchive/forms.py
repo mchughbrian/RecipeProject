@@ -1,6 +1,8 @@
 from django import forms
 from .models import Recipe
 from .models import MealPlan
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+from .models import Profile
 
 
 class RecipeForm(forms.ModelForm):
@@ -43,5 +45,13 @@ class MealDayForm(forms.Form):
             if meals.get('dinner'):  # if dinner is True
                 self.fields['dinner_%s' % i] = forms.ModelChoiceField(queryset=available_recipes, required=False)
 
+
 class RecipeSearchForm(forms.Form):
     query = forms.CharField(label="Search for a recipe", max_length=255)
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['cookbook_name']
+        # Add other profile fields as needed

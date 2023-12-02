@@ -120,3 +120,12 @@ class MealDayModelForm(forms.ModelForm):
         super(MealDayModelForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['recipe'].queryset = Recipe.objects.filter(uploaded_by=user)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    cookbook_name = models.CharField(max_length=100, blank=True)
+
+
+    def __str__(self):
+        return self.user.username  # Or any other string representation
