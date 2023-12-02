@@ -357,5 +357,5 @@ def my_profile(request):
         'password_form': password_form,
         'profile_form': profile_form
     }
-    return render(request, 'recipes/profile.html', context)
+    return render(request, 'recipes/my_profile.html', context)
 

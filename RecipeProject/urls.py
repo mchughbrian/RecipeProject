@@ -53,6 +53,7 @@ urlpatterns = [
     path('mealplan/<int:mealplan_id>/delete/', views.delete_mealplan, name='delete_mealplan'),
     path('download_mealplan/<int:mealplan_id>/', views.download_mealplan, name='download_mealplan'),
     path('discover/', views.discover, name='discover'),
+    path('my_profile', views.my_profile, name='my_profile')
 
 
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
