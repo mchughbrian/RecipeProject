@@ -1,3 +1,12 @@
+.icon-wrapper a h4 {
+    color: #808080 !important; /* Your specific gray color */
+    text-decoration: none; /* Optional: Removes underline */
+}
+
+.icon-wrapper a:visited h4 {
+    color: #808080; /* Ensures visited links are also gray */
+}
+
 .img-container {
     height: 400px;  /* You can adjust this value according to your needs */
     background-position: center;
@@ -94,13 +103,6 @@
   color: #808080; /* Your specific gray color code */
   /* Additional styles can go here */
 }
-
-/* Style for the text within the action card */
-.action-card h4 {
-  color: #808080; /* Your specific gray color code */
-  margin-top: 10px; /* Space between icons and text */
-}
-
 
 .filter-container {
     display: flex;
