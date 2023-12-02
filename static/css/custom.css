@@ -91,6 +91,12 @@
 
 }
 
+.icon-wrapper:hover {
+    color: #000; /* Black text on hover */
+    text-decoration: none; /* No underline on hover */
+
+}
+
 /* Style for the Font Awesome icons */
 .fas {
   color: #808080; /* Your specific gray color code */
@@ -114,13 +120,4 @@
     font-size: 1rem; /* Increase font size for better readability */
     border: 1px solid #ccc; /* Optional: style the border */
     border-radius: 4px; /* Optional: round the corners */
-}
-
-.icon-wrapper a h4 {
-    color: #808080 !important; /* Your specific gray color */
-    text-decoration: none; /* Optional: Removes underline */
-}
-
-.icon-wrapper a:visited h4 {
-    color: #808080; /* Ensures visited links are also gray */
 }
