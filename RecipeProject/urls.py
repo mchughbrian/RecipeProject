@@ -22,12 +22,12 @@ from django.urls import path
 #]
 
 # Django's built-in path function and our views are imported
-from django.urls import path
 from django.contrib.auth.views import LoginView
 from RecipeArchive import views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path, include
 
 
 # URL patterns are defined for our app
@@ -35,6 +35,7 @@ urlpatterns = [
     # An empty path ('') is mapped to our home view.
     # This means that when a user navigates to the root URL of our app, the home view will be used to handle the request.
     path('', views.home, name='home'),
+    path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
     path("register/", views.register, name="register"),
     path('recipes/', views.home, name='home'),
@@ -53,7 +54,8 @@ urlpatterns = [
     path('mealplan/<int:mealplan_id>/delete/', views.delete_mealplan, name='delete_mealplan'),
     path('download_mealplan/<int:mealplan_id>/', views.download_mealplan, name='download_mealplan'),
     path('discover/', views.discover, name='discover'),
-    path('my_profile', views.my_profile, name='my_profile')
+    path('my_profile', views.my_profile, name='my_profile'),
+    path('registration/', include('django.contrib.auth.urls')),
 
 
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

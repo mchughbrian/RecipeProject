@@ -16,6 +16,7 @@ from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import ProfileForm
 
+
 # A view is defined to handle requests to the homepage
 def home(request):
     # The view checks if the user is authenticated
@@ -319,12 +320,6 @@ def discover(request):
                 data = response.json()
                 recipes = data['results']
     return render(request, 'recipes/discover.html', {'form': form, 'recipes': recipes})
-
-
-from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-from .forms import ProfileForm
-from django.contrib import messages
 
 
 @login_required

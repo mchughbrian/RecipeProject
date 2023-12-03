@@ -4,8 +4,13 @@
 <h2>My Profile</h2>
 <form method="POST">
     {% csrf_token %}
-    {{ user_form.as_p }}
     {{ profile_form.as_p }}
     <button type="submit">Save Changes</button>
 </form>
+
+    <!-- Link to change password -->
+<div class="password-change-link">
+    <a href="{% url 'password_change' %}">Change Password</a>
+</div>
+
 {% endblock %}

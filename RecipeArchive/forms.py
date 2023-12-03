@@ -55,3 +55,13 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['cookbook_name']
         # Add other profile fields as needed
+
+
+class CustomUserChangeForm(UserChangeForm):
+    password = None  # Exclude password field
+
+    class Meta:
+        model = Profile
+        fields = ['cookbook_name']  # Specify the fields to include
+        # If you want to include the password change, use PasswordChangeForm separately
+
