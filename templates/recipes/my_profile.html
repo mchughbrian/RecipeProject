@@ -2,13 +2,23 @@
 
 {% block content %}
 <h2>My Profile</h2>
+
+<!-- Display messages -->
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <form method="POST">
     {% csrf_token %}
     {{ profile_form.as_p }}
     <button type="submit">Save Changes</button>
 </form>
 
-    <!-- Link to change password -->
+<!-- Link to change password -->
 <div class="password-change-link">
     <a href="{% url 'password_change' %}">Change Password</a>
 </div>

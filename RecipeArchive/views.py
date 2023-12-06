@@ -15,7 +15,7 @@ from django.conf import settings
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import ProfileForm
-
+from .models import Profile
 
 # A view is defined to handle requests to the homepage
 def home(request):
@@ -23,6 +23,7 @@ def home(request):
     if request.user.is_authenticated:
         # Start with all recipes excluding special categories
         recipes = Recipe.objects.exclude(name__in=["Takeout", "N/A"])
+        user_profile = request.user.profile
 
         # Filter by meal type if specified
         meal_type = request.GET.get('meal_type', '')
@@ -39,6 +40,7 @@ def home(request):
         context = {
             'recipes': recipes,
             'meal_type': meal_type,
+            'user_profile': user_profile,
             # ... other context variables ...
         }
 
@@ -338,6 +340,11 @@ def my_profile(request):
             user = password_form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Your password was successfully updated!')
+
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('my_profile')  # Redirect to a confirmation page or back to the profile page
 
         # Redirect to some page upon success
         return redirect('my_profile')
