@@ -3,41 +3,34 @@
 {% load static %}
 
 {% block content %}
-    <div class="container">
-        <h2>{{ recipe.name }}</h2>
+<div class="container recipe-view">
+    <h2>{{ recipe.name }}</h2>
 
-        <!-- Recipe Image -->
-        {% if recipe.image %}
-        <div class="row">
-            <div class="col-md-12">
-                <img src="{{ recipe.image.url }}" class="img-fluid recipe-image" alt="{{ recipe.name }}">
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Recipe Details -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <p><strong>Meal Type:</strong> {{ recipe.meal_type }}</p>
-                <p><strong>Rating:</strong> {{ recipe.rating }}</p>
-                <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
-            </div>
-        </div>
-
-        {% if user.is_authenticated and user == recipe.user %}
-            <a href="{% url 'edit_recipe' recipe.id %}" class="btn btn-primary">Edit Recipe</a>
-        {% endif %}
-
-        <!-- Delete Button -->
-        {% if user.is_authenticated and user == recipe.user %}
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <form action="{% url 'delete_recipe' recipe.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete Recipe</button>
-                </form>
-            </div>
-        </div>
-        {% endif %}
+    <!-- Recipe Image -->
+    {% if recipe.image %}
+    <div class="recipe-image">
+        <img src="{{ recipe.image.url }}" class="img-fluid" alt="{{ recipe.name }}">
     </div>
+    {% endif %}
+
+    <!-- Recipe Details -->
+    <div class="recipe-details">
+        <p><strong>Meal Type:</strong> {{ recipe.meal_type }}</p>
+        <p><strong>Rating:</strong> {{ recipe.rating }}</p>
+        <p><strong>Ingredients:</strong></p>
+        <p>{{ recipe.ingredients|linebreaksbr }}</p>
+    </div>
+
+
+    <!-- Edit and Delete Buttons -->
+    {% if user.is_authenticated and user == recipe.user %}
+    <div class="recipe-actions">
+        <a href="{% url 'edit_recipe' recipe.id %}" class="btn btn-custom">Edit Recipe</a>
+        <form action="{% url 'delete_recipe' recipe.id %}" method="POST" class="delete-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete Recipe</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

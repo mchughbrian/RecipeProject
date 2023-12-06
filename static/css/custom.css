@@ -162,3 +162,35 @@
 .recipe-form .btn-custom:hover {
     background-color: #0056b3; /* Darker shade for hover */
 }
+
+.recipe-view {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.recipe-view .recipe-image {
+    margin-bottom: 20px;
+}
+
+.recipe-view .recipe-details {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.recipe-view .recipe-details p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.recipe-view .recipe-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.recipe-view .delete-form {
+    display: inline;
+}
