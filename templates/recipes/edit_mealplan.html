@@ -1,13 +1,23 @@
-<form method="POST" action="{% url 'edit_mealplan' mealplan.id %}">
-    {% csrf_token %}
+{% extends 'base_generic.html' %}
 
-    {% for form, mealday in forms_mealdays %}
-        <div class="meal-day">
-            <p><strong>Day:</strong> {{ mealday.day }}</p>
-            <p><strong>Meal Type:</strong> {{ mealday.get_meal_type_display }}</p>
-            <p><strong>Recipe:</strong> {{ form.recipe }}</p>
-        </div>
-    {% endfor %}
+{% block content %}
+<div class="container mealplan-edit">
+    <h1>Edit Meal Plan</h1>
+    <form method="POST" action="{% url 'edit_mealplan' mealplan.id %}" class="mealplan-form">
+        {% csrf_token %}
 
-    <button type="submit" class="btn btn-custom">Save</button>
-</form>
+        {% for form, mealday in forms_mealdays %}
+            <div class="meal-day">
+                <p><strong>Day:</strong> {{ mealday.day }}</p>
+                <p><strong>Meal Type:</strong> {{ mealday.get_meal_type_display }}</p>
+                <div class="form-group">
+                    <label for="{{ form.recipe.id_for_label }}">Recipe:</label>
+                    {{ form.recipe }}
+                </div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-custom">Save</button>
+    </form>
+</div>
+{% endblock %}
