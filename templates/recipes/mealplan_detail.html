@@ -1,26 +1,29 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<div class="container">
-    <a href="{% url 'view_mealplans'%}" class="btn btn-custom">View Meal Plan</a>
-    <a href="{% url 'download_mealplan' mealplan.id %}" class="btn btn-custom">Download Meal Plan</a>
+<div class="container mealplan-detail">
+    <div class="mealplan-actions">
+        <a href="{% url 'view_mealplans'%}" class="btn btn-custom">View Meal Plan</a>
+        <a href="{% url 'download_mealplan' mealplan.id %}" class="btn btn-custom">Download Meal Plan</a>
+    </div>
 
     <h2>Meal Plan Detail</h2>
 
     <!-- Display meal plan information -->
-    <p><strong>Name:</strong> {{ mealplan.name }}</p>
+    <div class="mealplan-info">
+        <p><strong>Name:</strong> {{ mealplan.name }}</p>
+    </div>
 
     <!-- Display meal days -->
     {% for day, meals in grouped_meals.items %}
         <div class="meal-day">
             <h3>Day {{ day }}</h3>
             {% for meal_day in meals %}
-            <p><strong>{{ meal_day.meal_type }}:</strong>
-               <a href="{% url 'recipe' meal_day.recipe.id %}">
-                   {{ meal_day.recipe.name }}
-               </a>
-            </p>
-
+                <p><strong>{{ meal_day.meal_type }}:</strong>
+                   <a href="{% url 'recipe' meal_day.recipe.id %}">
+                       {{ meal_day.recipe.name }}
+                   </a>
+                </p>
             {% endfor %}
         </div>
     {% empty %}

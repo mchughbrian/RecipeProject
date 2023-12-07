@@ -235,3 +235,38 @@
 .meal-plan-form .btn-custom:hover {
     background-color: #333; /* Darker shade for hover */
 }
+
+.mealplan-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.mealplan-detail .mealplan-actions {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.mealplan-detail .mealplan-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.mealplan-detail .meal-day {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.mealplan-detail .meal-day h3 {
+    margin-top: 0;
+}
+
+.mealplan-detail .meal-day p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
