@@ -270,3 +270,31 @@
     margin-bottom: 10px;
     line-height: 1.6;
 }
+
+.mealplans-view {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.mealplans-view .mealplans-list {
+    margin-top: 20px;
+}
+
+.mealplans-view .mealplan-item {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.mealplans-view .mealplan-item h2 {
+    margin-top: 0;
+}
+
+.mealplans-view .mealplan-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
