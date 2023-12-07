@@ -2,12 +2,6 @@
 
 {% block content %}
 <div class="container mealplan-detail">
-    <div class="mealplan-actions">
-        <a href="{% url 'view_mealplans'%}" class="btn btn-custom">View Meal Plan</a>
-        <a href="{% url 'download_mealplan' mealplan.id %}" class="btn btn-custom">Download Meal Plan</a>
-    </div>
-
-    <h2>Meal Plan Detail</h2>
 
     <!-- Display meal plan information -->
     <div class="mealplan-info">
@@ -29,5 +23,9 @@
     {% empty %}
         <p>No meal days found for this meal plan.</p>
     {% endfor %}
+    <div class="mealplan-actions">
+        <a href="{% url 'view_mealplans'%}" class="btn btn-custom">View Meal Plans</a>
+        <a href="{% url 'download_mealplan' mealplan.id %}" class="btn btn-custom">Download Meal Plan</a>
+    </div>
 </div>
 {% endblock %}
