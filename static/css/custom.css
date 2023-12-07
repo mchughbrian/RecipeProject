@@ -325,3 +325,42 @@
     margin-bottom: 5px;
 }
 
+.mealplan-create {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.mealplan-create .mealplan-form .form-group {
+    margin-bottom: 15px;
+}
+
+.mealplan-create .mealplan-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.mealplan-create .mealplan-form input[type="text"],
+.mealplan-create .mealplan-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    line-height: 1.5;
+}
+
+.mealplan-create .mealplan-form .btn-custom {
+    background-color: #f8f9fa; /* Primary color */
+    color: #333;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.mealplan-create .mealplan-form .btn-custom:hover {
+    background-color: #000; /* Darker shade for hover */
+}

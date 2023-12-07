@@ -1,23 +1,23 @@
 {% extends 'base_generic.html' %}
+{% load recipe_tags %}  {# Load the custom template filters #}
 
 {% block content %}
 <div class="container mealplan-create">
     <h1>Create Meal Plan</h1>
-    <form method="post" class="mealplan-form">
+    <form method="POST" class="mealplan-form">
         {% csrf_token %}
+
+        {# Loop through the fields in the form #}
         {% for field in form %}
+            {# Use the custom filter to check what type of meal the field corresponds to #}
             <div class="form-group">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}
-                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                {% endif %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor %}
+                {{ field }} {# This uses the django-crispy-forms package for better styling. If you don't have it installed, use {{ field }} instead. #}
             </div>
         {% endfor %}
+
         <button type="submit" class="btn btn-custom">Submit</button>
     </form>
 </div>
 {% endblock %}
+
