@@ -298,3 +298,30 @@
     margin-top: 10px;
 }
 
+.mealplan-edit {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.mealplan-edit .mealplan-form .meal-day {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.mealplan-edit .mealplan-form .meal-day p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.mealplan-edit .mealplan-form .form-group {
+    margin-bottom: 15px;
+}
+
+.mealplan-edit .mealplan-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
