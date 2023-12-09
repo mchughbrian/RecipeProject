@@ -338,3 +338,31 @@
     border-radius: 4px;
     line-height: 1.5;
 }
+
+.recipe-view .recipe-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .recipe-view .recipe-content {
+        flex-direction: row;
+    }
+
+    .recipe-view .recipe-image {
+        flex: 1;
+        margin-right: 40px; /* Space between image and details */
+    }
+
+    .recipe-view .recipe-details {
+        flex: 1;
+    }
+}
+
+.recipe-view .recipe-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    margin-top: 40px; /* Space between details and buttons */
+}

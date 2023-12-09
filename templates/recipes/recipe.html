@@ -6,21 +6,24 @@
 <div class="container recipe-view">
     <h2>{{ recipe.name }}</h2>
 
-    <!-- Recipe Image -->
-    {% if recipe.image %}
-    <div class="recipe-image">
-        <img src="{{ recipe.image.url }}" class="img-fluid" alt="{{ recipe.name }}">
-    </div>
-    {% endif %}
+    <!-- Recipe Content Wrapper -->
+    <div class="recipe-content">
 
-    <!-- Recipe Details -->
-    <div class="recipe-details">
-        <p><strong>Meal Type:</strong> {{ recipe.meal_type }}</p>
-        <p><strong>Rating:</strong> {{ recipe.rating }}</p>
-        <p><strong>Ingredients:</strong></p>
-        <p>{{ recipe.ingredients|linebreaksbr }}</p>
-    </div>
+        <!-- Recipe Image -->
+        {% if recipe.image %}
+        <div class="recipe-image">
+            <img src="{{ recipe.image.url }}" class="img-fluid" alt="{{ recipe.name }}">
+        </div>
+        {% endif %}
 
+        <!-- Recipe Details -->
+        <div class="recipe-details">
+            <p><strong>Meal Type:</strong> {{ recipe.meal_type }}</p>
+            <p><strong>Rating:</strong> {{ recipe.rating }}</p>
+            <p><strong>Ingredients:</strong></p>
+            <p>{{ recipe.ingredients|linebreaksbr }}</p>
+        </div>
+    </div>
 
     <!-- Edit and Delete Buttons -->
     {% if user.is_authenticated and user == recipe.user %}
@@ -34,3 +37,4 @@
     {% endif %}
 </div>
 {% endblock %}
+
