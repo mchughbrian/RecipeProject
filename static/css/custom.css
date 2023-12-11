@@ -366,3 +366,25 @@
     justify-content: center; /* Center the buttons */
     margin-top: 40px; /* Space between details and buttons */
 }
+
+.landing {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.landing .welcome-message h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.landing .welcome-message p {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+}
+
+.landing .auth-options a {
+    margin: 10px;
+    padding: 10px 20px;
+    color: black;
+    text-decoration: none;
+}

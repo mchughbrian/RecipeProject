@@ -17,7 +17,9 @@ from django.contrib.auth import update_session_auth_hash
 from .forms import ProfileForm
 from .models import Profile
 
+
 # A view is defined to handle requests to the homepage
+@login_required
 def home(request):
     # The view checks if the user is authenticated
     if request.user.is_authenticated:
@@ -361,3 +363,8 @@ def my_profile(request):
     }
     return render(request, 'recipes/my_profile.html', context)
 
+
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')  # Redirect to the home page if logged in
+    return render(request, 'registration/landing_page.html')  # Show the landing page otherwise

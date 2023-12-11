@@ -27,7 +27,8 @@ from django.urls import path, include
 urlpatterns = [
     # An empty path ('') is mapped to our home view.
     # This means that when a user navigates to the root URL of our app, the home view will be used to handle the request.
-    path('', views.home, name='home'),
+    path('', views.landing_page, name='landing_page'),
+    path('home/', views.home, name='home'),
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
     path("register/", views.register, name="register"),
