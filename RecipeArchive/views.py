@@ -313,6 +313,7 @@ def discover(request):
     recipes = []
     form = RecipeSearchForm()
     error_message = None
+    number_of_results = 10  # Specify the number of results you want
 
     if request.method == 'POST':
         form = RecipeSearchForm(request.POST)
@@ -320,9 +321,12 @@ def discover(request):
             query = form.cleaned_data['query']
             API_ENDPOINT = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch"
             API_KEY = settings.API_KEY
+            API_HOST = settings.API_HOST
 
             try:
-                response = requests.get(API_ENDPOINT, params={"query": query, "apiKey": API_KEY})
+                response = requests.get(API_ENDPOINT,
+                                        headers= {"X-RapidAPI-Key": API_KEY, "X-RapidAPI-Host": API_HOST},
+                                        params={"query": query, "number": number_of_results})
                 if response.status_code == 200:
                     data = response.json()
                     recipes = data.get('results', [])
