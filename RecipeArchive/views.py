@@ -16,7 +16,7 @@ from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import ProfileForm
 from .models import Profile
-
+from django.contrib.auth import logout
 
 # A view is defined to handle requests to the homepage
 @login_required
@@ -312,6 +312,7 @@ def download_mealplan(request, mealplan_id):
 def discover(request):
     recipes = []
     form = RecipeSearchForm()
+    error_message = None
 
     if request.method == 'POST':
         form = RecipeSearchForm(request.POST)
@@ -319,12 +320,18 @@ def discover(request):
             query = form.cleaned_data['query']
             API_ENDPOINT = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch"
             API_KEY = settings.API_KEY
-            response = requests.get(API_ENDPOINT, params={"query": query, "apiKey": API_KEY})
-            if response.status_code == 200:
-                data = response.json()
-                recipes = data['results']
-    return render(request, 'recipes/discover.html', {'form': form, 'recipes': recipes})
 
+            try:
+                response = requests.get(API_ENDPOINT, params={"query": query, "apiKey": API_KEY})
+                if response.status_code == 200:
+                    data = response.json()
+                    recipes = data.get('results', [])
+                else:
+                    error_message = "An error occurred while fetching recipes."
+            except requests.RequestException:
+                error_message = "Failed to connect to the recipe service."
+
+    return render(request, 'recipes/discover.html', {'form': form, 'recipes': recipes, 'error_message': error_message})
 
 @login_required
 def my_profile(request):
