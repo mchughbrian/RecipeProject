@@ -33,7 +33,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
     path("register/", views.register, name="register"),
     path('recipes/', views.home, name='home'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='registration/landing_page'), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('add-recipe/', views.add_recipe, name='add_recipe'),
     path('delete/<int:recipe_id>/', views.delete_recipe, name='delete_recipe'),
     path('recipe/<int:recipe_id>/', views.recipe, name='recipe'),
