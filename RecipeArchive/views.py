@@ -309,7 +309,7 @@ def download_mealplan(request, mealplan_id):
     return response
 
 
-def discover(request):
+'''def discover(request):
     recipes = []
     form = RecipeSearchForm()
     error_message = None
@@ -336,6 +336,8 @@ def discover(request):
                 error_message = "Failed to connect to the recipe service."
 
     return render(request, 'recipes/discover.html', {'form': form, 'recipes': recipes, 'error_message': error_message})
+'''
+
 
 @login_required
 def my_profile(request):
