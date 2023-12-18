@@ -18,6 +18,7 @@ from .forms import ProfileForm
 from .models import Profile
 from django.contrib.auth import logout
 
+
 # A view is defined to handle requests to the homepage
 @login_required
 def home(request):
@@ -261,6 +262,7 @@ def edit_mealplan(request, mealplan_id):
     forms_mealdays = zip(forms, mealday_instances)
 
     return render(request, 'recipes/edit_mealplan.html', {'forms_mealdays': forms_mealdays, 'mealplan': mealplan})
+
 
 def delete_mealplan(request, mealplan_id):
     # get the mealplan or 404 if not found
