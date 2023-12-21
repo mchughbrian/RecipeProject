@@ -3,6 +3,24 @@ from .models import Recipe
 from .models import MealPlan
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from .models import Profile
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+
+class CustomUserCreationForm(UserCreationForm):
+    cookbook_name = forms.CharField(max_length=100, required=True, help_text='Name of your cookbook')
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2', 'cookbook_name']
+
+    def save(self, commit=True):
+        user = super(CustomUserCreationForm, self).save(commit=False)
+        if commit:
+            user.save()
+            user.profile.cookbook_name = self.cleaned_data['cookbook_name']
+            user.profile.save()
+        return user
 
 
 class RecipeForm(forms.ModelForm):

@@ -17,6 +17,8 @@ from django.contrib.auth import update_session_auth_hash
 from .forms import ProfileForm
 from .models import Profile
 from django.contrib.auth import logout
+from .forms import CustomUserCreationForm
+import time
 
 
 # A view is defined to handle requests to the homepage
@@ -64,13 +66,20 @@ def home(request):
 
 def register(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # Create a profile for the new user
+            try:
+                Profile.objects.get_or_create(user=user)
+            except Exception as e:
+                print("Error creating profile:", e)
+            # Log the user in and redirect to the home page
             login(request, user)
-            return redirect("home")  # Or specify where you want to redirect the user after successful registration
+            return redirect("home")  # Redirect to the home page or another appropriate page
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
+
     return render(request, "registration/register.html", {"form": form})
 
 
