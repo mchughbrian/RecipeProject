@@ -1,7 +1,20 @@
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-    <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
-</form>
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-section">
+        <div class="login-image">
+            <img src="{% static 'images/Logon2.png' %}" alt="Login Image">
+        </div>
+        <div class="login-form">
+            <!-- Your login form goes here -->
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
