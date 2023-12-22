@@ -404,7 +404,7 @@
 
 .login-image img {
     max-width: 100%; /* Ensures image is responsive */
-    max-height: 300px; /* Adjust the size as needed */
+    max-height: 450px; /* Adjust the size as needed */
     margin-right: 60px; /* Adds some space between image and form */
 }
 
