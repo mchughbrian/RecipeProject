@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from .models import Recipe
 from .models import MealPlan
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
@@ -22,6 +24,31 @@ class CustomUserCreationForm(UserCreationForm):
             user.profile.save()
         return user
 
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+
+        password_help_text = """
+            Your password must contain at least:
+            - 8 characters
+            - 1 number
+            - 1 uppercase letter
+            - 1 lowercase letter
+            """
+        self.fields['password1'].help_text = password_help_text.strip()
+
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("Username is already associated with an account.")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Email is already associated with an account.")
+        return email
 
 class RecipeForm(forms.ModelForm):
 
