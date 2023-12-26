@@ -412,3 +412,9 @@
     max-width: 300px; /* Adjust the size as needed */
 }
 
+.info-icon {
+    cursor: pointer;
+    margin-left: 5px;
+    color: #17a2b8; /* Bootstrap info color */
+}
+
