@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 
 class CustomUserCreationForm(UserCreationForm):
     cookbook_name = forms.CharField(max_length=100, required=True)
+    email = forms.EmailField(required=True)  #custom required field
 
     class Meta:
         model = User
