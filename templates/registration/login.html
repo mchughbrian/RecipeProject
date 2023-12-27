@@ -8,12 +8,12 @@
             <img src="{% static 'images/Logon2.png' %}" alt="Login Image">
         </div>
         <div class="login-form">
-            <!-- Your login form goes here -->
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit">Login</button>
             </form>
+            <a href="{% url 'password_reset' %}">Forgot password?</a>
         </div>
     </div>
 </div>
