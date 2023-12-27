@@ -1,14 +1,37 @@
 {% extends 'base_generic.html' %}
+{% load static %}
 
 {% block content %}
-<div class="landing">
-    <div class="welcome-message">
-        <h1>Welcome to My Recipe Archive</h1>
-        <p>I created this because I always forget about food I have made in the past</p>
+<div class="top-section">
+    <div class="left-content">
+        <h1>Create Your Recipe Archive</h1>
+        <p>Stop forgetting about all the good food you make</p>
     </div>
+    <div class="right-content">
+        <img src="{% static 'images/home_snip_1.png' %}" alt="Cooking Image" class="img-fluid">
+    </div>
+</div>
+<div class="features-section">
+    <div class="feature-column">
+        <h3>Save all your recipes</h3>
+        <p>Fill easy to use forms to save your info</p>
+        <img src="{% static 'images/add.png' %}" alt="Feature One">
+    </div>
+
+    <div class="feature-column">
+        <h3>Generate AI images</h3>
+        <p>Use AI to bring your archive alive</p>
+        <img src="{% static 'images/BeefBowl.png' %}" alt="Feature Two">
+    </div>
+
+    <div class="feature-column">
+        <h3>Create Mealplans</h3>
+        <p>Using your recipes easily plan your meals</p>
+        <img src="{% static 'images/plan.png' %}" alt="Feature Three">
+    </div>
+</div>
     <div class="auth-options">
         <a href="{% url 'login' %}" class="btn btn-custom">Log In</a>
         <a href="{% url 'register' %}" class="btn btn-custom">Register</a>
     </div>
-</div>
 {% endblock %}

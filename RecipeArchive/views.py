@@ -83,6 +83,7 @@ def register(request):
     return render(request, "registration/register.html", {"form": form})
 
 
+@login_required()
 def add_recipe(request):
     if request.method == "POST":
         form = RecipeForm(request.POST, request.FILES)
@@ -140,6 +141,7 @@ def profile(request):
     return render(request, 'registration/profile.html')
 
 
+@login_required()
 def edit_recipe(request, id):
     # Get the Recipe instance with the given ID. If no such instance exists,
     # the get_object_or_404 function will automatically render a 404 response.
@@ -170,6 +172,7 @@ def edit_recipe(request, id):
     return render(request, 'recipes/edit_recipe.html', {'form': form})
 
 
+@login_required()
 def create_mealday(request, mealplan_id):
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
     days = mealplan.days
@@ -200,6 +203,7 @@ def create_mealday(request, mealplan_id):
     return render(request, 'recipes/create_mealday.html', {'form': form})
 
 
+@login_required()
 def create_mealplan(request):
     # if the request method is POST
     if request.method == 'POST':
@@ -229,6 +233,7 @@ def create_mealplan(request):
     return render(request, 'recipes/create_mealplan.html', {'form': form})
 
 
+@login_required()
 def mealplan_detail(request, mealplan_id):
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
     meal_days = MealDay.objects.filter(meal_plan=mealplan).order_by('day')
@@ -248,12 +253,14 @@ def mealplan_detail(request, mealplan_id):
     return render(request, 'recipes/mealplan_detail.html', context)
 
 
+@login_required()
 def view_mealplans(request):
     # get all the mealplans of the current user and order by 'updated' field in descending order
     mealplans = MealPlan.objects.filter(user=request.user).order_by('-updated')
     return render(request, 'recipes/view_mealplans.html', {'mealplans': mealplans})
 
 
+@login_required()
 def edit_mealplan(request, mealplan_id):
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
     mealday_instances = MealDay.objects.filter(meal_plan=mealplan)
@@ -273,6 +280,7 @@ def edit_mealplan(request, mealplan_id):
     return render(request, 'recipes/edit_mealplan.html', {'forms_mealdays': forms_mealdays, 'mealplan': mealplan})
 
 
+@login_required()
 def delete_mealplan(request, mealplan_id):
     # get the mealplan or 404 if not found
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
@@ -290,7 +298,7 @@ def delete_mealplan(request, mealplan_id):
     # if not a POST request, render the confirm delete page
     return render(request, 'recipes/confirm_delete.html', {'mealplan': mealplan})
 
-
+@login_required()
 def get_available_recipes_for_user(user):
     # Get recipes owned by the user
     user_recipes = Recipe.objects.filter(user=user)
@@ -302,6 +310,7 @@ def get_available_recipes_for_user(user):
     return user_recipes | special_recipes
 
 
+@login_required()
 def download_mealplan(request, mealplan_id):
     mealplan = get_object_or_404(MealPlan, id=mealplan_id)
     mealday_instances = MealDay.objects.filter(meal_plan=mealplan)
