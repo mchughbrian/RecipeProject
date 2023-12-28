@@ -6,6 +6,8 @@
     <div class="left-content">
         <h1>Create Your Recipe Archive</h1>
         <p>Stop forgetting about all the good food you make</p>
+        <a href="{% url 'login' %}" class="btn btn-custom">Log In</a>
+        <a href="{% url 'register' %}" class="btn btn-custom">Register</a>
     </div>
     <div class="right-content">
         <img src="{% static 'images/home_snip_1.png' %}" alt="Cooking Image" class="img-fluid">
@@ -30,8 +32,4 @@
         <img src="{% static 'images/plan.png' %}" alt="Feature Three">
     </div>
 </div>
-    <div class="auth-options">
-        <a href="{% url 'login' %}" class="btn btn-custom">Log In</a>
-        <a href="{% url 'register' %}" class="btn btn-custom">Register</a>
-    </div>
 {% endblock %}
