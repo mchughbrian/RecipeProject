@@ -405,3 +405,7 @@ def landing_page(request):
 
 def privacy_policy(request):
     return render(request, 'registration/privacy_policy.html')
+
+
+def terms_of_use(request):
+    return render(request, 'registration/terms_of_use.html')
