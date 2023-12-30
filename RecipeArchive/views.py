@@ -401,3 +401,7 @@ def landing_page(request):
     if request.user.is_authenticated:
         return redirect('home')  # Redirect to the home page if logged in
     return render(request, 'registration/landing_page.html')  # Show the landing page otherwise
+
+
+def privacy_policy(request):
+    return render(request, 'registration/privacy_policy.html')
