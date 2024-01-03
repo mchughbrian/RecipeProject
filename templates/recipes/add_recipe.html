@@ -18,7 +18,60 @@
                 {% endfor %}
             </div>
         {% endfor %}
+
+        <!-- Generate Image Button and Info Icon -->
+        <div class="form-group">
+            <button type="button" id="generateImageButton" class="btn btn-secondary">Generate Image</button>
+            <span class="info-icon" data-toggle="tooltip" data-placement="top" title="Use AI to generate an image based on a description of your recipe. Limited to 5 free images per user.">
+                <i class="fas fa-info-circle"></i>
+            </span>
+        </div>
+
         <button type="submit" class="btn btn-custom">Submit</button>
     </form>
 </div>
+
+<!-- Modal for Image Prompt -->
+<div class="modal fade" id="imagePromptModal" tabindex="-1" role="dialog" aria-labelledby="imagePromptModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePromptModalLabel">Image Prompt</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="imagePromptInput" class="form-control" placeholder="Enter a description for the image...">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmImagePrompt">Generate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function(){
+        // Initialize tooltip
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Handle Generate Image Button Click
+        $('#generateImageButton').click(function(){
+            $('#imagePromptModal').modal('show');
+        });
+
+        // Handle Confirm in Modal
+        $('#confirmImagePrompt').click(function(){
+            var imagePrompt = $('#imagePromptInput').val();
+            // TODO: Make AJAX call to generate image
+            $('#imagePromptModal').modal('hide');
+        });
+    });
+</script>
+{% endblock %}
+
