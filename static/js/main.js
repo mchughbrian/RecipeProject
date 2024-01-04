@@ -1,6 +1,9 @@
 // main.js
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('mealTypeSelect').addEventListener('change', function() {
-        document.getElementById('filterForm').submit();
-    });
+    var mealTypeSelect = document.getElementById('mealTypeSelect');
+    if (mealTypeSelect) {
+        mealTypeSelect.addEventListener('change', function() {
+            document.getElementById('filterForm').submit();
+        });
+    }
 });
