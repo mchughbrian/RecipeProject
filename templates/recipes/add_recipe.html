@@ -56,22 +56,28 @@
 
 {% block extra_js %}
 <script>
-    $(document).ready(function(){
-        // Initialize tooltip
-        $('[data-toggle="tooltip"]').tooltip();
-
+    document.addEventListener('DOMContentLoaded', function() {
         // Handle Generate Image Button Click
-        $('#generateImageButton').click(function(){
-            $('#imagePromptModal').modal('show');
-        });
+        var generateImageButton = document.getElementById('generateImageButton');
+        var imagePromptModal = document.getElementById('imagePromptModal');
+        var confirmImagePrompt = document.getElementById('confirmImagePrompt');
+
+        if (generateImageButton && imagePromptModal) {
+            generateImageButton.addEventListener('click', function() {
+                imagePromptModal.style.display = 'block';
+            });
+        }
 
         // Handle Confirm in Modal
-        $('#confirmImagePrompt').click(function(){
-            var imagePrompt = $('#imagePromptInput').val();
-            // TODO: Make AJAX call to generate image
-            $('#imagePromptModal').modal('hide');
-        });
+        if (confirmImagePrompt) {
+            confirmImagePrompt.addEventListener('click', function() {
+                var imagePrompt = document.getElementById('imagePromptInput').value;
+                // TODO: Make AJAX call to generate image
+                imagePromptModal.style.display = 'none';
+            });
+        }
     });
 </script>
 {% endblock %}
+
 
