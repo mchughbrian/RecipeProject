@@ -56,27 +56,29 @@
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Handle Generate Image Button Click
-        var generateImageButton = document.getElementById('generateImageButton');
-        var imagePromptModal = document.getElementById('imagePromptModal');
-        var confirmImagePrompt = document.getElementById('confirmImagePrompt');
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle Generate Image Button Click
+    var generateImageButton = document.getElementById('generateImageButton');
+    var imagePromptModal = $('#imagePromptModal'); // Use jQuery to select the modal
+    var confirmImagePrompt = document.getElementById('confirmImagePrompt');
 
-        if (generateImageButton && imagePromptModal) {
-            generateImageButton.addEventListener('click', function() {
-                imagePromptModal.style.display = 'block';
-            });
-        }
+    if (generateImageButton && imagePromptModal) {
+        generateImageButton.addEventListener('click', function() {
+            console.log("Button clicked"); // This should appear in the console when you click the button
+            imagePromptModal.modal('show'); // Use Bootstrap's modal method to show it
+        });
+    }
 
-        // Handle Confirm in Modal
-        if (confirmImagePrompt) {
-            confirmImagePrompt.addEventListener('click', function() {
-                var imagePrompt = document.getElementById('imagePromptInput').value;
-                // TODO: Make AJAX call to generate image
-                imagePromptModal.style.display = 'none';
-            });
-        }
-    });
+    // Handle Confirm in Modal
+    if (confirmImagePrompt) {
+        confirmImagePrompt.addEventListener('click', function() {
+            var imagePrompt = document.getElementById('imagePromptInput').value;
+            // TODO: Make AJAX call to generate image
+            imagePromptModal.modal('hide'); // Use Bootstrap's modal method to hide it
+        });
+    }
+});
+
 </script>
 {% endblock %}
 
