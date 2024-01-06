@@ -72,9 +72,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle Confirm in Modal
     if (confirmImagePrompt) {
         confirmImagePrompt.addEventListener('click', function() {
-            var imagePrompt = document.getElementById('imagePromptInput').value;
-            // TODO: Make AJAX call to generate image
-            imagePromptModal.modal('hide'); // Use Bootstrap's modal method to hide it
+            var imagePrompt = imagePromptInput.value;
+
+            // Make AJAX call to generate image
+            $.ajax({
+                url: '/generate-image/', // URL to your Django view that handles image generation
+                type: 'POST',
+                data: {
+                    'prompt': imagePrompt,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val() // CSRF token for Django
+                },
+                success: function(data) {
+                    // On success, show the generated image
+                    // Assuming you have an <img> element to display the image
+                    $('#generatedImage').attr('src', data.image_url);
+
+                    // Optionally, you can show the image in the modal itself or in another part of your page
+                    // For example, if you want to show it in the modal before hiding it:
+                    // $('#imageContainerInModal').html('<img src="' + data.image_url + '" alt="Generated Image">');
+
+                    // Then hide the modal
+                    imagePromptModal.modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    // Handle any errors here
+                    console.error("Error in AJAX request:", status, error);
+                }
+            });
         });
     }
 });

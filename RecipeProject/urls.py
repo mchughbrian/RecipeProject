@@ -56,6 +56,7 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-of-use/', views.terms_of_use, name='terms_of_use'),
+    path('generate-image/', views.generate_image, name='generate-image'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

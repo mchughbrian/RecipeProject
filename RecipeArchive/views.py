@@ -9,7 +9,7 @@ from .forms import RecipeForm, MealDayForm, RecipeSearchForm
 from .forms import MealPlanForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import requests
 from django.conf import settings
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
@@ -18,8 +18,8 @@ from .forms import ProfileForm
 from .models import Profile
 from django.contrib.auth import logout
 from .forms import CustomUserCreationForm
-import time
-
+from openai import OpenAI
+import os
 
 # A view is defined to handle requests to the homepage
 @login_required
@@ -409,3 +409,31 @@ def privacy_policy(request):
 
 def terms_of_use(request):
     return render(request, 'registration/terms_of_use.html')
+
+
+def generate_image(request):
+    # Check if the request is a POST request
+    if request.method == 'POST':
+        # Retrieve the user's prompt from the POST data
+        prompt = request.POST.get('prompt')
+
+        # Initialize the OpenAI client with your API key
+        client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+
+        # Call the OpenAI API to generate an image based on the prompt
+        response = client.images.generate(
+            model="dall-e-3",  # Specify the model to use
+            prompt=prompt,     # The user's text prompt
+            size="1024x1024",  # The size of the generated image
+            quality="standard",# The quality of the image
+            n=1,               # Number of images to generate
+        )
+
+        # Extract the URL of the generated image from the response
+        image_url = response.data[0].url
+
+        # Return the image URL in a JSON response
+        return JsonResponse({'image_url': image_url})
+
+    # If the request is not a POST request, return an error
+    return JsonResponse({'error': 'Invalid request'}, status=400)
