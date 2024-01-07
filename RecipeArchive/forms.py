@@ -51,11 +51,12 @@ class CustomUserCreationForm(UserCreationForm):
             raise ValidationError("Email is already associated with an account.")
         return email
 
+
 class RecipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        fields = ['name', 'ingredients', 'image', 'meal_type', 'rating']
+        fields = ['name', 'ingredients', 'image', 'image_url','meal_type', 'rating']
 
 
 class MealPlanForm(forms.ModelForm):

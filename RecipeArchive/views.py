@@ -23,6 +23,7 @@ from .forms import CustomUserCreationForm
 from openai import OpenAI
 import os
 
+
 # A view is defined to handle requests to the homepage
 @login_required
 def home(request):
@@ -88,15 +89,18 @@ def register(request):
 @login_required()
 def add_recipe(request):
     if request.method == "POST":
+        print(request.POST)  # Print the POST data
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
             new_recipe = form.save(commit=False)
             new_recipe.user = request.user
+
             # Check if an image URL is provided in the POST data
-            image_url = request.POST.get('image')
+            image_url = request.POST.get('image_url')  # Corrected to 'image_url'
+            print("Image URL:", image_url)
             if image_url:
                 # If an image URL is provided, use it
-                new_recipe.image = image_url
+                new_recipe.image_url = image_url  # Assign to 'image_url' field
 
             new_recipe.save()
             return redirect('home')

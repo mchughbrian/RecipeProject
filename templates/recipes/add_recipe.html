@@ -27,8 +27,6 @@
             </span>
         </div>
 
-        <input type="hidden" id="generatedImageUrl" name="image" value="">
-
         <button type="submit" class="btn btn-custom">Submit</button>
     </form>
 </div>
@@ -132,23 +130,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     $('#saveImageButton').click(function() {
-        // Assuming '#generatedImage' is the img element where the image URL is set
-        var imageUrl = $('#generatedImage').attr('src'); // Get the 'src' attribute of the image
+        var generatedImageUrl = $('#generatedImage').attr('src'); // Get the URL of the generated image
+        console.log(generatedImageUrl); // Check if the URL is captured correctly
 
-        if (imageUrl) {
-            // Set the value of the hidden input field in your form
-            $('#generatedImageUrl').val(imageUrl);
+        // Update the 'image_url' field in your form
+        $('#id_image_url').val(generatedImageUrl); // Assuming the ID of your image URL field is 'id_image_url'
 
-            // Optionally, update the 'src' of a preview image element if you have one
-            $('#savedImagePreview').attr('src', imageUrl).show();
+        // Clear any selected file in the 'image' file input field, if necessary
+        //$('#id_image').val(''); // Assuming the ID of your image file input field is 'id_image'
 
-            // Close the modal
-            $('#imagePromptModal').modal('hide');
-        } else {
-            console.error("No image URL found");
-            // Handle the error case where no image URL is available
-        }
+        // Close the modal or perform other actions as needed
+        $('#imagePromptModal').modal('hide');
     });
+
 
 });
 
