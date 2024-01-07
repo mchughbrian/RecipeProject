@@ -7,17 +7,23 @@
     <form method="POST" enctype="multipart/form-data" class="recipe-form">
         {% csrf_token %}
         {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}
-                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                {% endif %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor %}
-            </div>
+            {% if field.name != 'image_url' %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% endfor %}
+
+        <!-- Hidden field for image_url -->
+        <input type="hidden" id="id_image_url" name="image_url" value="{{ form.image_url.value }}">
+
 
         <!-- Generate Image Button and Info Icon -->
         <div class="form-group">
@@ -25,6 +31,10 @@
             <span class="info-icon" data-toggle="tooltip" data-placement="top" title="Use AI to generate an image based on a description of your recipe. Limited to 5 free images per user.">
                 <i class="fas fa-info-circle"></i>
             </span>
+        </div>
+
+        <div id="imageConfirmation" style="display: none;" class="alert alert-success">
+            Generated Image will be saved with your recipe.
         </div>
 
         <button type="submit" class="btn btn-custom">Submit</button>
@@ -138,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Clear any selected file in the 'image' file input field, if necessary
         //$('#id_image').val(''); // Assuming the ID of your image file input field is 'id_image'
+        $('#imageConfirmation').show();
 
         // Close the modal or perform other actions as needed
         $('#imagePromptModal').modal('hide');
