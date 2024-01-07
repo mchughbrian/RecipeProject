@@ -76,6 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle Generate Image Button Click
     $('#imagePreviewSection').hide(); // Hide the image container initially
     $('#generatedImage').hide(); // Hide the image initially
+    $('#id_image_url').val('');
+
     var generateImageButton = document.getElementById('generateImageButton');
     var imagePromptModal = $('#imagePromptModal'); // Use jQuery to select the modal
     var confirmImagePrompt = document.getElementById('confirmImagePrompt');
@@ -142,13 +144,13 @@ document.addEventListener('DOMContentLoaded', function() {
     $('#saveImageButton').click(function() {
         var generatedImageUrl = $('#generatedImage').attr('src'); // Get the URL of the generated image
         console.log(generatedImageUrl); // Check if the URL is captured correctly
+        if (generatedImageUrl) {
+            $('#id_image_url').val(generatedImageUrl);
+            $('#imageConfirmation').show();
 
-        // Update the 'image_url' field in your form
-        $('#id_image_url').val(generatedImageUrl); // Assuming the ID of your image URL field is 'id_image_url'
-
-        // Clear any selected file in the 'image' file input field, if necessary
-        //$('#id_image').val(''); // Assuming the ID of your image file input field is 'id_image'
-        $('#imageConfirmation').show();
+        } else {
+            $('#id_image_url').val(''); // Clear the field if no image is generated
+        }
 
         // Close the modal or perform other actions as needed
         $('#imagePromptModal').modal('hide');

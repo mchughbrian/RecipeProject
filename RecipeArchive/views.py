@@ -97,12 +97,12 @@ def add_recipe(request):
             new_recipe.user = request.user
 
             # Check if an image URL is provided in the POST data
-            image_url = request.POST.get('image_url')  # Corrected to 'image_url'
+            image_url = form.cleaned_data.get('image_url')
             print("Image URL:", image_url)
             #if image_url:
                 # If an image URL is provided, use it
              #   new_recipe.image_url = image_url  # Assign to 'image_url' field
-            if image_url:
+            if image_url and image_url != 'None':
                 response = requests.get(image_url)
                 if response.status_code == 200:
                     # Count the number of recipes with image_urls for this user
@@ -116,6 +116,8 @@ def add_recipe(request):
 
             new_recipe.save()
             return redirect('home')
+        else:
+            print(form.errors)
     else:
         form = RecipeForm()
 

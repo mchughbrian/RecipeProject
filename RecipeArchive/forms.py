@@ -53,7 +53,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class RecipeForm(forms.ModelForm):
-
+    image_url = forms.URLField(required=False, empty_value=None)  # Set empty_value to None
     class Meta:
         model = Recipe
         fields = ['name', 'ingredients', 'image', 'image_url','meal_type', 'rating']
