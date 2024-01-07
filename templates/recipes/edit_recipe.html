@@ -6,6 +6,7 @@
     <form method="POST" enctype="multipart/form-data" class="recipe-form">
         {% csrf_token %}
         {% for field in form %}
+            {% if field.name != 'image_url' %}
             <div class="form-group">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
@@ -16,7 +17,10 @@
                     <div class="alert alert-danger">{{ error }}</div>
                 {% endfor %}
             </div>
+            {% endif %}
         {% endfor %}
+        <input type="hidden" id="id_image_url" name="image_url" value="{{ form.image_url.value }}">
+
         <button type="submit" class="btn btn-custom">Update</button>
     </form>
 </div>
