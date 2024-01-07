@@ -27,6 +27,8 @@
             </span>
         </div>
 
+        <input type="hidden" id="generatedImageUrl" name="image" value="">
+
         <button type="submit" class="btn btn-custom">Submit</button>
     </form>
 </div>
@@ -64,6 +66,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Handle Generate Image Button Click
+    $('#imagePreviewSection').hide(); // Hide the image container initially
+    $('#generatedImage').hide(); // Hide the image initially
     var generateImageButton = document.getElementById('generateImageButton');
     var imagePromptModal = $('#imagePromptModal'); // Use jQuery to select the modal
     var confirmImagePrompt = document.getElementById('confirmImagePrompt');
@@ -127,6 +131,25 @@ document.addEventListener('DOMContentLoaded', function() {
             });*/
         });
     }
+    $('#saveImageButton').click(function() {
+        // Assuming '#generatedImage' is the img element where the image URL is set
+        var imageUrl = $('#generatedImage').attr('src'); // Get the 'src' attribute of the image
+
+        if (imageUrl) {
+            // Set the value of the hidden input field in your form
+            $('#generatedImageUrl').val(imageUrl);
+
+            // Optionally, update the 'src' of a preview image element if you have one
+            $('#savedImagePreview').attr('src', imageUrl).show();
+
+            // Close the modal
+            $('#imagePromptModal').modal('hide');
+        } else {
+            console.error("No image URL found");
+            // Handle the error case where no image URL is available
+        }
+    });
+
 });
 
 </script>

@@ -92,6 +92,12 @@ def add_recipe(request):
         if form.is_valid():
             new_recipe = form.save(commit=False)
             new_recipe.user = request.user
+            # Check if an image URL is provided in the POST data
+            image_url = request.POST.get('image')
+            if image_url:
+                # If an image URL is provided, use it
+                new_recipe.image = image_url
+
             new_recipe.save()
             return redirect('home')
     else:
