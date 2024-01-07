@@ -11,12 +11,20 @@
 
         <!-- Recipe Image -->
         {% if recipe.image %}
+        <!-- Recipe Image -->
         <div class="recipe-image">
             {% if recipe.image_url %}
                 <!-- If image_url is available, use it -->
                 <img src="{{ recipe.image_url }}" class="img-fluid" alt="{{ recipe.name }}">
+            {% elif recipe.image %}
+                <!-- Else, use the uploaded image file -->
+                <img src="{{ recipe.image.url }}" class="img-fluid" alt="{{ recipe.name }}">
+            {% else %}
+                <!-- Optional: Display a default image if no image is available -->
+                <img src="{% static 'default-image.jpg' %}" class="img-fluid" alt="Default Image">
             {% endif %}
         </div>
+
         {% endif %}
 
         <!-- Recipe Details -->
