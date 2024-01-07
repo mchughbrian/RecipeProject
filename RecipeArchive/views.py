@@ -179,6 +179,7 @@ def edit_recipe(request, id):
         # files (uploaded images), binding it to the recipe instance.
         # If the form is valid, Django will automatically update the recipe instance.
         form = RecipeForm(request.POST, request.FILES, instance=recipe)
+        form.fields.pop('image_url', None)  # Exclude the image_url field
 
         # Check if the form is valid.
         if form.is_valid():
@@ -187,7 +188,8 @@ def edit_recipe(request, id):
 
             # After saving the changes, redirect the user to the home page.
             return redirect('home')
-
+        else:
+            print(form.errors)
     # If the request method is not POST, this means the user has navigated to the page
     # but has not submitted the form. In this case, we want to display the form
     # populated with the current data of the recipe instance.
