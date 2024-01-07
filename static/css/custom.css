@@ -535,3 +535,14 @@ main {
         margin-bottom: 20px;
     }
 }
+
+#imagePreviewSection img {
+    max-width: 100%;  /* Maximum width of 100% of its container */
+    max-height: 100%; /* Maximum height of 100% of its container */
+    height: auto;     /* Maintain aspect ratio */
+    width: auto;      /* Maintain aspect ratio */
+    display: block;   /* Display block to remove any extra space below the image */
+    margin: 0 auto;   /* Center the image horizontally if it's smaller than the container */
+    padding: 10px; /* Adjust padding as needed */
+
+}

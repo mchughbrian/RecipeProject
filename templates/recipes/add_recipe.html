@@ -50,7 +50,7 @@
             </div>
             <!-- Inside your modal -->
             <div id="imagePreviewSection" style="display:none;">
-                <img id="imagePreview" src="" alt="Generated Image">
+                <img id="generatedImage" src="" alt="Generated Image" style="display: none;">
                 <button id="saveImageButton">Save Image</button>
             </div>
 
@@ -80,8 +80,27 @@ document.addEventListener('DOMContentLoaded', function() {
         confirmImagePrompt.addEventListener('click', function() {
             var imagePrompt = imagePromptInput.value;
 
+            // Simulate AJAX success without actually making an AJAX call
+            var simulatedData = {
+                image_url: 'https://via.placeholder.com/1024' // Placeholder image URL
+            };
+
+            // Use the simulatedData to set the image source
+            $('#generatedImage').attr('src', simulatedData.image_url).show();
+
+            $('#imagePreviewSection').show();
+            $('#saveImageButton').show();
+
+
+            // Optionally, show the image in the modal itself or in another part of your page
+            // For example, if you want to show it in the modal before hiding it:
+            // $('#imageContainerInModal').html('<img src="' + simulatedData.image_url + '" alt="Generated Image">');
+
+            // Then hide the modal
+            //imagePromptModal.modal('hide');
+
             // Make AJAX call to generate image
-            $.ajax({
+            /*$.ajax({
                 url: '/generate-image/', // URL to your Django view that handles image generation
                 type: 'POST',
                 data: {
@@ -91,7 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 success: function(data) {
                     // On success, show the generated image
                     // Assuming you have an <img> element to display the image
-                    $('#generatedImage').attr('src', data.image_url);
+
+                    //$('#generatedImage').attr('src', data.image_url);
 
                     // Optionally, you can show the image in the modal itself or in another part of your page
                     // For example, if you want to show it in the modal before hiding it:
@@ -104,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Handle any errors here
                     console.error("Error in AJAX request:", status, error);
                 }
-            });
+            });*/
         });
     }
 });

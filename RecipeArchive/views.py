@@ -413,16 +413,7 @@ def terms_of_use(request):
     return render(request, 'registration/terms_of_use.html')
 
 
-@csrf_exempt  # Temporarily disable CSRF for testing
 def generate_image(request):
-    if request.method == 'POST':
-        prompt = request.POST.get('prompt')
-        # For testing, just return the prompt in the response
-        return JsonResponse({'received_prompt': prompt})
-
-    return JsonResponse({'error': 'Invalid request'}, status=400)
-
-'''def generate_image(request):
     # Check if the request is a POST request
     if request.method == 'POST':
         # Retrieve the user's prompt from the POST data
@@ -447,4 +438,4 @@ def generate_image(request):
         return JsonResponse({'image_url': image_url})
 
     # If the request is not a POST request, return an error
-    return JsonResponse({'error': 'Invalid request'}, status=400)'''
+    return JsonResponse({'error': 'Invalid request'}, status=400)
