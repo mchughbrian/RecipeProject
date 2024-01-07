@@ -1,5 +1,6 @@
 import os
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.core.files.base import ContentFile
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
@@ -98,9 +99,20 @@ def add_recipe(request):
             # Check if an image URL is provided in the POST data
             image_url = request.POST.get('image_url')  # Corrected to 'image_url'
             print("Image URL:", image_url)
-            if image_url:
+            #if image_url:
                 # If an image URL is provided, use it
-                new_recipe.image_url = image_url  # Assign to 'image_url' field
+             #   new_recipe.image_url = image_url  # Assign to 'image_url' field
+            if image_url:
+                response = requests.get(image_url)
+                if response.status_code == 200:
+                    # Count the number of recipes with image_urls for this user
+                    image_count = Recipe.objects.filter(user=request.user, image_url__isnull=False).count()
+
+                    # Generate a new filename
+                    image_name = f"ImageGen_{image_count + 1}.jpg"
+
+                    # Save the image to the model's ImageField
+                    new_recipe.image.save(image_name, ContentFile(response.content), save=False)
 
             new_recipe.save()
             return redirect('home')
