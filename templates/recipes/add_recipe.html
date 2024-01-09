@@ -27,7 +27,7 @@
 
         <!-- Generate Image Button and Info Icon -->
         <div class="form-group">
-            <button type="button" id="generateImageButton" class="btn btn-secondary">Generate Image</button>
+            <button type="button" id="generateImageButton" class="btn btn-info">Generate Image</button>
             <span class="info-icon" data-toggle="tooltip" data-placement="top" title="Use AI to generate an image based on a description of your recipe. Limited to 5 free images per user.">
                 <i class="fas fa-info-circle"></i>
             </span>
@@ -52,11 +52,21 @@
                 </button>
             </div>
             <div class="modal-body">
+                <button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#promptTips" aria-expanded="false" aria-controls="promptTips">
+                    Tips for Creating a Good Prompt
+                </button>
+                <div class="collapse" id="promptTips">
+                    <div class="card card-body">
+                        Describe your dish, specify cooking styles, mention important elements, the style of plating or serving dish. <br><br>
+
+                        Example: "Hand made chicken meatballs that are seared to perfection with a side of Jasmine rice and zucchini sautéed. Professionally plated on a white dish. "
+                </div>
+            </div>
                 <input type="text" id="imagePromptInput" class="form-control" placeholder="Enter a description for the image...">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="confirmImagePrompt">Generate</button>
+                <button type="button" class="btn btn-custom" id="confirmImagePrompt">Generate</button>
             </div>
             <!-- Inside your modal -->
             <div id="imagePreviewSection" style="display:none;">

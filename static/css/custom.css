@@ -545,4 +545,13 @@ main {
     margin: 0 auto;   /* Center the image horizontally if it's smaller than the container */
     padding: 10px; /* Adjust padding as needed */
 
+}.btn-tips {
+    background-color: #17a2b8; /* Bootstrap's info color, for example */
+    color: #17a2b8;
+    border: none;
+}
+
+.btn-tips:hover {
+    background-color: #138496; /* A darker shade for hover effect */
+    color: white;
 }
