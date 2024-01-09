@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.views.decorators.csrf import csrf_exempt
-
+from django.utils.html import escape
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
 from .forms import RecipeForm, MealDayForm, RecipeSearchForm
 from .forms import MealPlanForm
@@ -92,6 +92,15 @@ def add_recipe(request):
     if request.method == "POST":
         print(request.POST)  # Print the POST data
         form = RecipeForm(request.POST, request.FILES)
+        image_prompt = request.POST.get('imagePrompt', '').strip()  # Get the prompt
+
+        # Basic validation for the prompt
+        if not image_prompt:
+            form.add_error(None, 'Please enter a prompt for the image.')  # Add a non-field error
+        else:
+            # Sanitize the prompt
+            image_prompt = escape(image_prompt)
+
         if form.is_valid():
             new_recipe = form.save(commit=False)
             new_recipe.user = request.user
