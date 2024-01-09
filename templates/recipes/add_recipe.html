@@ -102,16 +102,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle Confirm in Modal
     if (confirmImagePrompt) {
         confirmImagePrompt.addEventListener('click', function() {
-            var imagePrompt = imagePromptInput.value;
-            console.log(imagePrompt)
+
+            var userPrompt = imagePromptInput.value;
+            // Basic sanitization (for better security, rely on server-side sanitization)
+            userPrompt = userPrompt.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+
+            console.log(fullPrompt)
             // Check if the prompt is empty
-            if (!imagePrompt) {
+            if (!userPrompt) {
                 alert("Please enter a prompt for the image.");
                 return; // Stop the function if the prompt is empty
             }
 
-            // Basic sanitization (for better security, rely on server-side sanitization)
-            imagePrompt = imagePrompt.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
 
             // Simulate AJAX success without actually making an AJAX call
             var simulatedData = {
