@@ -126,7 +126,7 @@ class MealDayModelForm(forms.ModelForm):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cookbook_name = models.CharField(max_length=100, blank=True)
-
+    generated_images_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username  # Or any other string representation

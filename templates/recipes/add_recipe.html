@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Basic sanitization (for better security, rely on server-side sanitization)
             userPrompt = userPrompt.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
 
-            console.log(fullPrompt)
+            console.log(userPrompt)
             // Check if the prompt is empty
             if (!userPrompt) {
                 alert("Please enter a prompt for the image.");
