@@ -92,14 +92,6 @@ def add_recipe(request):
     if request.method == "POST":
         print(request.POST)  # Print the POST data
         form = RecipeForm(request.POST, request.FILES)
-        image_prompt = request.POST.get('imagePrompt', '').strip()  # Get the prompt
-
-        # Basic validation for the prompt
-        if not image_prompt:
-            form.add_error(None, 'Please enter a prompt for the image.')  # Add a non-field error
-        else:
-            # Sanitize the prompt
-            image_prompt = escape(image_prompt)
 
         if form.is_valid():
             new_recipe = form.save(commit=False)
