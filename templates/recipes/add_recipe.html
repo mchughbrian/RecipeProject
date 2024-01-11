@@ -102,64 +102,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle Confirm in Modal
     if (confirmImagePrompt) {
         confirmImagePrompt.addEventListener('click', function() {
+            var userPrompt = $('#imagePromptInput').val().trim();
 
-            var userPrompt = imagePromptInput.value;
-            // Basic sanitization (for better security, rely on server-side sanitization)
-            userPrompt = userPrompt.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+            var fullPrompt = "Please generate me a photo realistic image and professional plated food dish of the following food:  " + userPrompt;
 
-            console.log(userPrompt)
-            // Check if the prompt is empty
             if (!userPrompt) {
                 alert("Please enter a prompt for the image.");
                 return; // Stop the function if the prompt is empty
             }
 
-
-            // Simulate AJAX success without actually making an AJAX call
-            var simulatedData = {
-                image_url: 'https://via.placeholder.com/1024' // Placeholder image URL
-            };
-
-            // Use the simulatedData to set the image source
-            $('#generatedImage').attr('src', simulatedData.image_url).show();
-
-            $('#imagePreviewSection').show();
-            $('#saveImageButton').show();
-
-
-            // Optionally, show the image in the modal itself or in another part of your page
-            // For example, if you want to show it in the modal before hiding it:
-            // $('#imageContainerInModal').html('<img src="' + simulatedData.image_url + '" alt="Generated Image">');
-
-            // Then hide the modal
-            //imagePromptModal.modal('hide');
-
             // Make AJAX call to generate image
-            /*$.ajax({
-                url: '/generate-image/', // URL to your Django view that handles image generation
+            $.ajax({
+                url: '/generate-image/', // Update with the correct URL to your Django view
                 type: 'POST',
                 data: {
-                    'prompt': imagePrompt,
-                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val() // CSRF token for Django
+                    'prompt': fullPrompt,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val() // Include CSRF token
                 },
-                success: function(data) {
-                    // On success, show the generated image
-                    // Assuming you have an <img> element to display the image
-
-                    //$('#generatedImage').attr('src', data.image_url);
-
-                    // Optionally, you can show the image in the modal itself or in another part of your page
-                    // For example, if you want to show it in the modal before hiding it:
-                    // $('#imageContainerInModal').html('<img src="' + data.image_url + '" alt="Generated Image">');
-
-                    // Then hide the modal
-                    imagePromptModal.modal('hide');
+                success: function(response) {
+                    // Image generated successfully
+                    $('#generatedImage').attr('src', response.image_url).show();
+                    $('#imagePreviewSection').show();
+                    $('#saveImageButton').show();
                 },
-                error: function(xhr, status, error) {
-                    // Handle any errors here
-                    console.error("Error in AJAX request:", status, error);
+                error: function(xhr) {
+                    if (xhr.status === 403) {
+                        alert("You have reached your image generation limit.");
+                    } else {
+                        alert("An error occurred while generating the image.");
+                    }
                 }
-            });*/
+            });
         });
     }
     $('#saveImageButton').click(function() {

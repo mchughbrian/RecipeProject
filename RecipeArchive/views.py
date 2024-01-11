@@ -442,10 +442,16 @@ def terms_of_use(request):
 
 def generate_image(request):
     # Check if the request is a POST request
+    user_profile = get_object_or_404(Profile, user=request.user)
+
+    if user_profile.generated_images_count >= 5:
+        # Return a response indicating the limit has been reached
+        return JsonResponse({'error': 'Image generation limit reached'}, status=403)
+
     if request.method == 'POST':
         # Retrieve the user's prompt from the POST data
         prompt = request.POST.get('prompt')
-
+        print(prompt)
         # Initialize the OpenAI client with your API key
         client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 
