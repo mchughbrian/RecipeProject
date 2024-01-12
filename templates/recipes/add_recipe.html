@@ -64,6 +64,10 @@
             </div>
                 <input type="text" id="imagePromptInput" class="form-control" placeholder="Enter a description for the image...">
             </div>
+            <div id="processingOverlay" style="display: none;">
+                <!-- Overlay Content -->
+                <p>Generating image, please wait...</p>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-custom" id="confirmImagePrompt">Generate</button>
@@ -106,6 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             var fullPrompt = "Please generate me a photo realistic and professional image of  " + userPrompt;
 
+            $('#processingOverlay').show();
+            $(this).text('Generating...').prop('disabled', true);
+
+
             if (!userPrompt) {
                 alert("Please enter a prompt for the image.");
                 return; // Stop the function if the prompt is empty
@@ -124,12 +132,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     $('#generatedImage').attr('src', response.image_url).show();
                     $('#imagePreviewSection').show();
                     $('#saveImageButton').show();
+                    $('#processingOverlay').hide();
+                    $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
+
                 },
                 error: function(xhr) {
                     if (xhr.status === 403) {
                         alert("You have reached your image generation limit.");
+                        $('#processingOverlay').hide();
+                        $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
+
+
                     } else {
                         alert("An error occurred while generating the image.");
+                        $('#processingOverlay').hide();
+                        $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
+
+
                     }
                 }
             });
