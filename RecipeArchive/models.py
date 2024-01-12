@@ -20,7 +20,7 @@ class Recipe(models.Model):
 
     # image of the recipe, uploaded to the "recipes/" directory
     image = models.ImageField(upload_to='recipes/', blank=True, null=True)  # this makes the field optional
-    image_url = models.URLField(blank=True, null=True)
+    image_url = models.URLField(blank=True, null=True, max_length=1000)
 
     # cuisine of the recipe as a string of maximum length 100 characters
     # cuisine = models.CharField(max_length=100)
