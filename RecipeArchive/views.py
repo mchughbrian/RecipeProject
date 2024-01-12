@@ -467,6 +467,10 @@ def generate_image(request):
         # Extract the URL of the generated image from the response
         image_url = response.data[0].url
 
+        #keep track of image generation count
+        user_profile.generated_images_count += 1
+        user_profile.save()
+
         # Return the image URL in a JSON response
         return JsonResponse({'image_url': image_url})
 
