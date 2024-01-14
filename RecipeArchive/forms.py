@@ -70,7 +70,6 @@ class MealPlanForm(forms.ModelForm):
         }
 
 
-
 class MealDayForm(forms.Form):
 
     def __init__(self, *args, **kwargs):

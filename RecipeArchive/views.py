@@ -210,7 +210,6 @@ def create_mealday(request, mealplan_id):
         'lunch': mealplan.lunch,
         'dinner': mealplan.dinner,
     }
-
     if request.method == 'POST':
         form = MealDayForm(request.POST, user=request.user, days=days, meals=meals)
         if form.is_valid():
@@ -327,7 +326,7 @@ def delete_mealplan(request, mealplan_id):
     # if not a POST request, render the confirm delete page
     return render(request, 'recipes/confirm_delete.html', {'mealplan': mealplan})
 
-@login_required()
+
 def get_available_recipes_for_user(user):
     # Get recipes owned by the user
     user_recipes = Recipe.objects.filter(user=user)
