@@ -5,6 +5,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django import forms
+from django.utils import timezone
 # from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -127,6 +128,9 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cookbook_name = models.CharField(max_length=100, blank=True)
     generated_images_count = models.IntegerField(default=0)
+    has_subscription = models.BooleanField(default=False)
+    image_generations_this_month = models.IntegerField(default=0)
+    last_reset = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.user.username  # Or any other string representation

@@ -443,10 +443,15 @@ def generate_image(request):
     # Check if the request is a POST request
     user_profile = get_object_or_404(Profile, user=request.user)
 
-    if user_profile.generated_images_count >= 5:
-        # Return a response indicating the limit has been reached
-        return JsonResponse({'error': 'Image generation limit reached'}, status=403)
+    # Check if the user does not have a subscription and has reached the free limit
+    if not user_profile.has_subscription and user_profile.generated_images_count >= 5:
+        return JsonResponse({'error': 'Free image generation limit reached. Please subscribe for more.'}, status=403)
 
+    # Check if the user has a subscription but has reached the monthly limit
+    elif user_profile.has_subscription and user_profile.image_generations_this_month >= 20:
+        return JsonResponse({'error': 'Monthly image generation limit reached.'}, status=403)
+
+    # Proceed with image generation logic
     if request.method == 'POST':
         # Retrieve the user's prompt from the POST data
         prompt = request.POST.get('prompt')
@@ -466,8 +471,13 @@ def generate_image(request):
         # Extract the URL of the generated image from the response
         image_url = response.data[0].url
 
-        #keep track of image generation count
-        user_profile.generated_images_count += 1
+        # Increment the appropriate image generation count
+        if user_profile.has_subscription:
+            user_profile.image_generations_this_month += 1
+            user_profile.generated_images_count += 1
+        else:
+            user_profile.generated_images_count += 1
+
         user_profile.save()
 
         # Return the image URL in a JSON response

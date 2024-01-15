@@ -137,22 +137,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 },
                 error: function(xhr) {
+                    $('#processingOverlay').hide();
+                    $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
+
                     if (xhr.status === 403) {
-                        var userWantsToSubscribe = confirm("You have reached your image generation limit. Would you like to subscribe to continue?");
-                        if (userWantsToSubscribe) {
-                            // User clicked OK, redirect to the subscription page
-                             window.location.href = '/subscription-page/';
+                        var response = JSON.parse(xhr.responseText);
+                        var errorMessage = response.error || "You have reached your image generation limit.";
+
+                        if (errorMessage.includes("Please subscribe")) {
+                            var userWantsToSubscribe = confirm(errorMessage + " Would you like to subscribe to continue?");
+                            if (userWantsToSubscribe) {
+                                // User clicked
+                                window.location.href = '/subscription-page/';
+                            }
                         } else {
-                            $('#processingOverlay').hide();
-                            $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
+                            alert(errorMessage);
                         }
-
-                    } else {
-                        alert("An error occurred while generating the image.");
-                        $('#processingOverlay').hide();
-                        $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
-
-
                     }
                 }
             });
