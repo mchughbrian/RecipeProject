@@ -475,3 +475,9 @@ def generate_image(request):
 
     # If the request is not a POST request, return an error
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+def subscription_page(request):
+    # Handle subscription logic here
+    # Render a template with subscription options and payment form
+    return render(request, 'registration/subscription_page.html')

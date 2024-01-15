@@ -138,10 +138,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 error: function(xhr) {
                     if (xhr.status === 403) {
-                        alert("You have reached your image generation limit.");
-                        $('#processingOverlay').hide();
-                        $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
-
+                        var userWantsToSubscribe = confirm("You have reached your image generation limit. Would you like to subscribe to continue?");
+                        if (userWantsToSubscribe) {
+                            // User clicked OK, redirect to the subscription page
+                             window.location.href = '/subscription-page/';
+                        } else {
+                            $('#processingOverlay').hide();
+                            $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
+                        }
 
                     } else {
                         alert("An error occurred while generating the image.");

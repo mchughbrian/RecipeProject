@@ -22,6 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
+from RecipeArchive.views import subscription_page
 
 # URL patterns are defined for our app
 urlpatterns = [
@@ -57,6 +58,8 @@ urlpatterns = [
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-of-use/', views.terms_of_use, name='terms_of_use'),
     path('generate-image/', views.generate_image, name='generate-image'),
+    path('subscription-page/', subscription_page, name='subscription-page'),
+
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
