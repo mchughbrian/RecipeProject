@@ -1,0 +1,37 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h2>Manage Subscription</h2>
+
+<div class="subscription-details">
+    <p><strong>Current Subscription:</strong> {{ current_subscription }}</p>
+    <p><strong>Next Billing Date:</strong> {{ next_bill_date }}</p>
+    <p><strong>Price:</strong> ${{ price }}</p>
+</div>
+
+<!-- Cancel Subscription Button -->
+<button id="cancelButton">Cancel Subscription</button>
+
+<!-- Confirmation Modal/Popup (Hidden initially) -->
+<div id="confirmationModal" style="display:none;">
+    <p>Are you sure you want to cancel your subscription?</p>
+    <button id="confirmCancel">Yes, Cancel</button>
+    <button id="keepSubscription">No, Keep It</button>
+</div>
+
+<script>
+    document.getElementById('cancelButton').addEventListener('click', function() {
+        document.getElementById('confirmationModal').style.display = 'block';
+    });
+
+    document.getElementById('keepSubscription').addEventListener('click', function() {
+        document.getElementById('confirmationModal').style.display = 'none';
+    });
+
+    document.getElementById('confirmCancel').addEventListener('click', function() {
+        // Add logic to handle the cancellation
+        // This could be a form submission or an AJAX call
+    });
+</script>
+
+{% endblock %}

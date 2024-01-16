@@ -15,12 +15,31 @@
 <form method="POST">
     {% csrf_token %}
     {{ profile_form.as_p }}
-    <button type="submit">Save Changes</button>
+    <button type="submit">Save Name</button>
 </form>
 
 <!-- Link to change password -->
 <div class="password-change-link">
     <a href="{% url 'password_change' %}">Change Password</a>
+</div>
+
+    <h2>Subscription</h2>
+<!-- Link to manage subscription -->
+<!-- Display subscription status and manage link -->
+<div class="subscription-section">
+    <p>Subscription Status:
+        {% if user.profile.has_subscription %}
+            <strong>Active</strong>
+            <div class="subscription-management-link">
+                <a href="{% url 'subscription_manage' %}">Manage Subscription</a>
+            </div>
+        {% else %}
+            <strong>Not Subscribed</strong>
+            <div class="subscription-signup-link">
+                <a href="{% url 'subscription-page' %}">Sign Up for Subscription</a>
+            </div>
+        {% endif %}
+    </p>
 </div>
 
 {% endblock %}

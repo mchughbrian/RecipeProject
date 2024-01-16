@@ -491,3 +491,14 @@ def subscription_page(request):
     # Handle subscription logic here
     # Render a template with subscription options and payment form
     return render(request, 'registration/subscription_page.html')
+
+
+def subscription_manage(request):
+    profile = request.user.profile
+    # Assuming you have fields like next_bill_date, price, and subscription_type in your Profile model
+    context = {
+        'next_bill_date': 'TBD',
+        'price': '4.99',
+        'current_subscription': profile.has_subscription,
+    }
+    return render(request, 'registration/subscription_manage.html', context)
