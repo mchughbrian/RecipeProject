@@ -1,29 +1,75 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<div class="container">
-    <h1>Subscribe for More Image Generations</h1>
+<div class="subscription-container">
+    <h2>Subscribe for More Image Generations</h2>
     <div class="subscription-details">
         <p>Get access to <strong>20 image generations per month</strong> for just <strong>$4.99</strong>.</p>
         <p>With our subscription plan, you can generate high-quality images using our advanced AI technology. Bring your cookbook to life.</p>
-        
-        <h2>Subscription Benefits:</h2>
-        <ul>
-            <li>20 image generations per month.</li>
-            <li>High-quality image generation.</li>
-            <li>Ability to cancel at any time.</li>
-            <li>Generated images remain with your account, even if you cancel.</li>
-        </ul>
 
-        <h2>Why do we charge for this:</h2>
-            <p>Generating AI images is computationally intensive and comes with a cost
-            We are unable to provide this service for free. </p>
+        <div class="benefits">
+            <h3>Subscription Benefits:</h3>
+            <ul>
+                <li>20 image generations per month.</li>
+                <li>High-quality image generation.</li>
+                <li>Ability to cancel at any time.</li>
+                <li>Generated images remain with your account, even if you cancel.</li>
+            </ul>
+        </div>
 
-        <h2>How to Subscribe:</h2>
-        <p>To subscribe, please click the button below and follow the instructions to complete your subscription.</p>
-        
-        <!-- Subscription Button (Placeholder - integrate with payment system) -->
-        <a href="/path-to-subscription-payment/" class="btn btn-custom">Subscribe Now</a>
+        <div class="charge-reason">
+            <h3>Why do we charge for this:</h3>
+            <p>Generating AI images is computationally intensive and comes with a cost. We are unable to provide this service for free.</p>
+        </div>
+
+        <div class="how-to-subscribe">
+            <h3>How to Subscribe:</h3>
+            <p>To subscribe, please click the button below and follow the instructions to complete your subscription.</p>
+
+            <!-- Subscription Button (Placeholder - integrate with payment system) -->
+            <form action="/path-to-subscription-payment/" method="get">
+                <button type="submit" class="btn-custom">Subscribe Now</button>
+            </form>
+        </div>
     </div>
 </div>
+    <style>
+    .subscription-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .subscription-container h2, .subscription-container h3 {
+        color: #333;
+    }
+
+    .subscription-details p {
+        color: #555;
+    }
+
+    .benefits ul {
+        list-style-type: disc;
+        margin-left: 20px;
+    }
+
+    .btn-custom {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-custom:hover {
+        background-color: #45a049;
+    }
+</style>
+
 {% endblock %}
