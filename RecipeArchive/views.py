@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import escape
+from django.views.decorators.http import require_POST
+
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
 from .forms import RecipeForm, MealDayForm, RecipeSearchForm
 from .forms import MealPlanForm
@@ -502,3 +504,13 @@ def subscription_manage(request):
         'current_subscription': profile.has_subscription,
     }
     return render(request, 'registration/subscription_manage.html', context)
+
+
+@require_POST  # Ensure this view only accepts POST requests
+def cancel_subscription(request):
+    profile = request.user.profile
+    profile.has_subscription = False
+    profile.save()
+
+    # Redirect to the profile page
+    return redirect('my_profile')

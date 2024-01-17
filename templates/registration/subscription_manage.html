@@ -19,19 +19,29 @@
     <button id="keepSubscription">No, Keep It</button>
 </div>
 
+    <form id="cancelSubscriptionForm" method="post" action="{% url 'cancel_subscription' %}" style="display: none;">
+    {% csrf_token %}
+    <!-- Any additional data you might need to send can be included here -->
+    </form>
+
+
 <script>
+    // When the 'Cancel Subscription' button is clicked, show the modal
     document.getElementById('cancelButton').addEventListener('click', function() {
         document.getElementById('confirmationModal').style.display = 'block';
     });
 
+    // When the 'No, Keep It' button is clicked, hide the modal
     document.getElementById('keepSubscription').addEventListener('click', function() {
         document.getElementById('confirmationModal').style.display = 'none';
     });
 
+    // When the 'Yes, Cancel' button is clicked, submit the form
     document.getElementById('confirmCancel').addEventListener('click', function() {
-        // Add logic to handle the cancellation
-        // This could be a form submission or an AJAX call
+        // Submit the form to handle the cancellation
+        document.getElementById('cancelSubscriptionForm').submit();
     });
 </script>
+
 
 {% endblock %}
