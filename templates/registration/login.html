@@ -1,20 +1,42 @@
 {% extends 'base_generic.html' %}
-{% load static %}
 
 {% block content %}
 <div class="login-container">
-    <div class="login-section">
-        <div class="login-image">
-            <img src="{% static 'images/Logon2.png' %}" alt="Login Image">
-        </div>
-        <div class="login-form">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Login</button>
-            </form>
+    <h2>Login</h2> <!-- Header outside and above the login-form div -->
+    <div class="login-form">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-custom">Login</button>
+        </form>
+        <div class="password-reset-link">
             <a href="{% url 'password_reset' %}">Forgot password?</a>
         </div>
     </div>
 </div>
+    <style>
+    .login-container {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .login-container h2 {
+        color: #333;
+        margin-bottom: 20px; /* Space between header and form */
+    }
+
+    .login-form {
+        margin-top: 20px;
+    }
+
+    /* Styles for .btn-custom, .password-reset-link, etc. */
+
+</style>
+
 {% endblock %}
+
