@@ -1,7 +1,7 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="terms-container">
     <h1>Terms of Use for My Recipe Archive</h1>
     <p>Last Updated: December 29, 2023</p>
     <p>Welcome to My Recipe Archive. These terms and conditions outline the rules and regulations for the use of My Recipe Archive's Website.</p>
@@ -48,4 +48,30 @@
 
 
 </div>
+    <style>
+    .terms-container {
+        max-width: 800px; /* Adjust width as needed */
+        margin: auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: left;
+    }
+
+    .terms-container h1, .terms-container h2 {
+        color: #333;
+    }
+
+    .terms-container p, .terms-container ul {
+        color: #555;
+    }
+
+    .terms-container ul {
+        list-style-type: disc;
+        margin-left: 20px;
+    }
+
+    /* Additional styling as needed */
+</style>
 {% endblock %}
