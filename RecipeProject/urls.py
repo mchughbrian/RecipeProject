@@ -61,6 +61,8 @@ urlpatterns = [
     path('subscription-page/', subscription_page, name='subscription-page'),
     path('subscription_manage/', subscription_manage, name='subscription_manage'),
     path('cancel-subscription/', cancel_subscription, name='cancel_subscription'),
+    path('create-checkout-session/', views.create_checkout_session, name='create_checkout_session'),
+    path('cancel/', views.payment_cancelled, name='payment_cancelled'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

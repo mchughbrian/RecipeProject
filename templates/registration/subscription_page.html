@@ -22,15 +22,18 @@
             <p>Generating AI images is computationally intensive and comes with a cost. We are unable to provide this service for free.</p>
         </div>
 
+<!-- ... existing content ... -->
+
         <div class="how-to-subscribe">
             <h3>How to Subscribe:</h3>
             <p>To subscribe, please click the button below and follow the instructions to complete your subscription.</p>
 
-            <!-- Subscription Button (Placeholder - integrate with payment system) -->
-            <form action="/path-to-subscription-payment/" method="get">
-                <button type="submit" class="btn-custom">Subscribe Now</button>
-            </form>
+            <!-- Stripe Subscription Button -->
+            <button id="stripeButton" class="btn-custom">Subscribe Now</button>
         </div>
+
+        <!-- ... existing content ... -->
+
     </div>
 </div>
     <style>
@@ -72,4 +75,30 @@
     }
 </style>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('{{ stripe_public_key }}'); // Replace with your public key
+
+    document.getElementById('stripeButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch('{% url "create_checkout_session" %}')  // URL to your Django view
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(session) {
+                return stripe.redirectToCheckout({ sessionId: session.sessionId });
+            })
+            .then(function(result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+    });
+</script>
 {% endblock %}

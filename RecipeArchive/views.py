@@ -17,6 +17,7 @@ from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 import requests
 from django.conf import settings
+import stripe
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import ProfileForm
@@ -490,9 +491,20 @@ def generate_image(request):
 
 
 def subscription_page(request):
-    # Handle subscription logic here
-    # Render a template with subscription options and payment form
-    return render(request, 'registration/subscription_page.html')
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    # You can define your subscription plans or retrieve them from Stripe
+    plans = [
+        {"id": "Plan_1", "name": "Basic Plan", "price": 10},  # Example plan
+        # Add more plans as needed
+    ]
+
+    context = {
+        'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
+        'plans': plans,
+    }
+
+    return render(request, 'registration/subscription_page.html', context)
 
 
 def subscription_manage(request):
@@ -514,3 +526,28 @@ def cancel_subscription(request):
 
     # Redirect to the profile page
     return redirect('my_profile')
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+def create_checkout_session(request):
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price': 'price_1Oa7sfHfWVyyw5M2KYbXJcwq',  # Replace with your Stripe Price ID
+                'quantity': 1,
+            }],
+            mode='subscription',
+            success_url=request.build_absolute_uri('/success/'),  # URL to redirect to on successful payment
+            cancel_url=request.build_absolute_uri('/cancel/'),    # URL to redirect to on payment cancellation
+        )
+        return JsonResponse({'sessionId': checkout_session.id})
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+
+
+def payment_cancelled(request):
+    # You can add any context or processing you need here
+    return render(request, 'registration/payment_cancelled.html')
