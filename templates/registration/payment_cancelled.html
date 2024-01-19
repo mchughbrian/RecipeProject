@@ -3,9 +3,60 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<div class="container">
+<div class="payment-cancelled-container">
     <h2>Payment Cancelled</h2>
     <p>Your payment process was cancelled. If this was a mistake, please try again.</p>
-    <a href="{% url 'home' %}">Return to Home</a>
+    <p>You will be redirected to the home page in <span id="countdown">10</span> seconds.</p>
+    <a href="{% url 'home' %}" class="btn-custom">Return to Home</a>
 </div>
+
+<script>
+    var countdownNumber = 10;
+    var countdownElement = document.getElementById('countdown');
+
+    var countdownInterval = setInterval(function() {
+        countdownNumber--;
+        countdownElement.textContent = countdownNumber;
+
+        if (countdownNumber <= 0) {
+            clearInterval(countdownInterval);
+            window.location.href = "{% url 'home' %}";
+        }
+    }, 1000);
+</script>
+
+<style>
+    .payment-cancelled-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .payment-cancelled-container h2 {
+        color: #333;
+    }
+
+    .payment-cancelled-container p {
+        color: #555;
+    }
+
+    .btn-custom {
+        background-color: #a2a1a1;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-custom:hover {
+        background-color: #615c5c;
+    }
+</style>
 {% endblock %}
