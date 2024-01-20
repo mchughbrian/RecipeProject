@@ -54,7 +54,6 @@ class Recipe(models.Model):
     # the user who added the recipe, linked via a foreign key to the User model
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
     def __str__(self):
         return self.name
 
@@ -132,6 +131,7 @@ class Profile(models.Model):
     image_generations_this_month = models.IntegerField(default=0)
     last_reset = models.DateField(default=timezone.now)
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.user.username  # Or any other string representation

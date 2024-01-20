@@ -595,5 +595,9 @@ def payment_success(request):
     user_profile.save()
     # Future TODO: Implement webhook handling for more robust subscription updates
     # This will be implemented once a domain is established and webhooks can be used.
+    # TODO: Automate the retrieval and storage of Stripe subscription IDs using webhooks.
+    # Once a domain is established, set up a webhook endpoint to handle Stripe's 'checkout.session.completed' events.
+    # In the webhook handler, extract the subscription ID from the event and update the user's profile.
+    # This will replace the current manual process of updating subscription IDs and ensure real-time, accurate data synchronization with Stripe.
 
     return render(request, 'registration/sucess.html')
