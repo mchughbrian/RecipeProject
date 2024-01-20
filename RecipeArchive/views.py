@@ -8,7 +8,6 @@ from django.contrib.auth import login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import escape
 from django.views.decorators.http import require_POST
-
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
 from .forms import RecipeForm, MealDayForm, RecipeSearchForm
 from .forms import MealPlanForm
@@ -81,6 +80,13 @@ def register(request):
                 Profile.objects.get_or_create(user=user)
             except Exception as e:
                 print("Error creating profile:", e)
+
+            # Attempt to create a Stripe customer for the new user
+            try:
+                create_stripe_customer(user)
+            except Exception as e:
+                print("Error creating Stripe customer:", e)
+
             # Log the user in and redirect to the home page
             login(request, user)
             return redirect("home")  # Redirect to the home page or another appropriate page
@@ -493,6 +499,14 @@ def generate_image(request):
 def subscription_page(request):
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
+    user = request.user
+    if not user.profile.stripe_customer_id:
+        try:
+            create_stripe_customer(user)
+        except Exception as e:
+            print("Error creating Stripe customer:", e)
+            # Handle the error appropriately (e.g., show an error message to the user)
+
     # You can define your subscription plans or retrieve them from Stripe
     plans = [
         {"id": "Plan_1", "name": "Basic Plan", "price": 10},  # Example plan
@@ -546,6 +560,14 @@ def create_checkout_session(request):
         return JsonResponse({'sessionId': checkout_session.id})
     except Exception as e:
         return JsonResponse({'error': str(e)})
+
+
+def create_stripe_customer(user):
+    stripe.api_key = stripe.api_key
+    customer = stripe.Customer.create(email=user.email, description=user.id, name=user.username)
+
+    user.profile.stripe_customer_id = customer.id
+    user.profile.save()
 
 
 def payment_cancelled(request):
