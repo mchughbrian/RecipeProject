@@ -1,0 +1,28 @@
+<!-- payment_success.html -->
+
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="success-container">
+    <h2>Payment Successful!</h2>
+    <p>Your payment was processed successfully. You will be redirected to the home page shortly.</p>
+    <a href="{% url 'home' %}" class="btn-custom">Go to Home</a>
+</div>
+
+<script>
+    setTimeout(function() {
+        window.location.href = "{% url 'home' %}";
+    }, 10000); // Redirect after 10 seconds
+</script>
+
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+        /* Add more styling as needed */
+    }
+
+</style>
+{% endblock %}

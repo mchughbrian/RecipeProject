@@ -546,8 +546,21 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def create_checkout_session(request):
+    user_profile = request.user.profile
+
     try:
+        # Check if the user already has a Stripe customer ID
+        if user_profile.stripe_customer_id:
+            customer_id = user_profile.stripe_customer_id
+        else:
+            # Create a new Stripe customer and save the ID
+            customer = stripe.Customer.create(email=request.user.email)
+            customer_id = customer.id
+            user_profile.stripe_customer_id = customer_id
+            user_profile.save()
+
         checkout_session = stripe.checkout.Session.create(
+            customer=customer_id,
             payment_method_types=['card'],
             line_items=[{
                 'price': 'price_1Oa7sfHfWVyyw5M2KYbXJcwq',  # Replace with your Stripe Price ID
@@ -573,3 +586,14 @@ def create_stripe_customer(user):
 def payment_cancelled(request):
     # You can add any context or processing you need here
     return render(request, 'registration/payment_cancelled.html')
+
+
+def payment_success(request):
+    # You can add additional context or processing if needed
+    user_profile = request.user.profile
+    user_profile.has_subscription = True
+    user_profile.save()
+    # Future TODO: Implement webhook handling for more robust subscription updates
+    # This will be implemented once a domain is established and webhooks can be used.
+
+    return render(request, 'registration/sucess.html')

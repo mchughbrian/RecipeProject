@@ -22,7 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from RecipeArchive.views import subscription_page, subscription_manage, cancel_subscription
+from RecipeArchive.views import subscription_page, subscription_manage, cancel_subscription, payment_success
 
 # URL patterns are defined for our app
 urlpatterns = [
@@ -63,6 +63,7 @@ urlpatterns = [
     path('cancel-subscription/', cancel_subscription, name='cancel_subscription'),
     path('create-checkout-session/', views.create_checkout_session, name='create_checkout_session'),
     path('cancel/', views.payment_cancelled, name='payment_cancelled'),
+    path('success/', payment_success, name='payment_success'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
