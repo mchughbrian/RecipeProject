@@ -544,7 +544,7 @@ def cancel_subscription(request):
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-
+@login_required
 def create_checkout_session(request):
     user_profile = request.user.profile
 
