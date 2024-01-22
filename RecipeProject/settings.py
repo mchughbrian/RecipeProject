@@ -144,3 +144,8 @@ LOGOUT_REDIRECT_URL = 'landing_page'
 
 STRIPE_PUBLIC_KEY = 'pk_test_51Oa7YhHfWVyyw5M2zUAZn9vHj2gIhCiPWS7kgKlslrCSBGVGRWGFbt48xJaJUPVmFBBC0OA0qeBSeKWTAYqdCGss00evSg1ILG'
 STRIPE_SECRET_KEY = 'sk_test_51Oa7YhHfWVyyw5M2GvOyPEFeeo6buZYtSP0UtgUWE7nI80umMYQ1quspiTnmOAuSPYqenhKDpcYEVf02DQZEWg9i00vARp5GWI'
+
+AUTHENTICATION_BACKENDS = [
+    'RecipeArchive.backends.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Keep the default backend
+]
