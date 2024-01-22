@@ -2,91 +2,93 @@
 
 {% block content %}
     <h1>My Profile</h1>
-<div class="profile-container">
+    <div class="profile-containerP">
 
-    <!-- Display messages -->
-    {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
+        <!-- Display messages -->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Profile Form Card -->
+        <div class="grid-containerP">
+            <div class="cardP">
+                <h3>CookBook Name</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ profile_form.as_p }}
+                    <button type="submit" class="btn-custom">Save Name</button>
+                </form>
+            </div>
         </div>
-    {% endif %}
 
-    <!-- Profile Form -->
-    <h3>CookBook Name</h3>
-    <div class="profile-form">
-        <form method="POST">
-            {% csrf_token %}
-            {{ profile_form.as_p }}
-            <button type="submit" class="btn-custom">Save Name</button>
-        </form>
+        <!-- Password Change Card -->
+        <div class="grid-containerP">
+            <div class="cardP">
+                <h3>Password Change</h3>
+                <a href="{% url 'password_change' %}">Change Password</a>
+            </div>
+        </div>
+
+        <!-- Subscription Section Card -->
+        <div class="grid-containerP">
+            <div class="cardP">
+                <h3>Subscription</h3>
+                <p>Subscription Status:
+                    {% if user.profile.has_subscription %}
+                        <strong>Active</strong>
+                        <div class="subscription-management-link">
+                            <a href="{% url 'subscription_manage' %}">Manage Subscription</a>
+                        </div>
+                    {% else %}
+                        <strong>Not Subscribed</strong>
+                        <div class="subscription-signup-link">
+                            <a href="{% url 'subscription-page' %}" class="btn btn-info">Sign up for Subscription</a>
+                        </div>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
     </div>
 
-    <!-- Password Change Link -->
-<h3>Password Change</h3>
-    <div class="password-change-link">
-        <a href="{% url 'password_change' %}">Change Password</a>
-    </div>
+    <style>
+.profile-containerP {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
 
-    <!-- Subscription Section -->
-    <div class="subscription-section">
-        <h3>Subscription</h3>
-        <p>Subscription Status:
-            {% if user.profile.has_subscription %}
-                <strong>Active</strong>
-                <div class="subscription-management-link">
-                    <a href="{% url 'subscription_manage' %}">Manage Subscription</a>
-                </div>
-            {% else %}
-                <strong>Not Subscribed</strong>
-                <div class="subscription-signup-link">
-                    <a href="{% url 'subscription-page' %}" class="btn btn-info">Sign up for Subscription</a>
-                </div>
-            {% endif %}
-        </p>
-    </div>
-</div>
+.grid-containerP {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust minmax as needed */
+    gap: 20px; /* Space between grid items */
+}
 
+.cardP {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    /* Remove margin-bottom if previously set */
+}
 
-<style>
-    .profile-container {
-        max-width: 600px;
-        margin: auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+a {
+    color: #626060;
+    text-decoration: none;
+}
 
-    .profile-container h2, .profile-container h3 {
-        color: #333;
-    }
+a:hover {
+    text-decoration: underline;
+}
 
-    .profile-form form {
-        margin-bottom: 20px;
-    }
+.messages p {
+    color: red;
+    margin: 10px 0;
+}
 
-    .password-change-link, .subscription-section {
-        margin-top: 20px;
-    }
-
-    .subscription-section p, .password-change-link a {
-        color: #555;
-    }
-
-    a {
-        color: #626060;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    .messages p {
-        color: red;
-        margin: 10px 0;
-    }
-</style>
+    </style>
 {% endblock %}
