@@ -367,41 +367,12 @@
     margin-top: 40px; /* Space between details and buttons */
 }
 
-.landing {
-    text-align: center;
-    padding: 50px 20px;
-}
-
-.landing .welcome-message h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-}
-
-.landing .welcome-message p {
-    font-size: 1.2em;
-    margin-bottom: 40px;
-}
-
-.landing .auth-options a {
-    margin: 10px;
-    padding: 10px 20px;
-    color: black;
-    text-decoration: none;
-}
-
 .info-icon {
     cursor: pointer;
     margin-left: 5px;
     color: #17a2b8; /* Bootstrap info color */
 }
 
-.top-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background-color: #f8f8f8; /* Neutral gray color */
-    padding: 40px;
-}
 
 .left-content {
     flex: 1;
@@ -418,44 +389,6 @@
     height: auto;
 }
 
-.features-section {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-    padding: 20px;
-}
-
-.feature-column {
-    flex-basis: 30%;
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centers the content horizontally */
-}
-
-.feature-column img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-top: 10px;
-    align-self: center; /* Center the image in the flex container */
-}
-
-.feature-column h3, .feature-column p {
-    align-self: flex-start; /* Align text to the start */
-    width: 100%; /* Ensure full width for text alignment */
-}
-
-@media (max-width: 768px) {
-    .features-section {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .feature-column {
-        flex-basis: 100%;
-    }
-}
 html, body {
     height: 100%;
     margin: 0;

@@ -2,36 +2,38 @@
 {% load static %}
 
 {% block content %}
-<div class="top-section">
-    <div class="left-content">
+<div class="hero-section">
+    <div class="hero-content">
         <h1>Create Your Recipe Archive</h1>
         <p>Stop forgetting about all the good food you make</p>
-        <a href="{% url 'login' %}" class="btn btn-custom">Log In</a>
-        <a href="{% url 'register' %}" class="btn btn-custom">Register</a>
+        <a href="{% url 'login' %}" class="btn btn-info">Log In</a>
+        <a href="{% url 'register' %}" class="btn btn-info">Register</a>
     </div>
-    <div class="right-content">
+    <div class="hero-image">
         <img src="{% static 'images/home_snip_1.png' %}" alt="Cooking Image" class="img-fluid">
     </div>
 </div>
+
 <div class="features-section">
-    <div class="feature-column">
-        <h3>Save all your recipes</h3>
+    <div class="feature-row">
+        <h3>Save your recipes</h3>
         <p>Fill easy to use forms to save your info</p>
-        <img src="{% static 'images/add.png' %}" alt="Feature One">
+        <img src="{% static 'images/add.png' %}" alt="Feature One" class="feature-image feature-image-1">
     </div>
 
-    <div class="feature-column">
+    <div class="feature-row">
         <h3>Generate Images</h3>
-        <p>Use AI to bring your archive alive</p>
-        <img src="{% static 'images/BeefBowl.png' %}" alt="Feature Two">
+        <p>Use AI to bring your Recipe Archive to life</p>
+        <img src="{% static 'images/BeefBowl.png' %}" alt="Feature Two" class="feature-image feature-image-2">
     </div>
 
-    <div class="feature-column">
+    <div class="feature-row">
         <h3>Create Mealplans</h3>
         <p>Using your recipes easily plan your meals</p>
-        <img src="{% static 'images/plan.png' %}" alt="Feature Three">
+        <img src="{% static 'images/plan.png' %}" alt="Feature Three" class="feature-image feature-image-3">
     </div>
 </div>
+
     <style>
 
 @media only screen and (max-width: 600px) {
@@ -53,15 +55,109 @@
     }
 }
 
-    .top-section {
-    background-size: cover;
-    padding: 50px 0;
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full height of the viewport */
+    text-align: center;
+    padding: 20px;
 }
 
-.feature-column:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s ease-in-out;
+.hero-content {
+    /* Add margin for spacing between text and image */
+    margin-bottom: 20px;
 }
+
+.hero-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 1em;
+}
+
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border: 3px solid #cccccc;
+
+}
+
+.feature-row {
+    clear: both; /* Clear any floating elements */
+    display: block; /* Ensure block-level display */
+    margin-bottom: 40px; /* Space between each feature */
+    width: 100%; /* Take full width */
+    /* Other styles... */
+}
+
+.features-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.feature-row {
+    margin-bottom: 60px; /* Space between each feature */
+}
+
+.feature-row h3 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.feature-row p {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.feature-image-1 {
+    max-width: 600px;
+    max-height: 800px;
+    /* Other styles */
+}
+
+.feature-image-2 {
+    max-width: 750px;
+    max-height: 750px;
+    /* Other styles */
+}
+
+.feature-image-3 {
+    max-width: 700px;
+    max-height: 700px;
+    /* Other styles */
+}
+
+/* General styles for all feature images */
+.feature-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.feature-row img {
+    border: 3px solid #cccccc;
+    /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);*/
+    margin-bottom: 20px;
+}
+
+body {
+    background-color: #f5f5f5; /* Replace with your chosen color */
+    color: #333; /* Ensure text color contrasts well */
+    /* Other styles */
+}
+
+/* If you want to apply the color to a specific section */
+.features-section {
+    background-color: #f5f5f5; /* Replace with your chosen color */
+    /* Other styles */
+}
+
 
     </style>
 
