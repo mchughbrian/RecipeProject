@@ -1,6 +1,7 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
+    <div class="content-wrapper">
     <h1>My Profile</h1>
     <div class="profile-containerP">
 
@@ -53,8 +54,20 @@
             </div>
         </div>
     </div>
+    </div>
 
     <style>
+
+.content-wrapper {
+    max-width: 600px;
+    margin: auto;
+    padding: 0 20px; /* This padding is to ensure the content inside is aligned */
+}
+
+h1 {
+    padding: 0;
+    margin: 0; /* Remove margin to align with the start of the content */
+}
 .profile-containerP {
     max-width: 600px;
     margin: auto;
@@ -89,6 +102,7 @@ a:hover {
     color: red;
     margin: 10px 0;
 }
+
 
     </style>
 {% endblock %}
