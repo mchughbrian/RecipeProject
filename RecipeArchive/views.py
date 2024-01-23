@@ -338,7 +338,7 @@ def delete_mealplan(request, mealplan_id):
 
 def get_available_recipes_for_user(user):
     # Get recipes owned by the user
-    user_recipes = Recipe.objects.filter(user=user)
+    user_recipes = Recipe.objects.filter(user=user).order_by('name')
 
     # Get special recipes
     special_recipes = Recipe.objects.filter(user__username='default_user')
