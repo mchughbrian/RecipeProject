@@ -7,7 +7,7 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn-custom">Login</button>
+            <button type="submit" class="btn-log">Login</button>
         </form>
         <div class="password-reset-link">
             <a href="{% url 'password_reset' %}">Forgot password?</a>
@@ -34,8 +34,20 @@
         margin-top: 20px;
     }
 
-    /* Styles for .btn-custom, .password-reset-link, etc. */
+    .btn-log {
+        background-color: #17a2b8;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius:4px;
+        cursor: pointer;
+        width: 100%;
+    }
 
+    .btn-log:hover {
+        background-color: #138496; /* A darker shade for hover effect */
+        color: white;
+}
 </style>
 
 {% endblock %}
