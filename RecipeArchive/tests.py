@@ -54,3 +54,50 @@ class PaymentTests(TestCase):
         # Check if the profile was updated
         self.profile.refresh_from_db()
         self.assertTrue(self.profile.has_subscription)
+
+
+# Mock classes
+class MockData:
+    def __init__(self, url):
+        self.url = url
+
+class MockResponse:
+    def __init__(self):
+        self.data = [MockData("https://via.placeholder.com/1024")]
+
+
+class ImageGenerationTests(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user('testuser', 'test@example.com', 'password')
+        self.profile, created = Profile.objects.get_or_create(user=self.user)
+        self.profile.generated_images_count = 5  # Set the count to the limit
+        self.profile.has_subscription = False  # Ensure the user is a non-subscriber
+        self.profile.save()
+
+    def test_image_generation_limit_non_subscriber(self):
+        self.client.login(username='testuser', password='password')
+        response = self.client.post('/generate-image/', {'prompt': 'test prompt'})
+        self.assertEqual(response.status_code, 403)
+        self.assertIn('Free image generation limit reached', response.json()['error'])
+
+    def test_image_generation_limit_subscriber(self):
+        self.profile.has_subscription = True
+        self.profile.image_generations_this_month = 20
+        self.profile.save()
+
+        self.client.login(username='testuser', password='password')
+        response = self.client.post('/generate-image/', {'prompt': 'test prompt'})
+        self.assertEqual(response.status_code, 403)
+        self.assertIn('Monthly image generation limit reached', response.json()['error'])
+
+    @patch('openai.images.generate')
+    def test_successful_image_generation(self, mock_openai):
+        mock_openai.return_value = MockResponse()
+        #TODO fix this test case
+        self.client.login(username='testuser', password='password')
+        response = self.client.post('/generate-image/', {'prompt': 'test prompt'})
+        print(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('https://via.placeholder.com/1024', response.json()['image_url'])
