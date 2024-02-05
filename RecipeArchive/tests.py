@@ -57,13 +57,9 @@ class PaymentTests(TestCase):
 
 
 # Mock classes
-class MockData:
-    def __init__(self, url):
-        self.url = url
-
 class MockResponse:
     def __init__(self):
-        self.data = [MockData("https://via.placeholder.com/1024")]
+        self.data = [{'url': 'https://via.placeholder.com/1024'}]
 
 
 class ImageGenerationTests(TestCase):
@@ -95,8 +91,11 @@ class ImageGenerationTests(TestCase):
     @patch('openai.images.generate')
     def test_successful_image_generation(self, mock_openai):
         mock_openai.return_value = MockResponse()
-        #TODO fix this test case
+        self.profile.generated_images_count = 0  # Set the count to the limit
+        self.profile.has_subscription = True  # Ensure the user is a non-subscriber
+        self.profile.save()
         self.client.login(username='testuser', password='password')
+        #TODO fix this test case
         response = self.client.post('/generate-image/', {'prompt': 'test prompt'})
         print(response.content)
         self.assertEqual(response.status_code, 200)
