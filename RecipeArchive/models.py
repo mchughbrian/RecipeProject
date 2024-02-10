@@ -7,6 +7,22 @@ from django.contrib.auth.models import User
 from django import forms
 from django.utils import timezone
 # from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.utils.deconstruct import deconstructible
+
+
+@deconstructible
+class UploadToPathAndRename(object):
+    def __init__(self, path):
+        self.sub_path = path
+
+    def __call__(self, instance, filename):
+        # Assuming the user is linked directly from the Recipe model
+        user_id = instance.user.id  # Using user ID for folder name
+        # Construct a new filename here if you wish, e.g., appending a timestamp
+        new_filename = filename
+        # Return the path with user-specific folder
+        return f'{self.sub_path}/{user_id}/{new_filename}'
 
 
 # Recipe model is defined
@@ -15,12 +31,13 @@ class Recipe(models.Model):
     name = models.CharField(max_length=200)
 
     # description of the recipe as a text field
-    #description = models.TextField()
+    # description = models.TextField()
 
     ingredients = models.TextField()
 
     # image of the recipe, uploaded to the "recipes/" directory
-    image = models.ImageField(upload_to='recipes/', blank=True, null=True)  # this makes the field optional
+    image = models.ImageField(upload_to=UploadToPathAndRename('recipes'), blank=True, null=True)
+    # image = models.ImageField(upload_to='recipes/', blank=True, null=True)  # this makes the field optional
     image_url = models.URLField(blank=True, null=True, max_length=1000)
 
     # cuisine of the recipe as a string of maximum length 100 characters

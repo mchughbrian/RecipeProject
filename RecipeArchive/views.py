@@ -25,6 +25,8 @@ from django.contrib.auth import logout
 from .forms import CustomUserCreationForm
 from openai import OpenAI
 import os
+from django.core.exceptions import PermissionDenied
+
 
 
 # A view is defined to handle requests to the homepage
@@ -139,16 +141,24 @@ def add_recipe(request):
 @login_required
 def delete_recipe(request, recipe_id):
     # Retrieve the recipe by its ID.
-    recipe = Recipe.objects.get(id=recipe_id)
+    try:
+        recipe = Recipe.objects.get(id=recipe_id, user=request.user)  # Ensures ownership
+    except Recipe.DoesNotExist:
+        raise PermissionDenied  # Handles cases where the recipe does not exist or is not owned by the user
 
-    # Check if the logged-in user is the one who added the recipe.
-    if recipe.user == request.user:
-        # If so, delete the recipe.
-        recipe.delete()
+    # If the recipe has an associated image file, delete the file
+    if recipe.image:
+        # Construct the full file path
+        file_path = os.path.join(settings.MEDIA_ROOT, recipe.image.name)
+        # Check if the file exists and delete it
+        if os.path.isfile(file_path):
+            os.remove(file_path)
 
-    # After deleting the recipe (or if the user didn't have permission to delete it), redirect the user to the homepage.
+    # Delete the recipe record from the database
+    recipe.delete()
+
+    # After deleting the recipe, redirect the user to the homepage.
     return redirect('home')
-
 
 # Define a view function named 'recipe' which takes a request and recipe_id as arguments
 def recipe(request, recipe_id):
@@ -470,11 +480,11 @@ def generate_image(request):
 
         # Call the OpenAI API to generate an image based on the prompt
         response = client.images.generate(
-            model="dall-e-3",  # Specify the model to use
-            prompt=prompt,     # The user's text prompt
-            size="1024x1024",  # The size of the generated image
-            quality="standard",# The quality of the image
-            n=1,               # Number of images to generate
+            model="dall-e-3",    # Specify the model to use
+            prompt=prompt,       # The user's text prompt
+            size="1024x1024",    # The size of the generated image
+            quality="standard",  # The quality of the image
+            n=1,                 # Number of images to generate
         )
 
         # Extract the URL of the generated image from the response
@@ -543,6 +553,7 @@ def cancel_subscription(request):
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 @login_required
 def create_checkout_session(request):
