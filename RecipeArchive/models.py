@@ -33,7 +33,7 @@ class Recipe(models.Model):
     # description of the recipe as a text field
     # description = models.TextField()
 
-    ingredients = models.TextField()
+    ingredients = models.TextField(blank=True, null=True)
     instructions = models.TextField(blank=True, null=True)
 
     # image of the recipe, uploaded to the "recipes/" directory
