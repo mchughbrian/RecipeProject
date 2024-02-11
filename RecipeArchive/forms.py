@@ -25,7 +25,6 @@ class CustomUserCreationForm(UserCreationForm):
             user.profile.save()
         return user
 
-
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
 
@@ -37,7 +36,6 @@ class CustomUserCreationForm(UserCreationForm):
             - 1 lowercase letter
             """
         self.fields['password1'].help_text = password_help_text.strip()
-
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -56,8 +54,11 @@ class RecipeForm(forms.ModelForm):
     image_url = forms.URLField(required=False, empty_value=None)  # Set empty_value to None
     class Meta:
         model = Recipe
-        fields = ['name', 'ingredients', 'image', 'image_url','meal_type', 'rating']
-
+        fields = ['name', 'ingredients', 'instructions', 'image', 'image_url', 'meal_type', 'rating']
+        widgets = {
+            'ingredients': forms.Textarea(attrs={'rows': 4, 'placeholder': 'List each ingredient on a new line'}),
+            'instructions': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Step by step instructions'}),
+        }
 
 class MealPlanForm(forms.ModelForm):
     class Meta:

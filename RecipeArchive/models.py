@@ -34,6 +34,7 @@ class Recipe(models.Model):
     # description = models.TextField()
 
     ingredients = models.TextField()
+    instructions = models.TextField(blank=True, null=True)
 
     # image of the recipe, uploaded to the "recipes/" directory
     image = models.ImageField(upload_to=UploadToPathAndRename('recipes'), blank=True, null=True)
