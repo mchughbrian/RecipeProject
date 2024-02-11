@@ -3,7 +3,12 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from unittest.mock import patch
 from RecipeArchive.models import Profile
-
+from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import override_settings
+from .models import Recipe
+from io import BytesIO
+import os
 
 # We define a new test case by creating a subclass of django.test.TestCase
 class HomeViewTest(TestCase):
@@ -100,3 +105,112 @@ class ImageGenerationTests(TestCase):
         print(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertIn('https://via.placeholder.com/1024', response.json()['image_url'])
+
+
+@override_settings(MEDIA_ROOT='/tmp/django_test')
+class RecipeTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user1 = User.objects.create_user(username='testuser1', password='password123')
+        self.user2 = User.objects.create_user(username='testuser2', password='password123')
+        self.client.login(username='testuser', password='testpassword')
+
+    @patch('requests.get')
+    def test_add_recipe_with_image_url(self, mock_get):
+        # Mock the response from requests.get to simulate fetching an image
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.content = BytesIO(b'test image content').getvalue()
+
+        response = self.client.post(reverse('add_recipe'), {
+            'title': 'Test Recipe',  # Assuming 'title' is correct based on your initial test
+            'name': 'Test Recipe Name',
+            'ingredients': 'Test Ingredients',
+            'meal_type': 'Breakfast',  # Assuming 'meal_type' expects a string like 'Breakfast', 'Lunch', etc.
+            'rating': '5',  # Assuming 'rating' is a numeric field represented as a string in POST data
+            'image_url': 'https://via.placeholder.com/1024',
+            # Add other required fields here
+        })
+
+        # Check for form errors if the response is not a redirect
+        if response.status_code != 302:
+            print(response.context['form'].errors)
+
+        self.assertEqual(response.status_code, 302)  # Assuming redirect to 'home'
+        self.assertEqual(Recipe.objects.count(), 1)
+        recipe = Recipe.objects.first()
+        self.assertTrue(recipe.image)  # Check if the image field is populated
+        self.assertIn('ImageGen_', recipe.image.name)  # Check filename pattern
+
+        # Cleanup the created file
+        recipe.image.delete(save=False)
+
+    def test_image_upload(self):
+        # Path to a test image file
+        test_image_path = os.path.join(os.path.dirname(__file__), 'test_data', 'test_image.png')
+        with open(test_image_path, 'rb') as img:
+            response = self.client.post(reverse('add_recipe'), {
+                'title': 'Test Recipe2',  # Assuming 'title' is correct based on your initial test
+                'name': 'Test Recipe Name2',
+                'ingredients': 'Test Ingredients2',
+                'meal_type': 'Breakfast',  # Assuming 'meal_type' expects a string like 'Breakfast', 'Lunch', etc.
+                'rating': '5',
+                'image': SimpleUploadedFile(img.name, img.read(), content_type='image/png'),
+                # Include other required form fields
+                })
+
+        self.assertEqual(response.status_code, 302)  # Assuming successful upload redirects
+        self.assertTrue(Recipe.objects.exists())  # Ensure the recipe was created
+        recipe = Recipe.objects.first()
+        self.assertTrue(recipe.image)  # Ensure an image is associated with the recipe
+        # Clean up
+        recipe.image.delete(save=True)
+
+    def test_unique_file_storage2(self):
+        # Path to a test image file
+        self.client.login(username='testuser1', password='password123')
+        test_image_path = os.path.join(os.path.dirname(__file__), 'test_data', 'test_image.png')
+        with open(test_image_path, 'rb') as img:
+            response = self.client.post(reverse('add_recipe'), {
+                'title': 'Test Recipe2',  # Assuming 'title' is correct based on your initial test
+                'name': 'Test Recipe Name2',
+                'ingredients': 'Test Ingredients2',
+                'meal_type': 'Breakfast',  # Assuming 'meal_type' expects a string like 'Breakfast', 'Lunch', etc.
+                'rating': '5',
+                'image': SimpleUploadedFile(img.name, img.read(), content_type='image/png'),
+                # Include other required form fields
+            })
+
+        self.assertEqual(response.status_code, 302)  # Assuming successful upload redirects
+        self.assertTrue(Recipe.objects.exists())  # Ensure the recipe was created
+        recipe = Recipe.objects.first()
+        self.assertTrue(recipe.image)  # Ensure an image is associated with the recipe
+        self.client.logout()
+
+        # Log in as the second user
+        self.client.login(username='testuser2', password='password123')
+
+
+        with open(test_image_path, 'rb') as img:
+            response = self.client.post(reverse('add_recipe'), {
+                'title': 'Test Recipe2',  # Assuming 'title' is correct based on your initial test
+                'name': 'Test Recipe Name2',
+                'ingredients': 'Test Ingredients2',
+                'meal_type': 'Breakfast',  # Assuming 'meal_type' expects a string like 'Breakfast', 'Lunch', etc.
+                'rating': '5',
+                'image': SimpleUploadedFile(img.name, img.read(), content_type='image/png'),
+                # Include other required form fields
+            })
+
+        if response.status_code != 302:  # Assuming a successful submission redirects
+            print(response.content)  # Or `print(response.context['form'].errors)` for form errors
+
+        # Retrieve the uploaded images for both users
+        recipe1 = Recipe.objects.get(user=self.user1)
+        recipe2 = Recipe.objects.get(user=self.user2)
+
+        # Verify that the paths of the uploaded files are different
+        self.assertNotEqual(recipe1.image.name, recipe2.image.name)
+
+        # Clean up: Delete the images to clean up the file system
+        recipe1.image.delete(save=False)
+        recipe2.image.delete(save=False)

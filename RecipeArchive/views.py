@@ -28,8 +28,6 @@ import os
 from django.core.exceptions import PermissionDenied
 
 
-
-# A view is defined to handle requests to the homepage
 @login_required
 def home(request):
     # The view checks if the user is authenticated
