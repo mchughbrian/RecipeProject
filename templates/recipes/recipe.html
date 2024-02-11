@@ -3,30 +3,21 @@
 {% load static %}
 
 {% block content %}
-<div class="container recipe-view">
+<div class="recipe-view">
     <h2>{{ recipe.name }}</h2>
-
-    <!-- Recipe Content Wrapper -->
-    <div class="recipe-content">
-
-        <!-- Recipe Image -->
+    <div class="recipe-image2">
         {% if recipe.image %}
-        <div class="recipe-image">
-            <img src="{{ recipe.image.url }}" class="img-fluid" alt="{{ recipe.name }}">
-        </div>
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
         {% endif %}
-
-        <!-- Recipe Details -->
-        <div class="recipe-details">
-            <p><strong>Meal Type:</strong> {{ recipe.meal_type }}</p>
-            <p><strong>Rating:</strong> {{ recipe.rating }}</p>
-            <p><strong>Ingredients:</strong></p>
-            <p>{{ recipe.ingredients|linebreaksbr }}</p>
-            <p><strong>Instructions:</strong></p>
-            <p>{{ recipe.instructions|linebreaksbr }}</p>
-
-        </div>
     </div>
+<div class="recipe-details">
+    <p><span class="recipe-header">Ingredients:</span></p>
+    <p>{{ recipe.ingredients|linebreaksbr }}</p>
+    <p><span class="recipe-header">Instructions:</span></p>
+    <p>{{ recipe.instructions|linebreaksbr }}</p>
+    <p><span class="recipe-header">Meal Type:</span> {{ recipe.meal_type }}</p>
+    <p><span class="recipe-header">Rating:</span> {{ recipe.rating }}</p>
+</div>
 
     <!-- Edit and Delete Buttons -->
     {% if user.is_authenticated and user == recipe.user %}
@@ -39,5 +30,41 @@
     </div>
     {% endif %}
 </div>
+    <style>
+    .recipe-view {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        text-align: center;
+    }
+    .recipe-image2 img {
+        max-width: 100%; /* Makes image responsive */
+        height: auto; /* Maintain aspect ratio */
+        margin-bottom: 20px; /* Space between image and text */
+    }
+    .recipe-details {
+        text-align: left; /* Align text to the left for readability */
+    }
+    .recipe-header {
+        font-size: 1.2em; /* Adjust the size as needed */
+        font-weight: bold; /* Ensure it's bold, similar to <strong> */
+        display: block; /* Gives it its own line */
+        margin-top: 20px; /* Optional: Adds space above the header */
+    }
+    .recipe-actions {
+        text-align: center; /* Center-align the buttons */
+        margin-top: 20px; /* Add some space above the buttons */
+    }
+
+    .recipe-actions a.btn, .recipe-actions form.delete-form {
+        margin-right: 10px; /* Add some space between the buttons */
+    }
+
+    /* If you're not using a framework that automatically styles buttons inline, add this */
+    .recipe-actions form.delete-form {
+        display: inline-block; /* Display form inline with the link */
+    }
+
+</style>
 {% endblock %}
 
