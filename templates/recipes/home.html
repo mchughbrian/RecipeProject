@@ -44,9 +44,10 @@
         <div class="card flex-grow-1 d-flex flex-column">
 
             <!-- Add New Recipe -->
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             <a href="{% url 'add_recipe' %}" class="d-block text-center p-4">
                 <div class="icon-wrapper">
-                    <i class="fas fa-plus-circle fa-3x"></i> <!-- Icon for Add New Recipe -->
+                    <span class="material-icons" style="font-size:48px;">add_circle_outline</span>
                     <h4>Add New Recipe</h4>
                 </div>
             </a>
@@ -54,8 +55,8 @@
             <!-- Meal Plans -->
             <a href="{% url 'view_mealplans' %}" class="d-block text-center p-4">
                 <div class="icon-wrapper">
-                    <i class="fas fa-calendar-alt fa-3x"></i> <!-- Icon for Meal Plans -->
-                    <h4>Meal Plans</h4>
+                    <i class="fas fa-calendar-check fa-3x"></i> <!-- Icon for Meal Plans -->
+                    <h4>My Meal Plans</h4>
                 </div>
             </a>
 

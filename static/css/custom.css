@@ -83,18 +83,37 @@
 }
 
 .icon-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-    color: #808080; /* Your specific gray color code */
-
+    display: inline-block;
+    background-color: rgba(23, 162, 184, 0.87); /* Primary color */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .icon-wrapper:hover {
-    color: #000; /* Black text on hover */
-    text-decoration: none; /* No underline on hover */
+    background-color: #464849; /* Slightly darker on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
+}
 
+.icon-wrapper .material-icons {
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.icon-wrapper h4 {
+    display: inline;
+    vertical-align: middle;
+    margin: 0; /* Adjust as needed */
+}
+
+.add-recipe-link {
+    text-decoration: none; /* Removes underline */
+}
+
+.add-recipe-link:hover {
+    text-decoration: none; /* Ensures underline doesn't appear on hover */
 }
 
 /* Style for the Font Awesome icons */
