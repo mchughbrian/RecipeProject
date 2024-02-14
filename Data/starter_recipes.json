@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Overnight Oats",
+    "ingredients": "1/2 cup of oats  1/2 cup of milk  \n 1 tbs of Chia Seeds  \n 1/2 cup Vanilla Greek Yogurt  \n 1 Handful of Walnuts  \n 1 Diced Apple",
+    "instructions": "1) Add oats to container  \n 2) Mix in milk, Chia Seeds and Vanilla Greek Yogurt  \n 3) Add handful of Walnuts and mix  \n 4) Place diced Apple on top  \n 5) Place in fridge overnight",
+    "meal_type": "Breakfast",
+    "image_path": "recipes/starter/Oats.png",
+    "rating": 5
+  }
+]

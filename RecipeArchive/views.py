@@ -8,6 +8,8 @@ from django.contrib.auth import login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import escape
 from django.views.decorators.http import require_POST
+
+from .management.commands.assign_starter_recipes import assign_starter_recipes
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
 from .forms import RecipeForm, MealDayForm, RecipeSearchForm
 from .forms import MealPlanForm
@@ -88,7 +90,7 @@ def register(request):
                 print("Error creating Stripe customer:", e)
 
             # Log the user in and redirect to the home page
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect("home")  # Redirect to the home page or another appropriate page
     else:
         form = CustomUserCreationForm()
