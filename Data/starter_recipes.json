@@ -8,14 +8,6 @@
     "rating": 5
   },
     {
-    "name": "",
-    "ingredients": "",
-    "instructions": "",
-    "meal_type": "Lunch",
-    "image_path": "",
-    "rating": 5
-  },
-    {
     "name": "Sea Bass",
     "ingredients": "Sea Bass\n\n12 oz Sea Bass Fillet\n2 Tablespoons unsalted butter\n1 Tablespoon capers\nSalt\n3 garlic cloves, minced\n2 Tablespoons lemon juice\n1/3 cup dry white wine, like a Chardonnay\nLemon wedge, for serving\n\nPotatoes\n\n4 medium potatoes, washed and cubed\n2 tablespoons olive oil\n1 teaspoon garlic powder\n1 teaspoon paprika\nSalt and pepper to taste\n\nGreen Beans\n\n1 pound fresh green beans, trimmed\n2 tablespoons olive oil\n2 cloves garlic, minced\n1 teaspoon lemon zest\n1/2 teaspoon salt\n1/4 teaspoon black pepper",
     "instructions": "Sea Bass\n\n1. Heat oven to 375℉.\n2. Lay fillets in a single layer in a medium baking dish.\n3. In a medium mixing bowl, whisk together garlic, white wine, melted butter, lemon juice, capers, salt and pepper.\n4. Pour sauce over fillet. Spoon the sauce over top of the fish a few times to make sure that it’s evenly coated.\n5. Bake at 375℉ for about 15 minutes until the fish is bright white, opaque, and easily flakes with a fork.\n6. Serve fish immediately with a drizzle of sauce from the pan and fresh lemon wedges.\n\nPotatoes\n\n1. Preheat your air fryer to 400°F (200°C) for 5 minutes.\n2. In a large bowl, toss the cubed potatoes with olive oil, garlic powder, paprika, salt, and pepper until evenly coated.\n3. Place the seasoned potatoes in the air fryer basket in a single layer, making sure they are not overcrowded.\n4. Air fry the potatoes at 400°F (200°C) for 15-20 minutes, shaking the basket halfway through the cooking time, until the potatoes are golden brown and crispy on the outside and tender on the inside.\n5. Serve hot and enjoy!\n\nGreen Beans\n\n1. Preheat your oven to 425°F (220°C).\n2. Place the trimmed green beans on a large baking sheet in a single layer.\n3. Drizzle olive oil over the green beans and sprinkle minced garlic, lemon zest, salt, and black pepper evenly over them.\n4. Toss the green beans gently to coat them evenly with the oil and seasonings.\n5. Roast the green beans in the preheated oven for 15-20 minutes, tossing halfway through, until they are tender and slightly caramelized.\n6. Remove the roasted green beans from the oven and transfer them to a serving dish.",
@@ -41,11 +33,11 @@
     "rating": 5
   },
       {
-    "name": "",
-    "ingredients": "",
-    "instructions": "",
-    "meal_type": "Drink",
-    "image_path": "",
+    "name": "Apple Cinnamon",
+    "ingredients": "Apple: 1 large, preferably a crisp variety like Honeycrisp, Fuji, or Granny Smith, washed and sliced.\nVanilla Greek Yogurt: ½ cup, for dipping. Choose a brand with live cultures for added health benefits.\nCinnamon: ¼ teaspoon, or to taste, mixed into the yogurt for flavor.",
+    "instructions": "Prepare the Apple: Wash the apple thoroughly and slice it into thin wedges. Remove the core and seeds.\nMix the Yogurt: In a small bowl, combine the vanilla Greek yogurt with the cinnamon. Stir until the cinnamon is evenly distributed throughout the yogurt.\nServe: Place the sliced apple on a plate alongside the bowl of cinnamon-flavored vanilla Greek yogurt.\nEnjoy: Dip the apple slices into the yogurt mixture as you eat. The combination of crisp apple, creamy yogurt, and warm cinnamon creates a delightful and healthy snack.",
+    "meal_type": "Snack",
+    "image_path": "recipes/starter/Apple.png",
     "rating": 5
   }
 ]
