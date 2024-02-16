@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mealplans-view">
     <h1>Your Meal Plans</h1>
-    <a href="{% url 'create_mealplan' %}" class="btn btn-custom">Create Meal Plan</a>
+    <a href="{% url 'create_mealplan' %}" class="btn btn-info">Create Meal Plan</a>
 
     <div class="mealplans-list">
         {% for mealplan in mealplans %}
@@ -16,7 +16,7 @@
                 </div>
             </div>
         {% empty %}
-            <p>You have no meal plans. Start by <a href="{% url 'create_mealplan' %}" class="btn btn-custom">creating a new one</a>.</p>
+            <p>You have no meal plans. Start by creating one</p>
         {% endfor %}
     </div>
 </div>
