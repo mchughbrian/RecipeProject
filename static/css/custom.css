@@ -91,7 +91,15 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
-
+.icon-wrapper {
+    min-width: 200px; /* Minimum width */
+    min-height: 150px; /* Minimum height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
 .icon-wrapper:hover {
     background-color: #464849; /* Slightly darker on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
