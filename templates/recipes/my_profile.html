@@ -4,7 +4,11 @@
     <div class="content-wrapper">
     <h1>My Profile</h1>
     <div class="profile-containerP">
-
+    <div class="cardP">
+        <h3>Profile Information</h3>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
         <!-- Display messages -->
         {% if messages %}
             <div class="messages">
@@ -21,7 +25,7 @@
                 <form method="POST">
                     {% csrf_token %}
                     {{ profile_form.as_p }}
-                    <button type="submit" class="btn-custom">Save Name</button>
+                    <button type="submit" class="btn-link-like">Save Name</button>
                 </form>
             </div>
         </div>
@@ -81,6 +85,22 @@ h1 {
     gap: 20px; /* Space between grid items */
 }
 
+.btn-link-like {
+    background: none;
+    color: #17a2b8;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-link-like:hover,
+.btn-link-like:focus {
+    text-decoration: underline;
+}
+
+
 .cardP {
     background-color: white;
     border-radius: 8px;
@@ -90,7 +110,7 @@ h1 {
 }
 
 a {
-    color: #626060;
+    color: #17a2b8;
     text-decoration: none;
 }
 
