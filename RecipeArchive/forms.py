@@ -60,6 +60,7 @@ class RecipeForm(forms.ModelForm):
             'instructions': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Step by step instructions'}),
         }
 
+
 class MealPlanForm(forms.ModelForm):
     class Meta:
         model = MealPlan
@@ -118,4 +119,9 @@ class EmailUpdateForm(forms.ModelForm):
         model = User
         fields = ['email']
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Email is already associated with an account.")
+        return email
 

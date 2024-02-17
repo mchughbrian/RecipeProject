@@ -160,6 +160,7 @@ def delete_recipe(request, recipe_id):
     # After deleting the recipe, redirect the user to the homepage.
     return redirect('home')
 
+
 # Define a view function named 'recipe' which takes a request and recipe_id as arguments
 def recipe(request, recipe_id):
     # Try to get the Recipe object with the provided recipe_id.
@@ -339,7 +340,7 @@ def delete_mealplan(request, mealplan_id):
     # if this is a POST request, delete the mealplan
     if request.method == 'POST':
         mealplan.delete()
-        messages.success(request, 'Meal plan deleted successfully')
+        # messages.success(request, 'Meal plan deleted successfully')
         return redirect('view_mealplans')  # assuming 'mealplans' is the URL where you list all meal plans
 
     # if not a POST request, render the confirm delete page
@@ -409,6 +410,7 @@ def download_mealplan(request, mealplan_id):
 @login_required
 def my_profile(request):
     if request.method == 'POST':
+
         user_form = UserChangeForm(request.POST, instance=request.user)
         password_form = PasswordChangeForm(request.user, request.POST)
         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -428,6 +430,7 @@ def my_profile(request):
             messages.success(request, 'Your profile was successfully updated!')
             return redirect('my_profile')  # Redirect to a confirmation page or back to the profile page
 
+
         # Redirect to some page upon success
         return redirect('my_profile')
 
@@ -441,6 +444,7 @@ def my_profile(request):
         'password_form': password_form,
         'profile_form': profile_form
     }
+
     return render(request, 'recipes/my_profile.html', context)
 
 

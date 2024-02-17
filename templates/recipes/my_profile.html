@@ -5,13 +5,6 @@
     <h1>My Profile</h1>
     <div class="profile-containerP">
     <div class="cardP">
-        <h3>Profile Information</h3>
-        <p><strong>Username:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <a href="{% url 'update_email' %}">Update Email</a> <!-- Make sure 'update_email' matches your URL name -->
-
-    </div>
-        <!-- Display messages -->
         {% if messages %}
             <div class="messages">
                 {% for message in messages %}
@@ -19,6 +12,12 @@
                 {% endfor %}
             </div>
         {% endif %}
+        <h3>Profile Information</h3>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <a href="{% url 'update_email' %}">Update Email</a> <!-- Make sure 'update_email' matches your URL name -->
+
+    </div>
 
         <!-- Profile Form Card -->
         <div class="grid-containerP">
