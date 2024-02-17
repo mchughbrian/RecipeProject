@@ -1,7 +1,7 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<div class="container">
+<div class="containerM">
     <h2>Delete Meal Plan</h2>
     <p>Are you sure you want to delete the meal plan '{{ mealplan.name }}'?</p>
 
@@ -10,15 +10,5 @@
         <button type="submit" class="btn btn-danger">Delete Meal Plan</button>
     </form>
 </div>
-    <style>
-    .container {
-        max-width: 600px; /* Adjust based on your preference */
-        margin: auto; /* Center the container */
-        padding: 20px; /* Add some padding inside the container */
-        border: 1px solid #ccc; /* Slightly gray border */
-        border-radius: 5px; /* Optional: rounds the corners of the border */
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow */
-        background-color: #f9f9f9; /* Slightly off-white background for the container */
-    }
-    </style>
+
 {% endblock %}
