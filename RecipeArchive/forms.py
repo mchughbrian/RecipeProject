@@ -112,3 +112,10 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ['cookbook_name']  # Specify the fields to include
         # If you want to include the password change, use PasswordChangeForm separately
 
+
+class EmailUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email']
+
+

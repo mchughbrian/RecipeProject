@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 
 from .management.commands.assign_starter_recipes import assign_starter_recipes
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
-from .forms import RecipeForm, MealDayForm, RecipeSearchForm
+from .forms import RecipeForm, MealDayForm, RecipeSearchForm, EmailUpdateForm
 from .forms import MealPlanForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -612,3 +612,16 @@ def payment_success(request):
     # This will replace the current manual process of updating subscription IDs and ensure real-time, accurate data synchronization with Stripe.
 
     return render(request, 'registration/sucess.html')
+
+
+def update_email(request):
+    if request.method == 'POST':
+        form = EmailUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your email has been updated.')
+            return redirect('my_profile')  # Redirect to the profile page or wherever appropriate
+    else:
+        form = EmailUpdateForm(instance=request.user)
+
+    return render(request, 'registration/update_email.html', {'form': form})
