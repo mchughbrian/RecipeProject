@@ -1,16 +1,16 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
+<div class="containerM">
 <h2>Manage Subscription</h2>
-
-<div class="subscription-details">
     <p><strong>Current Subscription:</strong> {{ current_subscription }}</p>
     <p><strong>Next Billing Date:</strong> {{ next_bill_date }}</p>
     <p><strong>Price:</strong> ${{ price }}</p>
-</div>
 
 <!-- Cancel Subscription Button -->
-<button id="cancelButton">Cancel Subscription</button>
+<button id="cancelButton" class="btn btn-danger">Cancel Subscription</button>
+
+
 
 <!-- Confirmation Modal/Popup (Hidden initially) -->
 <div id="confirmationModal" style="display:none;">
@@ -23,7 +23,7 @@
     {% csrf_token %}
     <!-- Any additional data you might need to send can be included here -->
     </form>
-
+</div>
 
 <script>
     // When the 'Cancel Subscription' button is clicked, show the modal
