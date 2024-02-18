@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 
 from .management.commands.assign_starter_recipes import assign_starter_recipes
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
-from .forms import RecipeForm, MealDayForm, RecipeSearchForm, EmailUpdateForm
+from .forms import RecipeForm, MealDayForm, RecipeSearchForm, EmailUpdateForm, CustomPasswordChangeForm
 from .forms import MealPlanForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -412,7 +412,7 @@ def my_profile(request):
     if request.method == 'POST':
 
         user_form = UserChangeForm(request.POST, instance=request.user)
-        password_form = PasswordChangeForm(request.user, request.POST)
+        password_form = CustomPasswordChangeForm(request.user, request.POST)
         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
@@ -436,7 +436,7 @@ def my_profile(request):
 
     else:
         user_form = UserChangeForm(instance=request.user)
-        password_form = PasswordChangeForm(request.user)
+        password_form = CustomPasswordChangeForm(request.user)
         profile_form = ProfileForm(instance=request.user.profile)
 
     context = {
@@ -629,3 +629,16 @@ def update_email(request):
         form = EmailUpdateForm(instance=request.user)
 
     return render(request, 'registration/update_email.html', {'form': form})
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)  # Important for keeping the user logged in
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('my_profile')  # Redirect to a success page or profile
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
+    return render(request, 'registration/change_password.html', {'form': form})

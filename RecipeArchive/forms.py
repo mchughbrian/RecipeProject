@@ -125,3 +125,12 @@ class EmailUpdateForm(forms.ModelForm):
             raise ValidationError("Email is already associated with an account.")
         return email
 
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(label="Old Password", widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label="New Password", widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label="Confirm New Password", widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ('old_password', 'new_password1', 'new_password2')

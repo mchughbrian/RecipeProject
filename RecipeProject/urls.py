@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from RecipeArchive.views import subscription_page, subscription_manage, cancel_subscription, payment_success, \
-    update_email
+    update_email, change_password
 
 # URL patterns are defined for our app
 urlpatterns = [
@@ -66,6 +66,7 @@ urlpatterns = [
     path('cancel/', views.payment_cancelled, name='payment_cancelled'),
     path('success/', payment_success, name='payment_success'),
     path('update_email/', update_email, name='update_email'),
+    path('change_password/', change_password, name='change_password'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
