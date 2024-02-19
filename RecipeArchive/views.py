@@ -1,6 +1,7 @@
 import os
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.files.base import ContentFile
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
@@ -608,6 +609,15 @@ def payment_success(request):
     user_profile = request.user.profile
     user_profile.has_subscription = True
     user_profile.save()
+
+    send_mail(
+        'Subscription Notification',
+        'Thank you for subscribing.',
+        settings.EMAIL_HOST_USER,
+        [request.user.email],
+        fail_silently=False,
+    )
+
     # Future TODO: Implement webhook handling for more robust subscription updates
     # This will be implemented once a domain is established and webhooks can be used.
     # TODO: Automate the retrieval and storage of Stripe subscription IDs using webhooks.
@@ -623,6 +633,13 @@ def update_email(request):
         form = EmailUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
+            send_mail(
+                'Email Change Notification',
+                'Your email has been changed, if this was not you please contact us.',
+                settings.EMAIL_HOST_USER,
+                [request.user.email],
+                fail_silently=False,
+            )
             messages.success(request, 'Your email has been updated.')
             return redirect('my_profile')  # Redirect to the profile page or wherever appropriate
     else:
@@ -636,6 +653,14 @@ def change_password(request):
         form = CustomPasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
+
+            send_mail(
+                'Password Change Notification',
+                'Your password has been successfully changed. If you did not request this please contact us',
+                settings.EMAIL_HOST_USER,
+                [request.user.email],
+                fail_silently=False,
+            )
             update_session_auth_hash(request, form.user)  # Important for keeping the user logged in
             messages.success(request, 'Your password was successfully updated!')
             return redirect('my_profile')  # Redirect to a success page or profile
