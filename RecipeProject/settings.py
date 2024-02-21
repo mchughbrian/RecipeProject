@@ -85,10 +85,15 @@ WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'recipe_management',  # Your chosen database name
+        'USER': 'brian_is_user',
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'HOST': 'localhost',  # Or your database server's address
+        'PORT': '5432',  # Default PostgreSQL port
     }
 }
+
 
 
 # Password validation
