@@ -87,7 +87,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'recipe_management',  # Your chosen database name
-        'USER': 'brian_is_user',
+        'USER': os.environ['SQL_USER'],
         'PASSWORD': os.environ['DATABASE_PASSWORD'],
         'HOST': 'localhost',  # Or your database server's address
         'PORT': '5432',  # Default PostgreSQL port
