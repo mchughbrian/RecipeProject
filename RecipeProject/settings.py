@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+
+import dj_database_url
 import dotenv
 
 
@@ -33,7 +35,7 @@ API_HOST = os.environ['API_HOST']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
 
 
 # Application definition
@@ -83,7 +85,13 @@ WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# When running locally
+
 DATABASES = {
+    'default': dj_database_url.config(default='postgres://SQL_USER:DATABASE_PASSWORD@localhost:5432/recipe_management')
+}
+
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'recipe_management',  # Your chosen database name
@@ -92,7 +100,7 @@ DATABASES = {
         'HOST': 'localhost',  # Or your database server's address
         'PORT': '5432',  # Default PostgreSQL port
     }
-}
+}'''
 
 
 
