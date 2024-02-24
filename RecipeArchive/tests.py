@@ -118,6 +118,7 @@ class RecipeTests(TestCase):
     @patch('requests.get')
     def test_add_recipe_with_image_url(self, mock_get):
         # Mock the response from requests.get to simulate fetching an image
+        recipe_count = Recipe.objects.count()
         mock_get.return_value.status_code = 200
         mock_get.return_value.content = BytesIO(b'test image content').getvalue()
 
@@ -136,8 +137,8 @@ class RecipeTests(TestCase):
             print(response.context['form'].errors)
 
         self.assertEqual(response.status_code, 302)  # Assuming redirect to 'home'
-        self.assertEqual(Recipe.objects.count(), 1)
-        recipe = Recipe.objects.first()
+        self.assertEqual(Recipe.objects.count(), recipe_count+1)
+        recipe = Recipe.objects.last()
         self.assertTrue(recipe.image)  # Check if the image field is populated
         self.assertIn('ImageGen_', recipe.image.name)  # Check filename pattern
 
@@ -160,7 +161,7 @@ class RecipeTests(TestCase):
 
         self.assertEqual(response.status_code, 302)  # Assuming successful upload redirects
         self.assertTrue(Recipe.objects.exists())  # Ensure the recipe was created
-        recipe = Recipe.objects.first()
+        recipe = Recipe.objects.last()
         self.assertTrue(recipe.image)  # Ensure an image is associated with the recipe
         # Clean up
         recipe.image.delete(save=True)
@@ -168,6 +169,7 @@ class RecipeTests(TestCase):
     def test_unique_file_storage2(self):
         # Path to a test image file
         self.client.login(username='testuser1', password='password123')
+        recipe_count = Recipe.objects.count()
         test_image_path = os.path.join(os.path.dirname(__file__), 'test_data', 'test_image.png')
         with open(test_image_path, 'rb') as img:
             response = self.client.post(reverse('add_recipe'), {
@@ -181,8 +183,8 @@ class RecipeTests(TestCase):
             })
 
         self.assertEqual(response.status_code, 302)  # Assuming successful upload redirects
-        self.assertTrue(Recipe.objects.exists())  # Ensure the recipe was created
-        recipe = Recipe.objects.first()
+        self.assertEqual(Recipe.objects.count(), recipe_count+1)
+        recipe = Recipe.objects.last()
         self.assertTrue(recipe.image)  # Ensure an image is associated with the recipe
         self.client.logout()
 
@@ -205,9 +207,10 @@ class RecipeTests(TestCase):
             print(response.content)  # Or `print(response.context['form'].errors)` for form errors
 
         # Retrieve the uploaded images for both users
-        recipe1 = Recipe.objects.get(user=self.user1)
-        recipe2 = Recipe.objects.get(user=self.user2)
+        recipe1 = Recipe.objects.filter(user=self.user1).latest('id')
+        recipe2 = Recipe.objects.filter(user=self.user2).latest('id')
 
+        Recipe.objects.last()
         # Verify that the paths of the uploaded files are different
         self.assertNotEqual(recipe1.image.name, recipe2.image.name)
 
