@@ -29,8 +29,8 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 SECRET_KEY = os.environ['SECRET_KEY']
-API_KEY = os.environ['API_KEY']
-API_HOST = os.environ['API_HOST']
+#API_KEY = os.environ['API_KEY']
+#API_HOST = os.environ['API_HOST']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG']
