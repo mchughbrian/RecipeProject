@@ -1,4 +1,6 @@
 import os
+
+import boto3
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.files.base import ContentFile
 from django.core.mail import send_mail
@@ -149,11 +151,31 @@ def delete_recipe(request, recipe_id):
 
     # If the recipe has an associated image file, delete the file
     if recipe.image:
-        # Construct the full file path
-        file_path = os.path.join(settings.MEDIA_ROOT, recipe.image.name)
-        # Check if the file exists and delete it
-        if os.path.isfile(file_path):
-            os.remove(file_path)
+        if recipe.image:
+            # Initialize an S3 client
+            s3 = boto3.client(
+                's3',
+                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                region_name=settings.AWS_S3_REGION_NAME
+            )
+
+            # The 'Key' is the name of the file in your bucket
+            file_key = recipe.image.name
+
+            try:
+                # Check if the file exists by trying to get the object's metadata
+                s3.head_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_key)
+                file_exists = True
+            except s3.exceptions.ClientError:
+                # If a ClientError is thrown, check if it was a 404 error
+                # If it was a 404 error, then the object does not exist.
+                file_exists = False
+
+            if file_exists:
+                # If the file exists, delete it
+                s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_key)
+                print(f"Deleted {file_key} from S3 bucket {settings.AWS_STORAGE_BUCKET_NAME}.")
 
     # Delete the recipe record from the database
     recipe.delete()
