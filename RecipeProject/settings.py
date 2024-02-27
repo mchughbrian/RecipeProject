@@ -185,3 +185,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
 
 DEFAULT_FILE_STORAGE = 'RecipeArchive.storage_backends.MediaStorage'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
