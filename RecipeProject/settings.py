@@ -192,3 +192,5 @@ DEFAULT_FILE_STORAGE = 'RecipeArchive.storage_backends.MediaStorage'
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+
+CSRF_TRUSTED_ORIGINS = ['https://recipearchive.applikuapp.com', 'https://www.recipearchive.applikuapp.com']
