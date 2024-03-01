@@ -86,9 +86,14 @@ WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 
 # When running locally
 
+#DATABASES = {
+#    'default': dj_database_url.config(default='postgres://SQL_USER:DATABASE_PASSWORD@localhost:5432/recipe_management')
+#}
+
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://SQL_USER:DATABASE_PASSWORD@localhost:5432/recipe_management')
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
+
 
 '''DATABASES = {
     'default': {
