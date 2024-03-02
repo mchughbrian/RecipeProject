@@ -86,21 +86,21 @@ WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # When running on server
-#DATABASES = {
-#    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
-#}
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'recipe_management',  # Your chosen database name
-        'USER': os.environ['SQL_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        'HOST': 'localhost',  # Or your database server's address
-        'PORT': '5432',  # Default PostgreSQL port
-    }
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
+
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'recipe_management',  # Your chosen database name
+#        'USER': os.environ['SQL_USER'],
+#        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+#        'HOST': 'localhost',  # Or your database server's address
+#        'PORT': '5432',  # Default PostgreSQL port
+#    }
+#}
 
 
 
