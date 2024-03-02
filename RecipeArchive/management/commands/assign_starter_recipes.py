@@ -11,7 +11,7 @@ import os
 
 
 def assign_starter_recipes(user):
-    path = Path(settings.BASE_DIR) / 'data/starter_recipes.json'  # Update the path
+    path = f'https://{settings.AWS_S3_CUSTOM_DOMAIN}/media/recipes/starter/starter_recipes.json'  # Update the path
     with open(path, 'r') as file:
         recipes = json.load(file)
         for recipe_data in recipes:
