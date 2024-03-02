@@ -11,9 +11,10 @@ import os
 
 
 def assign_starter_recipes(user):
-    path = f'https://{settings.AWS_S3_CUSTOM_DOMAIN}/media/recipes/starter/starter_recipes.json'  # Update the path
-    with open(path, 'r') as file:
-        recipes = json.load(file)
+    json_url = f'https://{settings.AWS_S3_CUSTOM_DOMAIN}/media/recipes/starter/starter_recipes.json'  # Update the path
+    response = requests.get(json_url)
+    if response.status_code == 200:
+        recipes = response.json()  # Parse the JSON directly from the response
         for recipe_data in recipes:
             recipe = Recipe(
                 user=user,
