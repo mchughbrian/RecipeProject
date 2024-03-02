@@ -33,9 +33,9 @@ API_KEY = os.environ['API_KEY']
 API_HOST = os.environ['API_HOST']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = os.environ['DEBUG']
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -168,6 +168,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #MEDIA_URL = '/media/'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+LOGIN_URL = 'login'  # Ensure this matches the name or path of your login view
 LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'landing_page'
@@ -183,9 +184,9 @@ AUTHENTICATION_BACKENDS = [
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
 
-DEFAULT_FILE_STORAGE = 'RecipeArchive.storage_backends.MediaStorage'
+DEFAULT_FILE_STORAGE = 'RecipeArchive.backends.MediaStorage'
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_TRUSTED_ORIGINS = ['https://recipearchive.applikuapp.com', 'https://www.recipearchive.applikuapp.com']
+#CSRF_TRUSTED_ORIGINS = ['https://recipearchive.applikuapp.com', 'https://www.recipearchive.applikuapp.com']
