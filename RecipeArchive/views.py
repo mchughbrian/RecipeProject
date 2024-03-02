@@ -86,6 +86,7 @@ def register(request):
                 Profile.objects.get_or_create(user=user)
             except Exception as e:
                 print("Error creating profile:", e)
+                messages.error(request, f"Error creating profile: {e}")
 
             # Attempt to create a Stripe customer for the new user
             try:
