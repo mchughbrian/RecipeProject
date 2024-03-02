@@ -33,6 +33,7 @@ API_KEY = os.environ['API_KEY']
 API_HOST = os.environ['API_HOST']
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
@@ -84,18 +85,13 @@ WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# When running locally
-
+# When running on server
 #DATABASES = {
-#    'default': dj_database_url.config(default='postgres://SQL_USER:DATABASE_PASSWORD@localhost:5432/recipe_management')
+#    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 #}
 
+
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
-}
-
-
-'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'recipe_management',  # Your chosen database name
@@ -104,7 +100,7 @@ DATABASES = {
         'HOST': 'localhost',  # Or your database server's address
         'PORT': '5432',  # Default PostgreSQL port
     }
-}'''
+}
 
 
 
@@ -158,6 +154,7 @@ AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.us-east-2.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+AWS_S3_REGION_NAME = 'us-east-2'
 AWS_LOCATION = 'static'
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -173,6 +170,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #MEDIA_URL = '/media/'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+LOGIN_URL = 'login'  # Ensure this matches the name or path of your login view
 LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'landing_page'
@@ -188,9 +186,9 @@ AUTHENTICATION_BACKENDS = [
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
 
-DEFAULT_FILE_STORAGE = 'RecipeArchive.storage_backends.MediaStorage'
+DEFAULT_FILE_STORAGE = 'RecipeArchive.backends.MediaStorage'
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_TRUSTED_ORIGINS = ['https://recipearchive.applikuapp.com', 'https://www.recipearchive.applikuapp.com']
+#CSRF_TRUSTED_ORIGINS = ['https://recipearchive.applikuapp.com', 'https://www.recipearchive.applikuapp.com']

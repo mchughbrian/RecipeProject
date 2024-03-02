@@ -66,6 +66,7 @@ urlpatterns = [
     path('cancel/', views.payment_cancelled, name='payment_cancelled'),
     path('success/', payment_success, name='payment_success'),
     path('update_email/', update_email, name='update_email'),
+    #path('accounts/', include('django.contrib.auth.urls')),
     path('change_password/', change_password, name='change_password'),
 
               ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
