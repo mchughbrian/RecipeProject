@@ -3,6 +3,7 @@ import os
 import boto3
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
@@ -143,46 +144,19 @@ def add_recipe(request):
 # 'login_required' decorator is used to ensure that only logged-in users can access this view.
 @login_required
 def delete_recipe(request, recipe_id):
-    # Retrieve the recipe by its ID.
-    try:
-        recipe = Recipe.objects.get(id=recipe_id, user=request.user)  # Ensures ownership
-    except Recipe.DoesNotExist:
-        raise PermissionDenied  # Handles cases where the recipe does not exist or is not owned by the user
+    # Retrieve the recipe by its ID and ensure ownership.
+    recipe = get_object_or_404(Recipe, id=recipe_id, user=request.user)
 
-    # If the recipe has an associated image file, delete the file
+    # If the recipe has an associated image file, delete the file using Django's storage backend
     if recipe.image:
-        if recipe.image:
-            # Initialize an S3 client
-            s3 = boto3.client(
-                's3',
-                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                region_name=settings.AWS_S3_REGION_NAME
-            )
-
-            # The 'Key' is the name of the file in your bucket
-            file_key = recipe.image.name
-
-            try:
-                # Check if the file exists by trying to get the object's metadata
-                s3.head_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_key)
-                file_exists = True
-            except s3.exceptions.ClientError:
-                # If a ClientError is thrown, check if it was a 404 error
-                # If it was a 404 error, then the object does not exist.
-                file_exists = False
-
-            if file_exists:
-                # If the file exists, delete it
-                s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=file_key)
-                print(f"Deleted {file_key} from S3 bucket {settings.AWS_STORAGE_BUCKET_NAME}.")
+        # This will handle the deletion using the configured storage backend (e.g., S3)
+        recipe.image.delete(save=False)
 
     # Delete the recipe record from the database
     recipe.delete()
 
     # After deleting the recipe, redirect the user to the homepage.
     return redirect('home')
-
 
 # Define a view function named 'recipe' which takes a request and recipe_id as arguments
 def recipe(request, recipe_id):
@@ -219,28 +193,32 @@ def edit_recipe(request, id):
 
     # If the request method is POST, this means that the user has submitted the form.
     if request.method == "POST":
-        # Create a form instance and populate it with data from the request and
-        # files (uploaded images), binding it to the recipe instance.
-        # If the form is valid, Django will automatically update the recipe instance.
+        # Capture the current image path
+        current_image_path = recipe.image.name if recipe.image else None
+
         form = RecipeForm(request.POST, request.FILES, instance=recipe)
         form.fields.pop('image_url', None)  # Exclude the image_url field
-
-        # Check if the form is valid.
         if form.is_valid():
-            # Save the changes made to the recipe instance.
-            form.save()
+            # Check if the image was updated
+            updated_recipe = form.save(commit=False)  # Save the form but don't commit to DB yet
+            new_image_path = updated_recipe.image.name if updated_recipe.image else None
 
-            # After saving the changes, redirect the user to the home page.
+            if current_image_path != new_image_path:
+                # Delete the old image from S3 if it exists and is different from the new image
+                if current_image_path:
+                    try:
+                        default_storage.delete(current_image_path)
+                        print(f"Deleted old image {current_image_path} from S3.")
+                    except Exception as e:
+                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+
+            updated_recipe.save()  # Now commit the updates to the database
             return redirect('home')
         else:
             print(form.errors)
-    # If the request method is not POST, this means the user has navigated to the page
-    # but has not submitted the form. In this case, we want to display the form
-    # populated with the current data of the recipe instance.
     else:
         form = RecipeForm(instance=recipe)
 
-    # Render the 'edit_recipe.html' template with the form as context.
     return render(request, 'recipes/edit_recipe.html', {'form': form})
 
 
