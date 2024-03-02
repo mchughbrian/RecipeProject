@@ -16,7 +16,6 @@ import os
 import dj_database_url
 import dotenv
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -89,16 +88,34 @@ WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
+DATABASES["default"]["CONN_MAX_AGE"] = 60
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler'
+        },
+    },
+    'loggers': {
+        '': {  # 'catch all' loggers by referencing it with the empty string
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
 
 
 #DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'recipe_management',  # Your chosen database name
-#        'USER': os.environ['SQL_USER'],
-#        'PASSWORD': os.environ['DATABASE_PASSWORD'],
-#        'HOST': 'localhost',  # Or your database server's address
-#        'PORT': '5432',  # Default PostgreSQL port
+    #'default': {
+        #'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'recipe_management',  # Your chosen database name
+        #'USER': os.environ['SQL_USER'],
+        #'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        #'HOST': '157.245.213.203',  # Or your database server's address
+        #'PORT': '8001',  # Default PostgreSQL port
 #    }
 #}
 
