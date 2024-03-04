@@ -646,11 +646,17 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         # Assuming you have a way to get your user from session information
-        user = request.user.profile
-        subscription_id = session.get('subscription')  # Get the subscription ID from the event
+        customer_id = session.get('customer')
+        subscription_id = session.get('subscription')
+        # Now, find the user profile with this customer ID
+        try:
+            user_profile = Profile.objects.get(stripe_customer_id=customer_id)
+            # Now you can update the user_profile or perform other actions
+            subscription_created.send(sender=None, user_profile=user_profile, subscription_id=subscription_id)
 
-        # Send the custom signal
-        subscription_created.send(sender=user.__class__, user=user, subscription_id=subscription_id)
+        except Profile.DoesNotExist:
+            # Handle the case where no matching profile is found
+            pass
 
     return HttpResponse(status=200)
 

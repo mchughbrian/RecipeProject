@@ -27,13 +27,8 @@ subscription_created = Signal(["user", "subscription_id"])
 
 
 @receiver(subscription_created)
-def handle_subscription_created(sender, **kwargs):
-    user = kwargs.get('user')
-    #subscription_id = kwargs.get('subscription_id')
-
-    # Update the user profile or any other related models
-    # Assuming UserProfile has a relation to your User model
-    user_profile = user.profile
+def handle_subscription_created(sender, user_profile, subscription_id, **kwargs):
+    user_profile.stripe_subscription_id = subscription_id
     user_profile.has_subscription = True
     user_profile.save()
 
