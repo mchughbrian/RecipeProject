@@ -68,6 +68,7 @@ urlpatterns = [
     path('update_email/', update_email, name='update_email'),
     #path('accounts/', include('django.contrib.auth.urls')),
     path('change_password/', change_password, name='change_password'),
+    path('stripe/webhook/', views.stripe_webhook, name='stripe-webhook'),
 
-              ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

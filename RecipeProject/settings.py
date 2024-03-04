@@ -212,3 +212,4 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = ['https://recipearchive.applikuapp.com', 'https://www.recipearchive.applikuapp.com']
+STRIPE_WEBHOOK_SECRET = os.environ['STRIPE_WEBHOOK_SECRET']

@@ -12,7 +12,7 @@ from django.contrib.auth import login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import escape
 from django.views.decorators.http import require_POST
-
+from .signals import subscription_created
 from .management.commands.assign_starter_recipes import assign_starter_recipes
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
 from .forms import RecipeForm, MealDayForm, RecipeSearchForm, EmailUpdateForm, CustomPasswordChangeForm
@@ -607,17 +607,17 @@ def payment_cancelled(request):
 
 def payment_success(request):
     # You can add additional context or processing if needed
-    user_profile = request.user.profile
-    user_profile.has_subscription = True
-    user_profile.save()
+    #user_profile = request.user.profile
+    #user_profile.has_subscription = True
+    #user_profile.save()
 
-    send_mail(
-        'Subscription Notification',
-        'Thank you for subscribing.',
-        settings.EMAIL_HOST_USER,
-        [request.user.email],
-        fail_silently=False,
-    )
+    #send_mail(
+    #    'Subscription Notification',
+    #    'Thank you for subscribing.',
+    #    settings.EMAIL_HOST_USER,
+    #    [request.user.email],
+    #    fail_silently=False,
+    #)
 
     # Future TODO: Implement webhook handling for more robust subscription updates
     # This will be implemented once a domain is established and webhooks can be used.
@@ -627,6 +627,31 @@ def payment_success(request):
     # This will replace the current manual process of updating subscription IDs and ensure real-time, accurate data synchronization with Stripe.
 
     return render(request, 'registration/sucess.html')
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+        )
+    except (ValueError, stripe.error.SignatureVerificationError):
+        return HttpResponseForbidden()
+
+    # Handle the event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        # Assuming you have a way to get your user from session information
+        user = request.user.profile
+        subscription_id = session.get('subscription')  # Get the subscription ID from the event
+
+        # Send the custom signal
+        subscription_created.send(sender=user.__class__, user=user, subscription_id=subscription_id)
+
+    return HttpResponse(status=200)
 
 
 def update_email(request):
