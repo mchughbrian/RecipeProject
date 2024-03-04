@@ -630,6 +630,7 @@ def payment_success(request):
 
 
 @csrf_exempt
+@require_POST  # This ensures the view only accepts POST requests
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
