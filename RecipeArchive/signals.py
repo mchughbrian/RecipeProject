@@ -26,7 +26,7 @@ def create_starter_recipes(sender, instance, created, **kwargs):
 subscription_created = Signal(["user", "subscription_id"])
 
 
-@receiver(subscription_created)
+@receiver(subscription_created, sender=Profile)
 def handle_subscription_created(sender, user_profile, subscription_id, **kwargs):
     user_profile.stripe_subscription_id = subscription_id
     user_profile.has_subscription = True

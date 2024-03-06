@@ -652,7 +652,7 @@ def stripe_webhook(request):
         try:
             user_profile = Profile.objects.get(stripe_customer_id=customer_id)
             # Now you can update the user_profile or perform other actions
-            subscription_created.send(sender=None, user_profile=user_profile, subscription_id=subscription_id)
+            subscription_created.send(sender=Profile, user_profile=user_profile, subscription_id=subscription_id)
 
         except Profile.DoesNotExist:
             # Handle the case where no matching profile is found
