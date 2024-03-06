@@ -32,6 +32,7 @@ from .forms import CustomUserCreationForm
 from openai import OpenAI
 import os
 from django.core.exceptions import PermissionDenied
+from datetime import datetime
 
 
 @login_required
@@ -537,11 +538,33 @@ def subscription_page(request):
     return render(request, 'registration/subscription_page.html', context)
 
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+def get_user_next_billing_date(user_profile):
+    subscription_id = user_profile.stripe_subscription_id
+    if not subscription_id:
+        return "No Subscription Found"
+
+    try:
+        subscription = stripe.Subscription.retrieve(subscription_id)
+        next_billing_date = datetime.fromtimestamp(
+            subscription.current_period_end
+        ).strftime('%B %d, %Y')  # Example format: "March 10, 2024"
+        return f"Your next billing date is: {next_billing_date}"
+    except Exception as e:
+        print(e)
+        return "Error retrieving subscription details"
+
+
 def subscription_manage(request):
     profile = request.user.profile
     # Assuming you have fields like next_bill_date, price, and subscription_type in your Profile model
+    # Call the function to get the next billing date
+    next_bill_date = get_user_next_billing_date(profile)
+
     context = {
-        'next_bill_date': 'TBD',
+        'next_bill_date': next_bill_date,
         'price': '4.99',
         'current_subscription': profile.has_subscription,
     }
