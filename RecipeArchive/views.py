@@ -551,7 +551,7 @@ def get_user_next_billing_date(user_profile):
         next_billing_date = datetime.fromtimestamp(
             subscription.current_period_end
         ).strftime('%B %d, %Y')  # Example format: "March 10, 2024"
-        return f"Your next billing date is: {next_billing_date}"
+        return f"{next_billing_date}"
     except Exception as e:
         print(e)
         return "Error retrieving subscription details"
@@ -563,10 +563,12 @@ def subscription_manage(request):
     # Call the function to get the next billing date
     next_bill_date = get_user_next_billing_date(profile)
 
+    subscription_status = "Active" if profile.has_subscription else "Inactive"
+
     context = {
         'next_bill_date': next_bill_date,
         'price': '4.99',
-        'current_subscription': profile.has_subscription,
+        'current_subscription': subscription_status,
     }
     return render(request, 'registration/subscription_manage.html', context)
 
