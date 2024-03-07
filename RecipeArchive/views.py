@@ -636,21 +636,6 @@ def payment_success(request):
     #user_profile.has_subscription = True
     #user_profile.save()
 
-    #send_mail(
-    #    'Subscription Notification',
-    #    'Thank you for subscribing.',
-    #    settings.EMAIL_HOST_USER,
-    #    [request.user.email],
-    #    fail_silently=False,
-    #)
-
-    # Future TODO: Implement webhook handling for more robust subscription updates
-    # This will be implemented once a domain is established and webhooks can be used.
-    # TODO: Automate the retrieval and storage of Stripe subscription IDs using webhooks.
-    # Once a domain is established, set up a webhook endpoint to handle Stripe's 'checkout.session.completed' events.
-    # In the webhook handler, extract the subscription ID from the event and update the user's profile.
-    # This will replace the current manual process of updating subscription IDs and ensure real-time, accurate data synchronization with Stripe.
-
     return render(request, 'registration/sucess.html')
 
 
@@ -681,6 +666,19 @@ def stripe_webhook(request):
 
         except Profile.DoesNotExist:
             # Handle the case where no matching profile is found
+            pass
+
+    if event['type'] == 'invoice.payment_succeeded':
+        # Extract customer ID from event
+        customer_id = event['data']['object']['customer']
+
+        # Find the user profile associated with this Stripe customer ID
+        try:
+            user_profile = Profile.objects.get(stripe_customer_id=customer_id)
+            user_profile.image_generations_this_month = 0
+            user_profile.save()
+        except Profile.DoesNotExist:
+            # Handle error: Profile not found
             pass
 
     return HttpResponse(status=200)
