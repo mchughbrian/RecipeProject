@@ -442,12 +442,15 @@ def my_profile(request):
         profile_form = ProfileForm(instance=request.user.profile)
 
     user_profile = request.user.profile
+    generated_image_count = max(5 - user_profile.generated_images_count, 0)
+    image_generations_remaining = 20-user_profile.image_generations_this_month
+
     context = {
         'user_form': user_form,
         'password_form': password_form,
         'profile_form': profile_form,
-        'image_generations_remaining': 20-user_profile.image_generations_this_month,
-        'generated_image_count': 5-user_profile.generated_images_count
+        'image_generations_remaining': image_generations_remaining,
+        'generated_image_count': generated_image_count
     }
 
     return render(request, 'recipes/my_profile.html', context)
