@@ -33,6 +33,7 @@ from openai import OpenAI
 import os
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 @login_required
@@ -574,16 +575,24 @@ def subscription_manage(request):
 
 
 @require_POST  # Ensure this view only accepts POST requests
+@login_required
 def cancel_subscription(request):
     profile = request.user.profile
-    profile.has_subscription = False
-    profile.save()
 
-    # Redirect to the profile page
+    if profile.stripe_subscription_id:
+        try:
+            subscription = stripe.Subscription.modify(
+                profile.stripe_subscription_id,
+                cancel_at_period_end=True  # Schedule the subscription to cancel at the period end
+            )
+
+            messages.success(request, "Your subscription is scheduled to be cancelled at the end of the billing period. You can continue to use your image genearations until then.")
+        except Exception as e:
+            messages.error(request, f"An error occurred while trying to cancel your subscription: {str(e)}")
+    else:
+        messages.error(request, "No active subscription found.")
+
     return redirect('my_profile')
-
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 @login_required
@@ -662,6 +671,8 @@ def stripe_webhook(request):
         try:
             user_profile = Profile.objects.get(stripe_customer_id=customer_id)
             # Now you can update the user_profile or perform other actions
+            user_profile.image_generations_this_month = 0
+            user_profile.save()
             subscription_created.send(sender=Profile, user_profile=user_profile, subscription_id=subscription_id)
 
         except Profile.DoesNotExist:
@@ -679,6 +690,22 @@ def stripe_webhook(request):
             user_profile.save()
         except Profile.DoesNotExist:
             # Handle error: Profile not found
+            pass
+
+    # Handle the subscription deleted event
+    if event['type'] == 'customer.subscription.deleted':
+        subscription = event['data']['object']
+        customer_id = subscription['customer']
+
+        # Fetch the corresponding user profile using the Stripe customer ID
+        try:
+            user_profile = Profile.objects.get(stripe_customer_id=customer_id)
+            user_profile.has_subscription = False
+            user_profile.save()
+
+            # Optionally, log this event or notify the user
+        except Profile.DoesNotExist:
+            # Handle the case where no profile matches the Stripe customer ID
             pass
 
     return HttpResponse(status=200)
