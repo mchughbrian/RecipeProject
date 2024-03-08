@@ -414,7 +414,6 @@ def download_mealplan(request, mealplan_id):
 @login_required
 def my_profile(request):
     if request.method == 'POST':
-
         user_form = UserChangeForm(request.POST, instance=request.user)
         password_form = CustomPasswordChangeForm(request.user, request.POST)
         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -434,7 +433,6 @@ def my_profile(request):
             messages.success(request, 'Your profile was successfully updated!')
             return redirect('my_profile')  # Redirect to a confirmation page or back to the profile page
 
-
         # Redirect to some page upon success
         return redirect('my_profile')
 
@@ -443,10 +441,13 @@ def my_profile(request):
         password_form = CustomPasswordChangeForm(request.user)
         profile_form = ProfileForm(instance=request.user.profile)
 
+    user_profile = request.user.profile
     context = {
         'user_form': user_form,
         'password_form': password_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'image_generations_remaining': 20-user_profile.image_generations_this_month,
+        'generated_image_count': 5-user_profile.generated_images_count
     }
 
     return render(request, 'recipes/my_profile.html', context)

@@ -46,11 +46,13 @@
                 <p>Subscription Status:
                     {% if user.profile.has_subscription %}
                         <strong>Active</strong>
+                        <p>You have {{ image_generations_remaining }} image generations remaining this month.</p>
                         <div class="subscription-management-link">
                             <a href="{% url 'subscription_manage' %}">Manage Subscription</a>
                         </div>
                     {% else %}
                         <strong>Not Subscribed</strong>
+                        <p>You have {{ generated_image_count }} free image generations remaining.</p>
                         <div class="subscription-signup-link">
                             <a href="{% url 'subscription-page' %}" class="btn btn-info">Sign up for Subscription</a>
                         </div>
