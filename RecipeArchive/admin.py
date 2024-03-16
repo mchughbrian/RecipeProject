@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import Recipe, Profile
 
+admin.site.register(Recipe)
+admin.site.register(Profile)
+
 
 class RecipeAdmin(admin.ModelAdmin):
     ordering = ('user__id',)  # This orders the recipes in the admin list view by user ID.
@@ -16,5 +19,3 @@ class RecipeAdmin(admin.ModelAdmin):
 
 # register model and the custom admin class
 admin.site.register(RecipeAdmin)
-admin.site.register(Recipe)
-admin.site.register(Profile)
