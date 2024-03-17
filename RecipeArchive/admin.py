@@ -18,4 +18,4 @@ class RecipeAdmin(admin.ModelAdmin):
 admin.site.register(Recipe, RecipeAdmin, Profile)
 
 # Register the Profile model with the default admin interface
-admin.site.register(Profile)
+#admin.site.register(Profile)
