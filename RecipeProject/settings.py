@@ -34,8 +34,7 @@ API_HOST = os.environ['API_HOST']
 # SECURITY WARNING: don't run with debug turned on in production!
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.getenv('DEBUG', 'False') == 'True'
-#DEBUG = os.environ['DEBUG']
-DEBUG = True
+DEBUG = os.environ['DEBUG']
 
 ALLOWED_HOSTS = ['recipevault.io', 'www.recipevault.io', 'recipearchive.applikuapp.com',
                  'www.recipearchive.applikuapp.com', 'localhost', '127.0.0.1']
