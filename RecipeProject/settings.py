@@ -211,5 +211,6 @@ DEFAULT_FILE_STORAGE = 'RecipeArchive.backends.MediaStorage'
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_TRUSTED_ORIGINS = ['https://recipearchive.applikuapp.com', 'https://www.recipearchive.applikuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://recipearchive.applikuapp.com', 'https://www.recipearchive.applikuapp.com',
+                        'https://www.recipevault.io', 'https://recipevault.io']
 STRIPE_WEBHOOK_SECRET = os.environ['STRIPE_WEBHOOK_SECRET']
