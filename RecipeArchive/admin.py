@@ -15,4 +15,4 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 # register model and the custom admin class
-admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(Recipe, RecipeAdmin, Profile)
