@@ -48,8 +48,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'anymail',  # Add Anymail to INSTALLED_APPS
     'RecipeArchive.apps.RecipearchiveConfig',
 ]
+
+ANYMAIL = {
+    "POSTMARK_SERVER_TOKEN": os.environ['POSTMARK_SERVER_TOKEN'],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -112,16 +117,16 @@ LOGGING = {
 }
 
 
-#DATABASES = {
-    #'default': {
-        #'ENGINE': 'django.db.backends.postgresql',
-        #'NAME': 'recipe_management',  # Your chosen database name
-        #'USER': os.environ['SQL_USER'],
-        #'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        #'HOST': '157.245.213.203',  # Or your database server's address
-        #'PORT': '8001',  # Default PostgreSQL port
-#    }
-#}
+'''DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'recipe_management',  # Your chosen database name
+        'USER': os.environ['SQL_USER'],
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'HOST': 'localhost',  # Or your database server's address
+        'PORT': '5432',  # Default PostgreSQL port
+    }
+}'''
 
 
 
@@ -204,8 +209,10 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Keep the default backend
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
+#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+#EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
+EMAIL_BACKEND = "anymail.backends.postmark.EmailBackend"  # Set Anymail with Postmark as the email backend
+DEFAULT_FROM_EMAIL = "support@recipevault.io"  # Set your default from email address
 
 DEFAULT_FILE_STORAGE = 'RecipeArchive.backends.MediaStorage'
 
