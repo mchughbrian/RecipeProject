@@ -12,6 +12,8 @@ from django.contrib.auth import login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import escape
 from django.views.decorators.http import require_POST
+
+from .emails import send_welcome_email
 from .signals import subscription_created
 from .management.commands.assign_starter_recipes import assign_starter_recipes
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
@@ -95,6 +97,13 @@ def register(request):
                 create_stripe_customer(user)
             except Exception as e:
                 print("Error creating Stripe customer:", e)
+
+            # Send welcome email
+            try:
+                send_welcome_email(user)
+            except Exception as e:
+                print("Error sending welcome email:", e)
+                # Optionally handle email errors, e.g., log them or notify an admin
 
             # Log the user in and redirect to the home page
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
