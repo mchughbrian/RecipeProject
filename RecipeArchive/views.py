@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import escape
 from django.views.decorators.http import require_POST
 
-from .emails import send_welcome_email
+from .emails import send_welcome_email, send_subscribe_email, send_cancel_email, send_profile_email
 from .signals import subscription_created
 from .management.commands.assign_starter_recipes import assign_starter_recipes
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
@@ -598,7 +598,7 @@ def cancel_subscription(request):
                 profile.stripe_subscription_id,
                 cancel_at_period_end=True  # Schedule the subscription to cancel at the period end
             )
-
+            send_cancel_email(request.user)
             messages.success(request, "Your subscription is scheduled to be cancelled at the end of the billing period. You can continue to use your image genearations until then.")
         except Exception as e:
             messages.error(request, f"An error occurred while trying to cancel your subscription: {str(e)}")
@@ -687,6 +687,7 @@ def stripe_webhook(request):
             user_profile.image_generations_this_month = 0
             user_profile.save()
             subscription_created.send(sender=Profile, user_profile=user_profile, subscription_id=subscription_id)
+            send_subscribe_email(request.user)
 
         except Profile.DoesNotExist:
             # Handle the case where no matching profile is found
@@ -729,13 +730,7 @@ def update_email(request):
         form = EmailUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            send_mail(
-                'Email Change Notification',
-                'Your email has been changed, if this was not you please contact us.',
-                settings.EMAIL_HOST_USER,
-                [request.user.email],
-                fail_silently=False,
-            )
+            send_profile_email(request.user)
             messages.success(request, 'Your email has been updated.')
             return redirect('my_profile')  # Redirect to the profile page or wherever appropriate
     else:
@@ -749,14 +744,7 @@ def change_password(request):
         form = CustomPasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
-
-            send_mail(
-                'Password Change Notification',
-                'Your password has been successfully changed. If you did not request this please contact us',
-                settings.EMAIL_HOST_USER,
-                [request.user.email],
-                fail_silently=False,
-            )
+            send_profile_email(request.user)
             update_session_auth_hash(request, form.user)  # Important for keeping the user logged in
             messages.success(request, 'Your password was successfully updated!')
             return redirect('my_profile')  # Redirect to a success page or profile

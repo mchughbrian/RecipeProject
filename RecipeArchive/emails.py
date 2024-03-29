@@ -20,3 +20,49 @@ def send_welcome_email(user):
     """.format(name=user)
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
+
+def send_subscribe_email(user):
+    subject = 'Thank you for Subscribing to RecipeVault!'
+    message = """
+    Hi {name},
+
+    Thank you for signing up for the RecipeVault Subscription!
+
+    Each month you will get up to 20 image generations with your subscription. 
+    
+    The images you generate will remain with your account even after you cancel. 
+    
+    Best,
+    The Team
+    """.format(name=user)
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+
+
+def send_cancel_email(user):
+    subject = 'Cancellation Confirmation'
+    message = """
+    Hi {name},
+
+    We are sorry to see you go but want to thank you for subscribing to our service. 
+        
+    Feel free to continue to use our free tier option!  
+        
+    If you have any feedback on the subscription service please let us know at support@recipevault.io
+
+    Best,
+    The Team
+    """.format(name=user)
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+
+
+def send_profile_email(user):
+    subject = 'RecipeVault Profile Update'
+    message = """
+    Hi {name},
+
+    This email is to inform you that your profile information has been updated.  
+
+    Best,
+    The Team
+    """.format(name=user)
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
