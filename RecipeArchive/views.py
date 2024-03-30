@@ -627,7 +627,7 @@ def create_checkout_session(request):
             customer=customer_id,
             payment_method_types=['card'],
             line_items=[{
-                'price': 'price_1Oa7sfHfWVyyw5M2KYbXJcwq',  # Replace with your Stripe Price ID
+                'price': 'price_1P04fHHfWVyyw5M2VaunOIKS',  # Replace with your Stripe Price ID
                 'quantity': 1,
             }],
             mode='subscription',
