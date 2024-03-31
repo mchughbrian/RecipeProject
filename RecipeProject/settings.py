@@ -36,8 +36,7 @@ API_HOST = os.environ['API_HOST']
 #DEBUG = os.getenv('DEBUG', 'False') == 'True'
 DEBUG = os.environ['DEBUG']
 
-ALLOWED_HOSTS = ['recipevault.io', 'www.recipevault.io', 'recipearchive.applikuapp.com',
-                 'www.recipearchive.applikuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
 
 # Application definition
 
