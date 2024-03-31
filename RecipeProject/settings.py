@@ -36,7 +36,7 @@ API_HOST = os.environ['API_HOST']
 #DEBUG = os.getenv('DEBUG', 'False') == 'True'
 DEBUG = os.environ['DEBUG']
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
 
 # Application definition
 
