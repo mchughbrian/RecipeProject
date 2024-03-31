@@ -34,7 +34,7 @@ API_HOST = os.environ['API_HOST']
 # SECURITY WARNING: don't run with debug turned on in production!
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.getenv('DEBUG', 'False') == 'True'
-DEBUG = os.environ['DEBUG']
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't', 'y', 'yes')
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
 
@@ -86,47 +86,44 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 # When running on server
-env = environ.Env()
-DATABASES = {
-    'default': env.db('DATABASE_URL')
-}
+DJANGO_ENV = os.environ.get('DJANGO_ENV', 'development')
 
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
-DATABASES["default"]["CONN_MAX_AGE"] = 60
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler'
-        },
-    },
-    'loggers': {
-        '': {  # 'catch all' loggers by referencing it with the empty string
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
-
-
-'''DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'recipe_management',  # Your chosen database name
-        'USER': os.environ['SQL_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        'HOST': 'localhost',  # Or your database server's address
-        'PORT': '5432',  # Default PostgreSQL port
+if DJANGO_ENV == 'production':
+    env = environ.Env()
+    DATABASES = {
+        'default': env.db('DATABASE_URL')
     }
-}'''
 
+    DATABASES["default"]["ATOMIC_REQUESTS"] = True
+    DATABASES["default"]["CONN_MAX_AGE"] = 60
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler'
+            },
+        },
+        'loggers': {
+            '': {  # 'catch all' loggers by referencing it with the empty string
+                'handlers': ['console'],
+                'level': 'DEBUG',
+            },
+        },
+    }
+else:  # Development settings
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'recipe_management',  # Your chosen database name
+            'USER': os.environ['SQL_USER'],
+            'PASSWORD': os.environ['DATABASE_PASSWORD'],
+            'HOST': 'localhost',  # Or your database server's address
+            'PORT': '5432',  # Default PostgreSQL port
+        }
+    }
 
 
 # Password validation
