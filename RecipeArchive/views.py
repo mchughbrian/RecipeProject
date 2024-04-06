@@ -243,15 +243,6 @@ def edit_recipe(request, id):
                 else:
                     print(f"Failed to download default image from {default_image_url}")
 
-            elif current_image_path != new_image_path:
-                # Delete the old image from S3 if it exists and is different from the new image
-                if current_image_path:
-                    try:
-                        default_storage.delete(current_image_path)
-                        print(f"Deleted old image {current_image_path} from S3.")
-                    except Exception as e:
-                        print(f"Error deleting old image {current_image_path} from S3: {e}")
-
             elif current_image_url != image_url and image_url is not None:
                 response = requests.get(image_url)
                 if response.status_code == 200:
@@ -264,6 +255,14 @@ def edit_recipe(request, id):
                     # Save the image to the model's ImageField
                     updated_recipe.image.save(image_name, ContentFile(response.content), save=False)
 
+            elif current_image_path != new_image_path:
+                # Delete the old image from S3 if it exists and is different from the new image
+                if current_image_path:
+                    try:
+                        default_storage.delete(current_image_path)
+                        print(f"Deleted old image {current_image_path} from S3.")
+                    except Exception as e:
+                        print(f"Error deleting old image {current_image_path} from S3: {e}")
 
             updated_recipe.save()  # Now commit the updates to the database
             return redirect('home')
