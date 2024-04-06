@@ -12,7 +12,7 @@ from django.contrib.auth import login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import escape
 from django.views.decorators.http import require_POST
-
+from django.core.files import File
 from .emails import send_welcome_email, send_subscribe_email, send_cancel_email, send_profile_email
 from .signals import subscription_created
 from .management.commands.assign_starter_recipes import assign_starter_recipes
@@ -126,11 +126,18 @@ def add_recipe(request):
 
             # Check if an image URL is provided in the POST data
             image_url = form.cleaned_data.get('image_url')
-            print("Image URL:", image_url)
-            #if image_url:
-                # If an image URL is provided, use it
-             #   new_recipe.image_url = image_url  # Assign to 'image_url' field
-            if image_url and image_url != 'None':
+            image = form.cleaned_data.get('image')
+            #print("Image URL:", image_url)
+
+            if not image and not image_url:
+                # Specify the path to your default image
+                default_image_path = os.path.join(settings.STATIC_ROOT, 'images', 'default_recipe.png')
+                # Open the default image
+                with open(default_image_path, 'rb') as default_image:
+                    # Save the default image to the model's ImageField
+                    new_recipe.image.save('default_recipe.jpg', File(default_image), save=False)
+
+            elif image_url and image_url != 'None':
                 response = requests.get(image_url)
                 if response.status_code == 200:
                     # Count the number of recipes with image_urls for this user
