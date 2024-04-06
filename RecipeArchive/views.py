@@ -133,10 +133,14 @@ def add_recipe(request):
                 # Specify the path to your default image
                 default_image_path = f"{settings.STATIC_URL}images/default.png"
                 # Open the default image
-                with open(default_image_path, 'rb') as default_image:
-                    # Save the default image to the model's ImageField
-                    new_recipe.image.save('default.png', File(default_image), save=False)
-
+                response = requests.get(default_image_path)
+                if response.status_code == 200:
+                    # Create a ContentFile object from the downloaded image content
+                    image_content = ContentFile(response.content)
+                    # Save the image to the model's ImageField
+                    new_recipe.image.save('default.png', image_content, save=True)
+                else:
+                    print(f"Failed to download the image. Status code: {response.status_code}")
             elif image_url and image_url != 'None':
                 response = requests.get(image_url)
                 if response.status_code == 200:
