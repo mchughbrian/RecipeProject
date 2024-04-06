@@ -116,6 +116,7 @@ def register(request):
 
 @login_required()
 def add_recipe(request):
+    user_profile = get_object_or_404(Profile, user=request.user)
     if request.method == "POST":
         print(request.POST)  # Print the POST data
         form = RecipeForm(request.POST, request.FILES)
@@ -145,7 +146,8 @@ def add_recipe(request):
                 response = requests.get(image_url)
                 if response.status_code == 200:
                     # Count the number of recipes with image_urls for this user
-                    image_count = Recipe.objects.filter(user=request.user, image_url__isnull=False).count()
+                    # image_count = Recipe.objects.filter(user=request.user, image_url__isnull=False).count()
+                    image_count = user_profile.generated_images_count
 
                     # Generate a new filename
                     image_name = f"ImageGen_{image_count + 1}.jpg"
@@ -213,6 +215,7 @@ def edit_recipe(request, id):
     # Get the Recipe instance with the given ID. If no such instance exists,
     # the get_object_or_404 function will automatically render a 404 response.
     recipe = get_object_or_404(Recipe, id=id)
+    user_profile = get_object_or_404(Profile, user=request.user)
 
     # If the request method is POST, this means that the user has submitted the form.
     if request.method == "POST":
@@ -253,12 +256,10 @@ def edit_recipe(request, id):
                     except Exception as e:
                         print(f"Error deleting old image {current_image_path} from S3: {e}")
 
-
-
                 if response.status_code == 200:
                     # Count the number of recipes with image_urls for this user
-                    image_count = Recipe.objects.filter(user=request.user, image_url__isnull=False).count()
-
+                    # image_count = Recipe.objects.filter(user=request.user, image_url__isnull=False).count()
+                    image_count = user_profile.generated_images_count
                     # Generate a new filename
                     image_name = f"ImageGen_{image_count + 1}.jpg"
 
