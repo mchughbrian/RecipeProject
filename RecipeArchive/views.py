@@ -226,7 +226,22 @@ def edit_recipe(request, id):
             updated_recipe = form.save(commit=False)  # Save the form but don't commit to DB yet
             new_image_path = updated_recipe.image.name if updated_recipe.image else None
 
-            if current_image_path != new_image_path:
+            # Check if the image is cleared
+            if not updated_recipe.image:
+
+                default_image_url = f"{settings.STATIC_URL}images/default.png"
+                response = requests.get(default_image_url)
+
+                if response.status_code == 200:
+                    # Create a ContentFile object from the downloaded image content
+                    image_content = ContentFile(response.content)
+
+                    # Save the image to the recipe instance
+                    updated_recipe.image.save('default.png', image_content, save=False)
+                else:
+                    print(f"Failed to download default image from {default_image_url}")
+
+            elif current_image_path != new_image_path:
                 # Delete the old image from S3 if it exists and is different from the new image
                 if current_image_path:
                     try:
