@@ -131,7 +131,7 @@ def add_recipe(request):
 
             if not image and not image_url:
                 # Specify the path to your default image
-                default_image_path = os.path.join(settings.STATIC_ROOT, 'images', 'default_recipe.png')
+                default_image_path = os.path.join(settings.STATIC_URL, 'images', 'default_recipe.png')
                 # Open the default image
                 with open(default_image_path, 'rb') as default_image:
                     # Save the default image to the model's ImageField
