@@ -226,7 +226,7 @@ def edit_recipe(request, id):
             # Check if the image was updated
             updated_recipe = form.save(commit=False)  # Save the form but don't commit to DB yet
             new_image_path = updated_recipe.image.name if updated_recipe.image else None
-            image_url = form.data.get('image_url')
+            image_url = form.data.get('image_url') or None
 
             # Check if the image is cleared
             if not updated_recipe.image and not image_url:
