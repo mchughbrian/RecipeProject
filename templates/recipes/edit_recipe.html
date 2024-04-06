@@ -21,7 +21,170 @@
         {% endfor %}
         <input type="hidden" id="id_image_url" name="image_url" value="{{ form.image_url.value }}">
 
-        <button type="submit" class="btn btn-info">Update</button>
+        <!-- Generate Image Button and Info Icon -->
+        <div class="form-group">
+            <button type="button" id="generateImageButton" class="btn btn-info">Generate Image</button>
+            <span class="info-icon" data-toggle="tooltip" data-placement="top" title="Use AI to generate an image based on a description of your recipe. Limited to 5 free images per user.">
+                <i class="fas fa-info-circle"></i>
+            </span>
+        </div>
+
+        <div id="imageConfirmation" style="display: none;" class="alert alert-success">
+            Generated Image will be saved with your recipe.
+        </div>
+
+        <button type="submit" class="btn btn-custom">Update</button>
     </form>
 </div>
+
+    <!-- Modal for Image Prompt -->
+<div class="modal fade" id="imagePromptModal" tabindex="-1" role="dialog" aria-labelledby="imagePromptModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePromptModalLabel">Image Prompt</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#promptTips" aria-expanded="false" aria-controls="promptTips">
+                    Tips for Creating a Good Prompt
+                </button>
+                <div class="collapse" id="promptTips">
+                    <div class="card card-body">
+                        Describe your dish, specify cooking styles, mention important elements, the style of plating or serving dish. <br><br>
+
+                        Example: "Hand made chicken meatballs that are seared to perfection with a side of Jasmine rice and zucchini sautéed. Professionally plated on a white dish. "
+                </div>
+            </div>
+                <input type="text" id="imagePromptInput" class="form-control" placeholder="Enter a description for the image...">
+            </div>
+            <div id="processingOverlay" style="display: none;">
+                <!-- Overlay Content -->
+                <p>Generating image, please wait...</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-custom" id="confirmImagePrompt">Generate</button>
+            </div>
+            <!-- Inside your modal -->
+            <div id="imagePreviewSection" style="display:none;">
+                <img id="generatedImage" src="" alt="Generated Image" style="display: none;">
+                <button id="saveImageButton">Save Image</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <style>
+    .container {
+    max-width: 700px;
+    margin: auto;
+    padding: 0 20px; /* This padding is to ensure the content inside is aligned */
+}
+    h1 {
+    padding: 30px;
+    margin: 0;}
+
+    </style>
+
 {% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle Generate Image Button Click
+    $('#imagePreviewSection').hide(); // Hide the image container initially
+    $('#generatedImage').hide(); // Hide the image initially
+    $('#id_image_url').val('');
+
+    var generateImageButton = document.getElementById('generateImageButton');
+    var imagePromptModal = $('#imagePromptModal'); // Use jQuery to select the modal
+    var confirmImagePrompt = document.getElementById('confirmImagePrompt');
+
+    if (generateImageButton && imagePromptModal) {
+        generateImageButton.addEventListener('click', function() {
+            console.log("Button clicked"); // This should appear in the console when you click the button
+            imagePromptModal.modal('show'); // Use Bootstrap's modal method to show it
+        });
+    }
+
+    // Handle Confirm in Modal
+    if (confirmImagePrompt) {
+        confirmImagePrompt.addEventListener('click', function() {
+            var userPrompt = $('#imagePromptInput').val().trim();
+
+            var fullPrompt = "Please generate me a photo realistic and professional image of  " + userPrompt;
+
+            $('#processingOverlay').show();
+            $(this).text('Generating...').prop('disabled', true);
+
+
+            if (!userPrompt) {
+                alert("Please enter a prompt for the image.");
+                return; // Stop the function if the prompt is empty
+            }
+
+            // Make AJAX call to generate image
+            $.ajax({
+                url: '/generate-image/', // Update with the correct URL to your Django view
+                type: 'POST',
+                data: {
+                    'prompt': fullPrompt,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val() // Include CSRF token
+                },
+                success: function(response) {
+                    // Image generated successfully
+                    $('#generatedImage').attr('src', response.image_url).show();
+                    $('#imagePreviewSection').show();
+                    $('#saveImageButton').show();
+                    $('#processingOverlay').hide();
+                    $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
+
+                },
+                error: function(xhr) {
+                    $('#processingOverlay').hide();
+                    $('#confirmImagePrompt').text('Generate Image').prop('disabled', false);
+
+                    if (xhr.status === 403) {
+                        var response = JSON.parse(xhr.responseText);
+                        var errorMessage = response.error || "You have reached your image generation limit.";
+
+                        if (errorMessage.includes("Please subscribe")) {
+                            var userWantsToSubscribe = confirm(errorMessage + " Would you like to subscribe to continue?");
+                            if (userWantsToSubscribe) {
+                                // User clicked
+                                window.location.href = '/subscription-page/';
+                            }
+                        } else {
+                            alert(errorMessage);
+                        }
+                    }
+                }
+            });
+        });
+    }
+    $('#saveImageButton').click(function() {
+        var generatedImageUrl = $('#generatedImage').attr('src'); // Get the URL of the generated image
+        console.log(generatedImageUrl); // Check if the URL is captured correctly
+        if (generatedImageUrl) {
+            $('#id_image_url').val(generatedImageUrl);
+            $('#imageConfirmation').show();
+
+        } else {
+            $('#id_image_url').val(''); // Clear the field if no image is generated
+        }
+
+        // Close the modal or perform other actions as needed
+        $('#imagePromptModal').modal('hide');
+    });
+
+
+});
+
+</script>
+{% endblock %}
+
+
+

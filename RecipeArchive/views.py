@@ -218,6 +218,7 @@ def edit_recipe(request, id):
     if request.method == "POST":
         # Capture the current image path
         current_image_path = recipe.image.name if recipe.image else None
+        current_image_url = recipe.image_url if recipe.image_url else None
 
         form = RecipeForm(request.POST, request.FILES, instance=recipe)
         form.fields.pop('image_url', None)  # Exclude the image_url field
@@ -225,9 +226,10 @@ def edit_recipe(request, id):
             # Check if the image was updated
             updated_recipe = form.save(commit=False)  # Save the form but don't commit to DB yet
             new_image_path = updated_recipe.image.name if updated_recipe.image else None
+            image_url = form.cleaned_data.get('image_url')
 
             # Check if the image is cleared
-            if not updated_recipe.image:
+            if not updated_recipe.image and not image_url:
 
                 default_image_url = f"{settings.STATIC_URL}images/default.png"
                 response = requests.get(default_image_url)
@@ -249,6 +251,19 @@ def edit_recipe(request, id):
                         print(f"Deleted old image {current_image_path} from S3.")
                     except Exception as e:
                         print(f"Error deleting old image {current_image_path} from S3: {e}")
+
+            elif current_image_url != image_url and image_url is not None:
+                response = requests.get(image_url)
+                if response.status_code == 200:
+                    # Count the number of recipes with image_urls for this user
+                    image_count = Recipe.objects.filter(user=request.user, image_url__isnull=False).count()
+
+                    # Generate a new filename
+                    image_name = f"ImageGen_{image_count + 1}.jpg"
+
+                    # Save the image to the model's ImageField
+                    updated_recipe.image.save(image_name, ContentFile(response.content), save=False)
+
 
             updated_recipe.save()  # Now commit the updates to the database
             return redirect('home')
