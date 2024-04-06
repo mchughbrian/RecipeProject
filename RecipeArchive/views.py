@@ -140,7 +140,7 @@ def add_recipe(request):
                     # Save the image to the model's ImageField
                     new_recipe.image.save('default.png', image_content, save=True)
                 else:
-                    print(f"Failed to download the image. Status code: {response.status_code}")
+                    print(f"Failed to download the image.")
             elif image_url and image_url != 'None':
                 response = requests.get(image_url)
                 if response.status_code == 200:
