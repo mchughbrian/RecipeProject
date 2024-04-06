@@ -237,6 +237,13 @@ def edit_recipe(request, id):
                 default_image_url = f"{settings.STATIC_URL}images/default.png"
                 response = requests.get(default_image_url)
 
+                if current_image_path:
+                    try:
+                        default_storage.delete(current_image_path)
+                        print(f"Deleted old image {current_image_path} from S3.")
+                    except Exception as e:
+                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+
                 if response.status_code == 200:
                     # Create a ContentFile object from the downloaded image content
                     image_content = ContentFile(response.content)
