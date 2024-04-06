@@ -245,6 +245,16 @@ def edit_recipe(request, id):
 
             elif current_image_url != image_url and image_url is not None:
                 response = requests.get(image_url)
+
+                if current_image_path:
+                    try:
+                        default_storage.delete(current_image_path)
+                        print(f"Deleted old image {current_image_path} from S3.")
+                    except Exception as e:
+                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+
+
+
                 if response.status_code == 200:
                     # Count the number of recipes with image_urls for this user
                     image_count = Recipe.objects.filter(user=request.user, image_url__isnull=False).count()
