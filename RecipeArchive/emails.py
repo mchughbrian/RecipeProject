@@ -66,3 +66,20 @@ def send_profile_email(user):
     The Team
     """.format(name=user)
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+
+
+def send_invoice_email(user):
+    subject = 'Thank you for your payment!'
+    message = """
+    Hi {name},
+
+    Thank you for your payment for your RecipeVault subscription. 
+    
+    We value your continued business. 
+    
+    Please let us know if there is anything we can do better at support@recipevault.io
+
+    Best,
+    The Team
+    """.format(name=user)
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])

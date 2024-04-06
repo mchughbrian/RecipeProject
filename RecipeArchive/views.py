@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import escape
 from django.views.decorators.http import require_POST
 from django.core.files import File
-from .emails import send_welcome_email, send_subscribe_email, send_cancel_email, send_profile_email
+from .emails import send_welcome_email, send_subscribe_email, send_cancel_email, send_profile_email, send_invoice_email
 from .signals import subscription_created
 from .management.commands.assign_starter_recipes import assign_starter_recipes
 from .models import Recipe, MealPlan, MealDay, MealDayModelForm
@@ -760,6 +760,8 @@ def stripe_webhook(request):
             user_profile = Profile.objects.get(stripe_customer_id=customer_id)
             user_profile.image_generations_this_month = 0
             user_profile.save()
+            send_invoice_email(request.user)
+
         except Profile.DoesNotExist:
             # Handle error: Profile not found
             pass
