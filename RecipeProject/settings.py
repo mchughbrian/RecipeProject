@@ -202,9 +202,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Keep the default backend
 ]
 
-#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-#EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
-EMAIL_BACKEND = "anymail.backends.postmark.EmailBackend"  # Set Anymail with Postmark as the email backend
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
+else:
+    EMAIL_BACKEND = "anymail.backends.postmark.EmailBackend"  # Set Anymail with Postmark as the email backend
+
 DEFAULT_FROM_EMAIL = "support@recipevault.io"  # Set your default from email address
 
 CSRF_COOKIE_SECURE = True
