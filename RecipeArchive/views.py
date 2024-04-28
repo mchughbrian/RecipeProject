@@ -835,7 +835,7 @@ def copy_recipe(request, recipe_id):
 
 def discover_recipes(request):
     # Fetch public, original recipes and order them by the number of times they have been copied (descending)
-    recipe_list = Recipe.objects.filter(public=True, is_original=True).order_by('-copy_count')
+    recipe_list = Recipe.objects.filter(public=True, is_original=True).order_by('-copy_count').exclude(user=request.user)
     paginator = Paginator(recipe_list, 12)  # Show 12 recipes per page.
 
     page_number = request.GET.get('page')
