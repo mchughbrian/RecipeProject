@@ -93,23 +93,21 @@
 }
 
 .icon-wrapper {
-    display: inline-block;
-    background-color: rgba(23, 162, 184, 0.87); /* Primary color */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    transition: all 0.3s ease; /* Smooth transition for hover effect */
-}
-.icon-wrapper {
-    min-width: 200px; /* Minimum width */
-    min-height: 150px; /* Minimum height */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     flex-direction: column;
+    background-color: rgba(23, 162, 184, 0.87); /* Primary color */
+    color: white;
+    padding: 5px 20px; /* Reduced padding to decrease height */
+    border-radius: 25px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    min-width: 200px; /* Minimum width */
+    min-height: 100px; /* Reduced minimum height */
 }
+
 .icon-wrapper:hover {
     background-color: #464849; /* Slightly darker on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
@@ -119,6 +117,7 @@
     vertical-align: middle;
     margin-right: 8px;
 }
+
 
 .icon-wrapper h4 {
     display: inline;

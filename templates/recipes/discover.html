@@ -13,7 +13,7 @@
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ recipe.name }}</h5>
-                    <p>{{ recipe.copy_count }}</p>
+                    <p>{{ recipe.copy_count }}    <i class="fas fa-chart-bar"></i></p>
                     <p>{{ recipe.meal_type }}</p>
                     <a href="/recipe/{{ recipe.id }}" class="btn btn-custom">View Recipe</a>
                     <a href="{% url 'copy_recipe' recipe.id %}" class="btn btn-outline-primary">Copy Recipe</a>
