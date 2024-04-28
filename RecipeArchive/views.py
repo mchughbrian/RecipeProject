@@ -35,6 +35,8 @@ from openai import OpenAI
 import os
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
+from django.core.paginator import Paginator
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -811,3 +813,31 @@ def change_password(request):
     else:
         form = CustomPasswordChangeForm(user=request.user)
     return render(request, 'registration/change_password.html', {'form': form})
+
+
+def copy_recipe(request, recipe_id):
+    if not request.user.is_authenticated:
+        return redirect('login')  # Ensure the user is logged in
+
+    original_recipe = get_object_or_404(Recipe, id=recipe_id, public=True)
+    Recipe.objects.create(
+        user=request.user,
+        name=original_recipe.name,
+        ingredients=original_recipe.ingredients,
+        instructions=original_recipe.instructions,
+        public=False  # New copies are not public by default
+    )
+    original_recipe.copy_count += 1  # Increment the copy count
+    original_recipe.save()
+
+    return redirect('recipes:view_recipe', recipe_id=recipe_id)  # Redirect to the view page of the new recipe
+
+
+def discover_recipes(request):
+    # Fetch public, original recipes and order them by the number of times they have been copied (descending)
+    recipe_list = Recipe.objects.filter(public=True, is_original=True).order_by('-copy_count')
+    paginator = Paginator(recipe_list, 12)  # Show 12 recipes per page.
+
+    page_number = request.GET.get('page')
+    recipes = paginator.get_page(page_number)
+    return render(request, 'recipes/discover.html', {'recipes': recipes})
