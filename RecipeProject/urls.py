@@ -69,7 +69,7 @@ urlpatterns = [
     #path('accounts/', include('django.contrib.auth.urls')),
     path('change_password/', change_password, name='change_password'),
     path('stripe/webhook/', views.stripe_webhook, name='stripe-webhook'),
-    path('recipe/<int:recipe_id>/copy/', copy_recipe, name='copy_recipe'),
+    path('recipe/<int:recipe_id>/copy/', views.copy_recipe, name='copy_recipe'),
 
 ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

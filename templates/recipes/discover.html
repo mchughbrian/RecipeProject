@@ -16,7 +16,10 @@
                     <p>{{ recipe.copy_count }}    <i class="fas fa-chart-bar"></i></p>
                     <p>{{ recipe.meal_type }}</p>
                     <a href="/recipe/{{ recipe.id }}" class="btn btn-custom">View Recipe</a>
-                    <a href="{% url 'copy_recipe' recipe.id %}" class="btn btn-outline-primary">Copy Recipe</a>
+                    <form action="{% url 'copy_recipe' recipe.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary">Copy Recipe</button>
+                    </form>
                 </div>
             </div>
         </div>

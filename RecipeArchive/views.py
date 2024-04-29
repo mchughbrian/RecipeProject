@@ -820,17 +820,25 @@ def copy_recipe(request, recipe_id):
         return redirect('login')  # Ensure the user is logged in
 
     original_recipe = get_object_or_404(Recipe, id=recipe_id, public=True)
-    Recipe.objects.create(
-        user=request.user,
-        name=original_recipe.name,
-        ingredients=original_recipe.ingredients,
-        instructions=original_recipe.instructions,
-        public=False  # New copies are not public by default
-    )
-    original_recipe.copy_count += 1  # Increment the copy count
-    original_recipe.save()
-
-    return redirect('recipes:view_recipe', recipe_id=recipe_id)  # Redirect to the view page of the new recipe
+    if request.method == 'POST':
+        # Create a new recipe instance by duplicating the original
+        new_recipe = Recipe(
+            name=original_recipe.name,
+            ingredients=original_recipe.ingredients,
+            instructions=original_recipe.instructions,
+            meal_type=original_recipe.meal_type,
+            rating=original_recipe.rating,
+            image=original_recipe.image,  # Handle image and other fields as necessary
+            user=request.user  # Set the current user as the creator of the new recipe
+        )
+        new_recipe.save()
+        original_recipe.copy_count += 1  # Increment the copy count
+        original_recipe.save()
+        # Optionally redirect to the new recipe's detail page or to another appropriate page
+        return redirect('recipe', new_recipe.id)
+    else:
+        # Redirect to a confirmation page or back to the original recipe's detail page
+        return redirect('recipe', recipe_id)
 
 
 def discover_recipes(request):
