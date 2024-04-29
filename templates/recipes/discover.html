@@ -15,11 +15,14 @@
                     <h5 class="card-title">{{ recipe.name }}</h5>
                     <p>{{ recipe.copy_count }}    <i class="fas fa-chart-bar"></i></p>
                     <p>{{ recipe.meal_type }}</p>
-                    <a href="/recipe/{{ recipe.id }}" class="btn btn-custom">View Recipe</a>
-                    <form action="{% url 'copy_recipe' recipe.id %}" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-primary">Copy Recipe</button>
-                    </form>
+                    <div style="display: flex; align-items: center;">
+                        <a href="/recipe/{{ recipe.id }}" class="btn btn-custom" style="margin-right: 10px;">View Recipe</a>
+                        <form action="{% url 'copy_recipe' recipe.id %}" method="POST" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info">Add Recipe</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>
