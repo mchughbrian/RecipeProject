@@ -239,12 +239,12 @@ def edit_recipe(request, id):
                 default_image_url = f"{settings.STATIC_URL}images/default.png"
                 response = requests.get(default_image_url)
 
-                if current_image_path:
-                    try:
-                        default_storage.delete(current_image_path)
-                        print(f"Deleted old image {current_image_path} from S3.")
-                    except Exception as e:
-                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+                #if current_image_path:
+                #    try:
+                #        default_storage.delete(current_image_path)
+                #        print(f"Deleted old image {current_image_path} from S3.")
+                #    except Exception as e:
+                #        print(f"Error deleting old image {current_image_path} from S3: {e}")
 
                 if response.status_code == 200:
                     # Create a ContentFile object from the downloaded image content
@@ -258,12 +258,12 @@ def edit_recipe(request, id):
             elif current_image_url != image_url and image_url is not None:
                 response = requests.get(image_url)
 
-                if current_image_path:
-                    try:
-                        default_storage.delete(current_image_path)
-                        print(f"Deleted old image {current_image_path} from S3.")
-                    except Exception as e:
-                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+                #if current_image_path:
+                    #try:
+                        #default_storage.delete(current_image_path)
+                        #print(f"Deleted old image {current_image_path} from S3.")
+                    #except Exception as e:
+                    #    print(f"Error deleting old image {current_image_path} from S3: {e}")
 
                 if response.status_code == 200:
                     # Count the number of recipes with image_urls for this user
@@ -275,14 +275,14 @@ def edit_recipe(request, id):
                     # Save the image to the model's ImageField
                     updated_recipe.image.save(image_name, ContentFile(response.content), save=False)
 
-            elif current_image_path != new_image_path:
+            #elif current_image_path != new_image_path:
                 # Delete the old image from S3 if it exists and is different from the new image
-                if current_image_path:
-                    try:
-                        default_storage.delete(current_image_path)
-                        print(f"Deleted old image {current_image_path} from S3.")
-                    except Exception as e:
-                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+                #if current_image_path:
+                #    try:
+                #        default_storage.delete(current_image_path)
+                #        print(f"Deleted old image {current_image_path} from S3.")
+                #    except Exception as e:
+                #        print(f"Error deleting old image {current_image_path} from S3: {e}")
 
             updated_recipe.save()  # Now commit the updates to the database
             return redirect('home')
