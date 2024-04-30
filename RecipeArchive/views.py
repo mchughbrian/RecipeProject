@@ -842,10 +842,20 @@ def copy_recipe(request, recipe_id):
 
 
 def discover_recipes(request):
-    # Fetch public, original recipes and order them by the number of times they have been copied (descending)
-    recipe_list = Recipe.objects.filter(public=True, is_original=True).order_by('-copy_count').exclude(user=request.user)
-    paginator = Paginator(recipe_list, 12)  # Show 12 recipes per page.
+    # Fetch public, original recipes
+    recipe_list = Recipe.objects.filter(public=True, is_original=True).exclude(user=request.user)
 
+    # Filter by meal type if specified
+    meal_type = request.GET.get('meal_type', '')
+    if meal_type and meal_type != 'All':
+        recipe_list = recipe_list.filter(meal_type=meal_type)  # Apply filter directly to recipe_list
+
+    # Order by copy count after filtering
+    recipe_list = recipe_list.order_by('-copy_count')
+
+    # Paginate the filtered and ordered recipes
+    paginator = Paginator(recipe_list, 12)  # Show 12 recipes per page.
     page_number = request.GET.get('page')
     recipes = paginator.get_page(page_number)
-    return render(request, 'recipes/discover.html', {'recipes': recipes})
+
+    return render(request, 'recipes/discover.html', {'recipes': recipes, 'meal_type': meal_type})
