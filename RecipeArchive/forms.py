@@ -54,10 +54,12 @@ class RecipeForm(forms.ModelForm):
     image_url = forms.URLField(required=False, empty_value=None)  # Set empty_value to None
     class Meta:
         model = Recipe
-        fields = ['name', 'ingredients', 'instructions', 'image', 'image_url', 'meal_type', 'rating']
+        fields = ['name', 'ingredients', 'instructions', 'image', 'image_url', 'meal_type', 'rating','public']
         widgets = {
             'ingredients': forms.Textarea(attrs={'rows': 4, 'placeholder': 'List each ingredient on a new line'}),
             'instructions': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Step by step instructions'}),
+            'public': forms.CheckboxInput(),  # Optionally specify a widget for the boolean field
+
         }
 
 
