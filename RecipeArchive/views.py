@@ -107,9 +107,9 @@ def register(request):
                 print("Error sending welcome email:", e)
                 # Optionally handle email errors, e.g., log them or notify an admin
 
-            # Log the user in and redirect to the home page
+            # Log the user in and redirect to discover page
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect("home")  # Redirect to the home page or another appropriate page
+            return redirect("discover")  # Redirect to the discover page
     else:
         form = CustomUserCreationForm()
 
@@ -843,6 +843,9 @@ def copy_recipe(request, recipe_id):
 
 def discover_recipes(request):
     # Fetch public, original recipes
+    if not request.user.is_authenticated:
+        # Redirect the user to the login page, or handle as appropriate
+        return redirect('login')
     recipe_list = Recipe.objects.filter(public=True, is_original=True).exclude(user=request.user)
 
     # Filter by meal type if specified
