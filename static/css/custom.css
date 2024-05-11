@@ -445,3 +445,7 @@ main {
     background-color: #138496; /* A darker shade for hover effect */
     color: white;
 }
+
+.white-icon {
+    color: white;
+}
