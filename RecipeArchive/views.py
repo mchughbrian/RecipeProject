@@ -451,36 +451,6 @@ def download_mealplan(request, mealplan_id):
     return response
 
 
-'''def discover(request):
-    recipes = []
-    form = RecipeSearchForm()
-    error_message = None
-    number_of_results = 10  # Specify the number of results you want
-
-    if request.method == 'POST':
-        form = RecipeSearchForm(request.POST)
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            API_ENDPOINT = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch"
-            API_KEY = settings.API_KEY
-            API_HOST = settings.API_HOST
-
-            try:
-                response = requests.get(API_ENDPOINT,
-                                        headers= {"X-RapidAPI-Key": API_KEY, "X-RapidAPI-Host": API_HOST},
-                                        params={"query": query, "number": number_of_results})
-                if response.status_code == 200:
-                    data = response.json()
-                    recipes = data.get('results', [])
-                else:
-                    error_message = "An error occurred while fetching recipes."
-            except requests.RequestException:
-                error_message = "Failed to connect to the recipe service."
-
-    return render(request, 'recipes/discover.html', {'form': form, 'recipes': recipes, 'error_message': error_message})
-'''
-
-
 @login_required
 def my_profile(request):
     if request.method == 'POST':
