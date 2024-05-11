@@ -36,6 +36,7 @@ import os
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -862,3 +863,13 @@ def discover_recipes(request):
     recipes = paginator.get_page(page_number)
 
     return render(request, 'recipes/discover.html', {'recipes': recipes, 'meal_type': meal_type})
+
+
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)  # Fetch the user by username
+    public_recipes = Recipe.objects.filter(user=user, public=True)  # Only fetch public recipes
+
+    return render(request, 'recipes/user_profile.html', {
+        'profile_user': user,  # The owner of the profile
+        'recipes': public_recipes
+    })
