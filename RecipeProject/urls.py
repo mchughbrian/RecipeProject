@@ -66,7 +66,7 @@ urlpatterns = [
     path('cancel/', views.payment_cancelled, name='payment_cancelled'),
     path('success/', payment_success, name='payment_success'),
     path('update_email/', update_email, name='update_email'),
-    path('user/<str:username>/', user_profile, name='user_profile'),
+    path('user/<int:id>/', user_profile, name='user_profile'),
     #path('accounts/', include('django.contrib.auth.urls')),
     path('change_password/', change_password, name='change_password'),
     path('stripe/webhook/', views.stripe_webhook, name='stripe-webhook'),

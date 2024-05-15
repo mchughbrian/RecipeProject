@@ -836,8 +836,8 @@ def discover_recipes(request):
     return render(request, 'recipes/discover.html', {'recipes': recipes, 'meal_type': meal_type})
 
 
-def user_profile(request, username):
-    user = get_object_or_404(User, username=username)  # Fetch the user by username
+def user_profile(request, id):
+    user = get_object_or_404(User, id=id)  # Fetch the user by id
     public_recipes = Recipe.objects.filter(user=user, public=True)  # Only fetch public recipes
 
     return render(request, 'recipes/user_profile.html', {
