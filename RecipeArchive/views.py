@@ -800,7 +800,8 @@ def copy_recipe(request, recipe_id):
             meal_type=original_recipe.meal_type,
             rating=original_recipe.rating,
             image=original_recipe.image,  # Handle image and other fields as necessary
-            user=request.user  # Set the current user as the creator of the new recipe
+            user=request.user,  # Set the current user as the creator of the new recipe
+            is_original=False
         )
         new_recipe.save()
         original_recipe.copy_count += 1  # Increment the copy count
