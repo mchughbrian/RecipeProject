@@ -34,7 +34,7 @@
     <form action="{% url 'copy_recipe' recipe.id %}" method="POST" class="copy-form">
         {% csrf_token %}
         <button type="submit" class="btn btn-info">Add Recipe</button>
-        <a href="{% url 'user_profile' username=recipe.user.username %}" class="btn-custom">View Creator's Profile</a>
+        <a href="{% url 'user_profile' id=user.id %}" class="btn-custom">View Creator's Profile</a>
 
     </form>
 </div>
