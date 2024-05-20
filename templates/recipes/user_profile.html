@@ -1,10 +1,40 @@
 {% extends 'base_generic.html' %}
 {% load static %}
-
 {% block content %}
+
+
+    <head>
+        <!-- Add this line in the head section of your HTML to include Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+
+    </head>
+
+    <script src="{% static 'js/main.js' %}"></script>
+
+
 <div class="container">
-<h1>{{ profile_user.cookbook_name }}</h1>
-    <!-- Existing recipes blocks -->
+        <!-- User profile section -->
+        <div class="row">
+            <div class="col-md-6">
+                <h1>{{profile_user.profile.cookbook_name}}</h1>
+            </div>
+        </div>
+    <div class="filter-container">
+        <form method="GET" action="{% url 'user_profile' id=profile_user.id %}" id="filterForm">
+            <select name="meal_type" id="mealTypeSelect">
+                <option value="" {% if meal_type == '' %}selected{% endif %}>All Meal Types</option>
+                <option value="Breakfast" {% if meal_type == 'Breakfast' %}selected{% endif %}>Breakfast</option>
+                <option value="Lunch" {% if meal_type == 'Lunch' %}selected{% endif %}>Lunch</option>
+                <option value="Dinner" {% if meal_type == 'Dinner' %}selected{% endif %}>Dinner</option>
+                <option value="Dessert" {% if meal_type == 'Dessert' %}selected{% endif %}>Dessert</option>
+                <option value="Drink" {% if meal_type == 'Drink' %}selected{% endif %}>Drink</option>
+                <option value="Snack" {% if meal_type == 'Snack' %}selected{% endif %}>Snack</option>
+                <option value="Other" {% if meal_type == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+        </form>
+    </div>
+
     <div class="row">
         {% for recipe in recipes %}
         <div class="col-md-4 d-flex recipe-row">

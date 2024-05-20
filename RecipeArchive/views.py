@@ -841,7 +841,15 @@ def user_profile(request, id):
     user = get_object_or_404(User, id=id)  # Fetch the user by id
     public_recipes = Recipe.objects.filter(user=user, public=True)  # Only fetch public recipes
 
+    # Filter by meal type if specified
+    meal_type = request.GET.get('meal_type', '')
+    if meal_type and meal_type != 'All':
+        public_recipes = public_recipes.filter(meal_type=meal_type)  # Filter recipes based on meal type
+    else:
+        public_recipes = public_recipes
+
     return render(request, 'recipes/user_profile.html', {
         'profile_user': user,  # The owner of the profile
-        'recipes': public_recipes
+        'recipes': public_recipes,
+        'meal_type': meal_type,
     })
