@@ -35,6 +35,9 @@ from openai import OpenAI
 import os
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
+from django.core.paginator import Paginator
+from django.contrib.auth.models import User
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -105,9 +108,9 @@ def register(request):
                 print("Error sending welcome email:", e)
                 # Optionally handle email errors, e.g., log them or notify an admin
 
-            # Log the user in and redirect to the home page
+            # Log the user in and redirect to discover page
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect("home")  # Redirect to the home page or another appropriate page
+            return redirect("discover")  # Redirect to the discover page
     else:
         form = CustomUserCreationForm()
 
@@ -237,12 +240,12 @@ def edit_recipe(request, id):
                 default_image_url = f"{settings.STATIC_URL}images/default.png"
                 response = requests.get(default_image_url)
 
-                if current_image_path:
-                    try:
-                        default_storage.delete(current_image_path)
-                        print(f"Deleted old image {current_image_path} from S3.")
-                    except Exception as e:
-                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+                #if current_image_path:
+                #    try:
+                #        default_storage.delete(current_image_path)
+                #        print(f"Deleted old image {current_image_path} from S3.")
+                #    except Exception as e:
+                #        print(f"Error deleting old image {current_image_path} from S3: {e}")
 
                 if response.status_code == 200:
                     # Create a ContentFile object from the downloaded image content
@@ -256,12 +259,12 @@ def edit_recipe(request, id):
             elif current_image_url != image_url and image_url is not None:
                 response = requests.get(image_url)
 
-                if current_image_path:
-                    try:
-                        default_storage.delete(current_image_path)
-                        print(f"Deleted old image {current_image_path} from S3.")
-                    except Exception as e:
-                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+                #if current_image_path:
+                    #try:
+                        #default_storage.delete(current_image_path)
+                        #print(f"Deleted old image {current_image_path} from S3.")
+                    #except Exception as e:
+                    #    print(f"Error deleting old image {current_image_path} from S3: {e}")
 
                 if response.status_code == 200:
                     # Count the number of recipes with image_urls for this user
@@ -273,14 +276,14 @@ def edit_recipe(request, id):
                     # Save the image to the model's ImageField
                     updated_recipe.image.save(image_name, ContentFile(response.content), save=False)
 
-            elif current_image_path != new_image_path:
+            #elif current_image_path != new_image_path:
                 # Delete the old image from S3 if it exists and is different from the new image
-                if current_image_path:
-                    try:
-                        default_storage.delete(current_image_path)
-                        print(f"Deleted old image {current_image_path} from S3.")
-                    except Exception as e:
-                        print(f"Error deleting old image {current_image_path} from S3: {e}")
+                #if current_image_path:
+                #    try:
+                #        default_storage.delete(current_image_path)
+                #        print(f"Deleted old image {current_image_path} from S3.")
+                #    except Exception as e:
+                #        print(f"Error deleting old image {current_image_path} from S3: {e}")
 
             updated_recipe.save()  # Now commit the updates to the database
             return redirect('home')
@@ -446,36 +449,6 @@ def download_mealplan(request, mealplan_id):
     response = HttpResponse(content, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=mealplan.txt'
     return response
-
-
-'''def discover(request):
-    recipes = []
-    form = RecipeSearchForm()
-    error_message = None
-    number_of_results = 10  # Specify the number of results you want
-
-    if request.method == 'POST':
-        form = RecipeSearchForm(request.POST)
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            API_ENDPOINT = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch"
-            API_KEY = settings.API_KEY
-            API_HOST = settings.API_HOST
-
-            try:
-                response = requests.get(API_ENDPOINT,
-                                        headers= {"X-RapidAPI-Key": API_KEY, "X-RapidAPI-Host": API_HOST},
-                                        params={"query": query, "number": number_of_results})
-                if response.status_code == 200:
-                    data = response.json()
-                    recipes = data.get('results', [])
-                else:
-                    error_message = "An error occurred while fetching recipes."
-            except requests.RequestException:
-                error_message = "Failed to connect to the recipe service."
-
-    return render(request, 'recipes/discover.html', {'form': form, 'recipes': recipes, 'error_message': error_message})
-'''
 
 
 @login_required
@@ -811,3 +784,72 @@ def change_password(request):
     else:
         form = CustomPasswordChangeForm(user=request.user)
     return render(request, 'registration/change_password.html', {'form': form})
+
+
+def copy_recipe(request, recipe_id):
+    if not request.user.is_authenticated:
+        return redirect('login')  # Ensure the user is logged in
+
+    original_recipe = get_object_or_404(Recipe, id=recipe_id, public=True)
+    if request.method == 'POST':
+        # Create a new recipe instance by duplicating the original
+        new_recipe = Recipe(
+            name=original_recipe.name,
+            ingredients=original_recipe.ingredients,
+            instructions=original_recipe.instructions,
+            meal_type=original_recipe.meal_type,
+            rating=original_recipe.rating,
+            image=original_recipe.image,  # Handle image and other fields as necessary
+            user=request.user,  # Set the current user as the creator of the new recipe
+            is_original=False,
+            original_recipe_id=original_recipe.id
+        )
+        new_recipe.save()
+        original_recipe.copy_count += 1  # Increment the copy count
+        original_recipe.save()
+        # Optionally redirect to the new recipe's detail page or to another appropriate page
+        return redirect('recipe', new_recipe.id)
+    else:
+        # Redirect to a confirmation page or back to the original recipe's detail page
+        return redirect('recipe', recipe_id)
+
+
+def discover_recipes(request):
+    # Fetch public, original recipes
+    if not request.user.is_authenticated:
+        # Redirect the user to the login page, or handle as appropriate
+        return redirect('login')
+    recipe_list = Recipe.objects.filter(public=True, is_original=True).exclude(user=request.user)
+
+    # Filter by meal type if specified
+    meal_type = request.GET.get('meal_type', '')
+    if meal_type and meal_type != 'All':
+        recipe_list = recipe_list.filter(meal_type=meal_type)  # Apply filter directly to recipe_list
+
+    # Order by copy count after filtering
+    recipe_list = recipe_list.order_by('-copy_count')
+
+    # Paginate the filtered and ordered recipes
+    paginator = Paginator(recipe_list, 12)  # Show 12 recipes per page.
+    page_number = request.GET.get('page')
+    recipes = paginator.get_page(page_number)
+
+    return render(request, 'recipes/discover.html', {'recipes': recipes, 'meal_type': meal_type})
+
+
+def user_profile(request, id):
+    user = get_object_or_404(User, id=id)  # Fetch the user by id
+    public_recipes = Recipe.objects.filter(user=user, public=True)  # Only fetch public recipes
+
+    # Filter by meal type if specified
+    meal_type = request.GET.get('meal_type', '')
+    if meal_type and meal_type != 'All':
+        public_recipes = public_recipes.filter(meal_type=meal_type)  # Filter recipes based on meal type
+    else:
+        public_recipes = public_recipes
+
+    return render(request, 'recipes/user_profile.html', {
+        'profile_user': user,  # The owner of the profile
+        'recipes': public_recipes,
+        'meal_type': meal_type,
+    })

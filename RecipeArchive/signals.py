@@ -17,10 +17,10 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-@receiver(post_save, sender=User)
-def create_starter_recipes(sender, instance, created, **kwargs):
-    if created:
-        assign_starter_recipes(instance)
+#@receiver(post_save, sender=User)
+#def create_starter_recipes(sender, instance, created, **kwargs):
+#    if created:
+#        assign_starter_recipes(instance)
 
 
 subscription_created = Signal(["user", "subscription_id"])

@@ -32,8 +32,6 @@ API_KEY = os.environ['API_KEY']
 API_HOST = os.environ['API_HOST']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.getenv('DEBUG', 'False') == 'True'
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't', 'y', 'yes')
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',')
@@ -161,36 +159,35 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 
-'''THIS IS FOR LOCAL TESTING'''
-#STATIC_URL = '/static/'
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static'),
-#]
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# AWS S3 settings
-AWS_ACCESS_KEY_ID = os.environ['AWS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_KEY']
-AWS_STORAGE_BUCKET_NAME = os.environ['AWS_BUCKET']
-AWS_S3_CUSTOM_DOMAIN = os.environ['AWS_CLOUDFRONT']
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_S3_REGION_NAME = 'us-east-2'
-AWS_LOCATION = 'static'
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+# set Media files
+if DEBUG:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
+    #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+else:
+    AWS_ACCESS_KEY_ID = os.environ['AWS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_KEY']
+    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_BUCKET']
+    AWS_S3_CUSTOM_DOMAIN = os.environ['AWS_CLOUDFRONT']
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    AWS_S3_REGION_NAME = 'us-east-2'
+    AWS_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    DEFAULT_FILE_STORAGE = 'RecipeArchive.backends.MediaStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-#For local only
-#MEDIA_URL = '/media/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = 'login'  # Ensure this matches the name or path of your login view
 LOGIN_REDIRECT_URL = 'home'
@@ -205,12 +202,13 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Keep the default backend
 ]
 
-#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-#EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
-EMAIL_BACKEND = "anymail.backends.postmark.EmailBackend"  # Set Anymail with Postmark as the email backend
-DEFAULT_FROM_EMAIL = "support@recipevault.io"  # Set your default from email address
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = '/tmp/app-emails'  # change this to a suitable directory
+else:
+    EMAIL_BACKEND = "anymail.backends.postmark.EmailBackend"  # Set Anymail with Postmark as the email backend
 
-DEFAULT_FILE_STORAGE = 'RecipeArchive.backends.MediaStorage'
+DEFAULT_FROM_EMAIL = "support@recipevault.io"  # Set your default from email address
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True

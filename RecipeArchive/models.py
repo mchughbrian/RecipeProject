@@ -69,6 +69,11 @@ class Recipe(models.Model):
     # date when the recipe was added, automatically set to the current date and time
     date_added = models.DateTimeField(auto_now_add=True)
 
+    public = models.BooleanField(default=True)  # Set the default to True
+    original_recipe = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='copies')
+    is_original = models.BooleanField(default=True)
+    copy_count = models.IntegerField(default=0)  # Tracks the number of times this recipe has been copied
+
     # the user who added the recipe, linked via a foreign key to the User model
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

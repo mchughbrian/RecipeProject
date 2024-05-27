@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from RecipeArchive.views import subscription_page, subscription_manage, cancel_subscription, payment_success, \
-    update_email, change_password
+    update_email, change_password, copy_recipe, user_profile
 
 # URL patterns are defined for our app
 urlpatterns = [
@@ -49,7 +49,7 @@ urlpatterns = [
     path('edit-mealplan/<int:mealplan_id>/', views.edit_mealplan, name='edit_mealplan'),
     path('mealplan/<int:mealplan_id>/delete/', views.delete_mealplan, name='delete_mealplan'),
     path('download_mealplan/<int:mealplan_id>/', views.download_mealplan, name='download_mealplan'),
-    #path('discover/', views.discover, name='discover'),
+    path('discover/', views.discover_recipes, name='discover'),
     path('my_profile', views.my_profile, name='my_profile'),
     path('registration/', include('django.contrib.auth.urls')),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
@@ -66,9 +66,13 @@ urlpatterns = [
     path('cancel/', views.payment_cancelled, name='payment_cancelled'),
     path('success/', payment_success, name='payment_success'),
     path('update_email/', update_email, name='update_email'),
+    path('user/<int:id>/', user_profile, name='user_profile'),
     #path('accounts/', include('django.contrib.auth.urls')),
     path('change_password/', change_password, name='change_password'),
     path('stripe/webhook/', views.stripe_webhook, name='stripe-webhook'),
+    path('recipe/<int:recipe_id>/copy/', views.copy_recipe, name='copy_recipe'),
 
 ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
