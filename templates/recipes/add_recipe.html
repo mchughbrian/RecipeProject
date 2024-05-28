@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         confirmImagePrompt.addEventListener('click', function() {
             var userPrompt = $('#imagePromptInput').val().trim();
 
-            var fullPrompt = "Please generate me a photo realistic and professional image of  " + userPrompt;
+            var fullPrompt = "Please generate me an image of  " + userPrompt;
 
             $('#processingOverlay').show();
             $(this).text('Generating...').prop('disabled', true);
