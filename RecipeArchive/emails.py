@@ -12,6 +12,8 @@ def send_welcome_email(user):
     Our goal is to create an easy way for you to save your recipes and bring them to life with images. 
         
     Check out our Image Generation Feature to bring your RecipeVault to life. 
+    
+    Use our discover page for a quick start and to find recipes other users have uploaded as public. 
         
     We are a new application, please feel free to give us feedback at support@recipevault.io
         

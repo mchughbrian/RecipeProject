@@ -110,7 +110,7 @@ def register(request):
 
             # Log the user in and redirect to discover page
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect("discover")  # Redirect to the discover page
+            return redirect("home")  # Redirect to the discover page
     else:
         form = CustomUserCreationForm()
 
