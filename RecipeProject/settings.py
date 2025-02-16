@@ -111,17 +111,21 @@ if DJANGO_ENV == 'production':
             },
         },
     }
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
 else:  # Development settings
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'recipe_management',  # Your chosen database name
+            'NAME': 'local_recipes',  # Your chosen database name
             'USER': os.environ['SQL_USER'],
             'PASSWORD': os.environ['DATABASE_PASSWORD'],
             'HOST': 'localhost',  # Or your database server's address
             'PORT': '5432',  # Default PostgreSQL port
         }
     }
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
 
 
 # Password validation
@@ -163,6 +167,10 @@ USE_TZ = True
 if DEBUG:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    if not os.path.exists(MEDIA_ROOT):
+        os.makedirs(MEDIA_ROOT)  # Ensure the media directory exists
+
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     STATIC_URL = '/static/'
     STATICFILES_DIRS = [
@@ -209,9 +217,6 @@ else:
     EMAIL_BACKEND = "anymail.backends.postmark.EmailBackend"  # Set Anymail with Postmark as the email backend
 
 DEFAULT_FROM_EMAIL = "support@recipevault.io"  # Set your default from email address
-
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
 STRIPE_WEBHOOK_SECRET = os.environ['STRIPE_WEBHOOK_SECRET']
