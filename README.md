@@ -2,7 +2,7 @@
 
 ## Overview
 
-MealPlanApp is a Django web application that allows users to create and manage meal plans. With an easy-to-use interface, users can add recipes, set meal plans for the week, and even choose options like "Takeout" or "N/A" for flexibility.
+RecipeArchive is a Django web application that allows users to create and manage meal plans. With an easy-to-use interface, users can add recipes, set meal plans for the week, and even choose options like "Takeout" or "N/A" for flexibility.
 
 Users have access to all their recipes on the home page and can filter by type of meal
 
