@@ -2,23 +2,12 @@
 
 ## Overview
 
-RecipeArchive is a Django web application that allows users to create and manage meal plans. With an easy-to-use interface, users can add recipes, set meal plans for the week, and even choose options like "Takeout" or "N/A" for flexibility.
+RecipeArchive is a Django web application that allows users to create and manage meal plans. With an easy-to-use interface, users can add recipes, generate images, set meal plans for the week. 
 
 Users have access to all their recipes on the home page and can filter by type of meal
 
-https://github.com/mchughbrian/RecipeProject/assets/35962729/598bcf4e-ff25-46db-81d7-49cbaf161603
+[Watch the demo video](https://youtube.com/shorts/DfzPbtUgGIg)
 
-Users can view/edit existing recipies or add new ones. 
-
-
-https://github.com/mchughbrian/RecipeProject/assets/35962729/1e1e4680-5bd1-45f6-95ff-bf1d756599c7
-
-
-
-Users can customize and create meal plans 
-
-
-https://github.com/mchughbrian/RecipeProject/assets/35962729/5145216d-c9dd-4b62-a38b-b6589c55ecd9
 
 
 
