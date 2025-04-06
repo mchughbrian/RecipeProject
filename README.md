@@ -44,8 +44,7 @@ Run migrations:
 
 Run the development server:
 ```python manage.py runserver```
-Open a web browser and navigate to http://localhost:8000/.
-
+Open a web browser and navigate to the applicable local host port. 
 ## Usage
 
 Register/Login:To start using the application, you first need to register and then log in.
