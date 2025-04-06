@@ -6,7 +6,8 @@ RecipeArchive is a Django web application that allows users to create and manage
 
 Users have access to all their recipes on the home page and can filter by type of meal
 
-[!Watch the demo video](https://youtube.com/shorts/DfzPbtUgGIg)
+[![Watch the video](https://img.youtube.com/vi/DfzPbtUgGIg/0.jpg)](https://youtube.com/shorts/DfzPbtUgGIg)
+
 
 
 
